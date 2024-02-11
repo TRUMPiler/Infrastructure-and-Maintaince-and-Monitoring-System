@@ -22,26 +22,30 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
         {
             con.ConnectionString = "data source=ASUSTUFGAMING\\SQLEXPRESS; database=Project; integrated security=SSPI";
         }
-        public ActionResult Login(GetData gd)
+        public ActionResult Login()
+        {
+            return View();
+           
+        }
+        public ActionResult Verify(GetData gd)
         {
             ConnectionString();
             con.Open();
-           
-            com.CommandText = "select * from Users where Username='"+gd.Username+"' and Password='"+gd.Password+"'";
+            com.Connection = con;
+            com.CommandText = "select * from Users where Username='" + gd.Username + "' and Password='" + gd.Password + "'";
             dr = com.ExecuteReader();
-            if(dr.Read())
+            if (dr.Read())
             {
                 con.Close();
 
-                return View();
+                return View("Success");
             }
             else
             {
                 con.Close();
 
-                return View();
+                return View("Error");
             }
-            
         }
     }
 }
