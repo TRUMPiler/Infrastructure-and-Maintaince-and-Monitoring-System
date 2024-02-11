@@ -3,19 +3,45 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-
+using Infrastructure_and_Maintaince_and_monitoring_system.Models;
+using System.Data.SqlClient;
 namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
 {
     public class HomeController : Controller
     {
         // GET: Home
+        SqlConnection con = new SqlConnection();
+        SqlCommand com = new SqlCommand();
+        SqlDataReader dr;
         public ActionResult Index()
         {
             return View();
         }
-        public ActionResult Login()
+        [HttpPost]
+        void ConnectionString()
         {
-            return View();
+            con.ConnectionString = "data source=ASUSTUFGAMING\\SQLEXPRESS; database=Project; integrated security=SSPI";
+        }
+        public ActionResult Login(GetData gd)
+        {
+            ConnectionString();
+            con.Open();
+           
+            com.CommandText = "select * from Users where Username='"+gd.Username+"' and Password='"+gd.Password+"'";
+            dr = com.ExecuteReader();
+            if(dr.Read())
+            {
+                con.Close();
+
+                return View();
+            }
+            else
+            {
+                con.Close();
+
+                return View();
+            }
+            
         }
     }
 }
