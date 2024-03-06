@@ -5,11 +5,18 @@ using System.Web;
 using System.Web.Mvc;
 using Infrastructure_and_Maintaince_and_monitoring_system.Models;
 using System.Data.SqlClient;
+using System.Net;
+using System.Net.Mail;
+using System.Web.Helpers;
 namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
 {
     public class HomeController : Controller
     {
         // GET: Home
+        SmtpClient smtp = new SmtpClient();
+        
+        
+        MailMessage mm = new MailMessage();
         SqlConnection con = new SqlConnection();
         SqlCommand com = new SqlCommand();
         SqlDataReader dr;
@@ -36,6 +43,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
             dr = com.ExecuteReader();
             if (dr.Read())
             {
+
                 con.Close();
 
                 return View("Success");
