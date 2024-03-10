@@ -20,6 +20,10 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
         SqlConnection con = new SqlConnection();
         SqlCommand com = new SqlCommand();
         SqlDataReader dr;
+        public ActionResult Register()
+        {
+            return View();
+        }
         public ActionResult Index()
         {
             return View();
