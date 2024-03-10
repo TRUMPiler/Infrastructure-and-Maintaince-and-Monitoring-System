@@ -1,21 +1,16 @@
-﻿
-@{
-    ViewBag.Title = "Login";
-
-}
-@{
-   // WebSecurity.InitializeDatabaseConnection("Users", "UserProfile", "UserId", "Email", true);
-}
-
-<h2>Login</h2>
-<form method="post" action="Verify">
-    Name:<input type="text" name="Username" />
-    <br />
-    Password:<input type="password" name="Password" />
-    <br />
-    <button type="submit">Login</button>
-</form>
-@{
-
-}
-
+﻿<html>
+<head>
+    <title>
+        Login
+    </title>
+</head>
+<body>
+    <form>
+        <label>Username</label>
+        <input type="text" name="Username" /><br />
+        <label>Password</label>
+        <input type="password" name="password" /><br />
+        <input type="submit" value="Log in" />
+    </form>
+</body>
+</html>
