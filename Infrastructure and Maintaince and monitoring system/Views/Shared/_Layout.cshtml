@@ -20,12 +20,19 @@
                 <div class="collapse navbar-collapse">
                     <ul class="navbar-nav me-auto">
                         <li class="nav-item">
-                            <a class="nav-link text-black">Home</a>
+                            @{
+                                String Link_Name = ViewBag.Title;
+                            }
+                            <!--<a class="nav-link text-black">Home</a>-->
+                        <li class="nav-item">
+                            @Html.ActionLink("Home", "Index", "Home", new { area = "" }, new { @class = "nav-link text-black" })
+                        </li>
                         </li>
                     </ul>
                     <ul class="nav-item">
                         <li>
-                            <a class="nav-link text-black" href="~/Views/Home/Login.cshtml">Login</a>
+                            <!--<a class="nav-link text-black" href="~/Views/Home/Login.cshtml">Login</a>-->
+                            @Html.ActionLink("Login", "Login", "Home", new { area = "" }, new { @class = "nav-link text-black" })
                         </li>
                     </ul>
                     <ul class="nav-item">
