@@ -45,17 +45,13 @@
             </div>
         </nav>
     </div>
-
-
-
-    <div class="container body-content">
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - Project created by Jainam Shah, Heli Mehta, Naishal Doshi and Pranav Chaudhari</p>
-        </footer>
+    
+    @RenderBody()
+    <div class="container">
+    <footer>
+        <p>&copy; @DateTime.Now.Year - Project created by Jainam Shah, Heli Mehta, Naishal Doshi and Pranav Chaudhari</p>
+    </footer
     </div>
-
     <script src="~/Scripts/jquery-3.4.1.min.js"></script>
     <script src="~/Scripts/bootstrap.min.js"></script>
 </body>
