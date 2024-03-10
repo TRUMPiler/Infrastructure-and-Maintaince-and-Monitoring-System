@@ -92,7 +92,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\assets\css\Login.css" />
     <Content Include="Content\assets\css\main.css" />
+    <Content Include="Content\assets\js\Login.js" />
     <Content Include="Content\Site.css" />
     <Content Include="Content\vendor\aos\aos.cjs.js" />
     <Content Include="Content\vendor\aos\aos.css" />
