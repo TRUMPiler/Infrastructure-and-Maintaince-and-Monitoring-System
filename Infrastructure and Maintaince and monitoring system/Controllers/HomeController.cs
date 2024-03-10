@@ -12,32 +12,38 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
 {
     public class HomeController : Controller
     {
-        // GET: Home
-        SmtpClient smtp = new SmtpClient();
-        
-        
-        MailMessage mm = new MailMessage();
-        SqlConnection con = new SqlConnection();
-        SqlCommand com = new SqlCommand();
-        SqlDataReader dr;
+        public ActionResult VerifyUser(GetData gs)
+        {
+            return View("Naishal");
+        }
+        public ActionResult Register()
+        {
+            return View();
+        }
+        public ActionResult Login()
+        {
+            return View();
+        }
+    
         public ActionResult Index()
         {
             return View();
         }
 
         [HttpPost]
-        public ActionResult Login(string username, string password)
+        public ActionResult Login(String GG)
         {
-            if (IsValidUser(username, password))
-            {
-                
-                return RedirectToAction("Dashboard");
-            }
-            else
-            {
-                ModelState.AddModelError("", "Invalid username or password.");
-                return View();
-            }
+            //if (IsValidUser(username, password))
+            //{
+
+            //    return RedirectToAction("Dashboard");
+            //}
+            //else
+            //{
+            //    ModelState.AddModelError("", "Invalid username or password.");
+            //    return View();
+            return View();
+            //}
         }
 
         
@@ -48,17 +54,19 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
 
         private bool IsValidUser(string username, string password)
         {
-            using (var con = new SqlConnection(connectionString))
-            {
-                con.Open();
-                using (var cmd = new SqlCommand("SELECT COUNT(*) FROM Users WHERE Username = @Username AND Password = @Password", con))
-                {           
-                    cmd.Parameters.AddWithValue("@Username", username);
-                    cmd.Parameters.AddWithValue("@Password", password);
-                    int count = (int)cmd.ExecuteScalar();
-                    return count > 0;
-                }
-            }
+            //using (var con = new SqlConnection(connectionString))
+            //{
+            //    con.Open();
+            //    using (var cmd = new SqlCommand("SELECT COUNT(*) FROM Users WHERE Username = @Username AND Password = @Password", con))
+            //    {           
+            //        cmd.Parameters.AddWithValue("@Username", username);
+            //        cmd.Parameters.AddWithValue("@Password", password);
+            //        int count = (int)cmd.ExecuteScalar();
+            //        return count > 0;
+            //    }
+            //}
+            return
+                 true;
         }
     }
 

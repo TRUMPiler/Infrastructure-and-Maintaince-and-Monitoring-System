@@ -38,7 +38,8 @@
                     </ul>
                     <ul class="nav-item">
                         <li>
-                            <a class="nav-link text-black">Signup</a>
+                            @*<a class="nav-link text-black">Signup</a>*@
+                            @Html.ActionLink("Signup", "Login", "Home", new { area = "" }, new { @class = "nav-link text-black" })
                         </li>
                     </ul>
                 </div>
