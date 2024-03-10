@@ -12,15 +12,14 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly string connectionString = "Data Source=DESKTOP-T7RS5U7\\SQLEXPRESS;Initial Catalog=IMMS;Integrated Security=True";
-
-        [HttpGet]
-        public ActionResult Register()
-        {
-            return View();
-        }
-
-        [HttpGet]
+        // GET: Home
+        SmtpClient smtp = new SmtpClient();
+        
+        
+        MailMessage mm = new MailMessage();
+        SqlConnection con = new SqlConnection();
+        SqlCommand com = new SqlCommand();
+        SqlDataReader dr;
         public ActionResult Index()
         {
             return View();
