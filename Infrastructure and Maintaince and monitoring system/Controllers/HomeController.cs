@@ -12,6 +12,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
 {
     public class HomeController : Controller
     {
+        [HandleError]
         public ActionResult VerifyUser(GetData gs)
         {
             return View("Naishal");
