@@ -20,44 +20,46 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
         SqlConnection con = new SqlConnection();
         SqlCommand com = new SqlCommand();
         SqlDataReader dr;
-        public ActionResult Register()
-        {
-            return View();
-        }
         public ActionResult Index()
         {
             return View();
         }
+
         [HttpPost]
-        void ConnectionString()
+        public ActionResult Login(string username, string password)
         {
-            con.ConnectionString = "Data Source=DESKTOP-T7RS5U7/SQLEXPRESS;Initial Catalog=IMMS;Integrated Security=True";
-        }
-        public ActionResult Login()
-        {
-            return View();
-           
-        }
-        public ActionResult Verify(GetData gd)
-        {
-            ConnectionString();
-            con.Open();
-            com.Connection = con;
-            com.CommandText = "select * from Users where Username='" + gd.Username + "' and Password='" + gd.Password + "'";
-            dr = com.ExecuteReader();
-            if (dr.Read())
+            if (IsValidUser(username, password))
             {
-
-                con.Close();
-
-                return View("Success");
+                
+                return RedirectToAction("Dashboard");
             }
             else
             {
-                con.Close();
+                ModelState.AddModelError("", "Invalid username or password.");
+                return View();
+            }
+        }
 
-                return View("Error");
+        
+        public ActionResult ChangePass()
+        {
+            return View();
+        }
+
+        private bool IsValidUser(string username, string password)
+        {
+            using (var con = new SqlConnection(connectionString))
+            {
+                con.Open();
+                using (var cmd = new SqlCommand("SELECT COUNT(*) FROM Users WHERE Username = @Username AND Password = @Password", con))
+                {           
+                    cmd.Parameters.AddWithValue("@Username", username);
+                    cmd.Parameters.AddWithValue("@Password", password);
+                    int count = (int)cmd.ExecuteScalar();
+                    return count > 0;
+                }
             }
         }
     }
+
 }

@@ -136,6 +136,7 @@
     <Content Include="Content\vendor\purecounter\purecounter_vanilla.js" />
     <Content Include="Content\vendor\swiper\swiper-bundle.min.css" />
     <Content Include="Content\vendor\swiper\swiper-bundle.min.js" />
+    <Content Include="GG.aspx" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\home.js" />
     <Content Include="Web.config" />
@@ -143,6 +144,13 @@
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="GG.aspx.cs">
+      <DependentUpon>GG.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="GG.aspx.designer.cs">
+      <DependentUpon>GG.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -189,6 +197,7 @@
     <Content Include="Views\Home\Success.cshtml" />
     <Content Include="Views\Home\Error.cshtml" />
     <Content Include="Views\Home\Register.cshtml" />
+    <Content Include="Views\Home\ChangePass.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -198,6 +207,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Content\assets\js\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
