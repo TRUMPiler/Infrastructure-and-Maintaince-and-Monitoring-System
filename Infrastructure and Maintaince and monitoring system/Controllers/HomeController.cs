@@ -27,7 +27,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
         [HttpPost]
         void ConnectionString()
         {
-            con.ConnectionString = "data source=ASUSTUFGAMING\\SQLEXPRESS; database=Project; integrated security=SSPI";
+            con.ConnectionString = "Data Source=DESKTOP-T7RS5U7/SQLEXPRESS;Initial Catalog=IMMS;Integrated Security=True";
         }
         public ActionResult Login()
         {
