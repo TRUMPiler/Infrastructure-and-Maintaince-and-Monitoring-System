@@ -14,7 +14,6 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Models
         public String PhoneNo { get; set; }
         public String Name { get; set; }
         public String LoginID { get; set; }
-
         public String Password { get; set; }
 
     }
