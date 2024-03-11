@@ -1,11 +1,11 @@
 ﻿
 @{
-    ViewBag.Title = "ChangePassword";
+    ViewBag.Title = "Forget Password";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <h2>Change Password</h2>
 @Model
-<form method="post" action="VerifyUser">
+<form method="post" action="VerifyLoginID">
     <label>Login ID</label>
     <input type="Text" name="LoginID" /><br />
     <input type="submit" value="Submit" /><br />

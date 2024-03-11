@@ -17,18 +17,23 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
         SqlConnection con = new SqlConnection();
         SqlCommand com = new SqlCommand();
         SqlDataReader dr;
-        String otp;
+        string otp="";
+        
+        string Result = "";
         [HandleError]
 
-        public void SendMail(String To)
+        public string SendMail(String To)
         {
             es.Email = "dashtaxigg@gmail.com";
             es.To = To;
+            string randomNum = GenerateRandomNumber(6);
+            Session["otp"] = randomNum;
             using (MailMessage mm = new MailMessage(es.Email, es.To))
             {
-                string randomNum = GenerateRandomNumber(6);
+                
+
                 es.Body = "Your Otp is " + randomNum;
-                otp = randomNum;
+                
                 es.Password = "cgqgsvvqvjwswyyq";
 
                 es.Subject = "Your One Time Password";
@@ -48,37 +53,13 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
                    
                 }
             }
+            return randomNum;
 
 
         }
         void ConnectionString()
         {
             con.ConnectionString = "data source=ASUSTUFGAMING\\SQLEXPRESS; database=IMMS; integrated security=SSPI";
-        }
-        [HttpPost]
-        public ActionResult VerifyUser(GetData gs)
-        {
-            ConnectionString();
-            con.Open();
-            com.Connection = con;
-            com.CommandText = "select Email from Tbl_Users where LoginID='" + gs.LoginID + "'";
-            dr = com.ExecuteReader();
-            if(!dr.HasRows)
-            {
-                return View("ChangePass",model:"Couldn't find your id");
-            }
-            
-                if (dr.Read())
-                {
-
-
-                    SendMail(dr[0].ToString());
-                    con.Close();
-                    
-                }
-                return View("VerifyOtp");
-            
-            
         }
         public ActionResult Register()
         {
@@ -90,56 +71,70 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
         {
             return View();
         }
-        public ActionResult VerifyOtp()
-        {
-            return View();
-        }
+        
 
         [HttpPost]
-        public ActionResult VerifyOtp(int otp)
+        public ActionResult VerifyOtp(string otps)
         {
-            if (Convert.ToInt32(this.otp)==otp)
+            Result = Session["otp"]+" "+otps;
+
+            otp = Session["otp"].ToString();
+                if (this.otp.Equals(otps))
+                {
+                    return RedirectToAction("ChangePass");
+                }
+                
+                
+            return View(model: "Coundn't Verify Otp"+ (this.otp.Equals(otps))+ Result);
+
+        }
+        [HttpPost]
+        public ActionResult Login(GetData gd)
+        {
+            String Query = "select * from Tbl_Users where LoginID='"+gd.LoginID+"' and Password ='"+gd.Password+"'";
+            ConnectionString();
+            con.Open();
+            com.Connection = con;
+            com.CommandText = Query;
+            dr = com.ExecuteReader();
+            if (dr.HasRows)
             {
-                return View("Login");
+                Session["LoginID"] = gd.LoginID;
+                Session["UserVerified"] = "true";
+                return View("Index");
             }
             else
             {
-                return View(model:"Coundn't Verify Otp");
+                return View("Login",model:"Invalid Crendiatls");
             }
-        }
-        public ActionResult Login(GetData gd)
-        {
-            //if (IsValidUser(username, password))
-            //{
-
-            //    return RedirectToAction("Dashboard");
-            //}
-            //else
-            //{
-            //    ModelState.AddModelError("", "Invalid username or password.");
-            //    return View();
-            Session["LoginID"] = gd.LoginID;
-            return View();
+            
             //}
         }
 
         
         public ActionResult ChangePass()
         {
-            if(Session["LoginID"]==null|| Session["LoginID"] == "")
+            if(Session["LoginID"]==null|| Session["LoginID"].Equals(""))
             {
                 return RedirectToAction("Login");
                 
             }
-            return View("");
+            return View();
         }
         [HttpPost]
-        public ActionResult ChangePass(String newPassword,String oldPassword)
+        public ActionResult ChangePass(string Newpass,string oldPass)
         {
-            return View();
-
+            if (Newpass.Equals(oldPass))
+            {
+                String Query = "update Tbl_User Password='" + oldPass + "' where LoginID='" + Session["LoginID"] + "'";
+                return View("Success");
+            }
+            else
+            {
+                return View(model:"Password Does not Match");
+            }
         }
-
+     
         private bool IsValidUser(string username, string password)
         {
             //using (var con = new SqlConnection(connectionString))
@@ -156,8 +151,48 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
             return
                  true;
         }
-        
+        public ActionResult ForgetPass()
+        {
+            if (Session["LoginID"] != null||!Session["LoginID"].Equals(""))
+            {
+                return RedirectToAction("ChangePass");
+            }
+            return View();
+        }
+        [HttpPost]
+        public ActionResult VerifyLoginID(GetData gs)
+        {
+            String Query = "Select Email from Tbl_Users where LoginID='"+gs.LoginID+"'";
+            ConnectionString();
+            con.Open();
+            com.Connection = con;
+            com.CommandText = Query;
+            dr = com.ExecuteReader();
+            if(dr.HasRows)
+            {
+                while (dr.Read())
+                {
+                    Session["LoginID"] = gs.LoginID;
+                    String Email= dr[0].ToString();
+                    SendMail(Email); 
+                    
+                }
+                
+                return View("VerifyOtp");
+                
+            }
+            else
+            {
+                return View("ForgetPass", model:Result) ;
+            }
+            
 
+
+        }
+        public ActionResult Login()
+        {
+            return View();
+        }
         public string GenerateRandomNumber(int numberOfDigits)
         {
             Random rand = new Random();
