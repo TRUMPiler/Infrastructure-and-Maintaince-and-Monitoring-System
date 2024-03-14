@@ -114,7 +114,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
         
         public ActionResult ChangePass()
         {
-            if(Session["LoginID"]==null|| Session["LoginID"].Equals(""))
+            if(Session["LoginID"]==null)
             {
                 return RedirectToAction("Login");
                 
@@ -153,11 +153,15 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
         }
         public ActionResult ForgetPass()
         {
-            if (Session["LoginID"] != null||!Session["LoginID"].Equals(""))
+            if (Session["LoginID"] != null)
             {
                 return RedirectToAction("ChangePass");
             }
             return View();
+        }
+        public void ResultSetGG()
+        {
+            
         }
         [HttpPost]
         public ActionResult VerifyLoginID(GetData gs)
@@ -188,8 +192,9 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
         }
         public ActionResult Login()
         {
-            if (Session["LoginID"] != null || !Session.Equals(""))
+            if (Session["LoginID"] != null)
             {
+                Session["LoginID"] = null;
                 return RedirectToAction("Index");
             }
             return View();

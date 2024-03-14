@@ -30,18 +30,31 @@
                         </li>
                         </li>
                     </ul>
+                    @if (Session["LoginID"] == null)
+                    {
+                        <ul class="nav-item">
+                            <li>
+                                <!--<a class="nav-link text-black" href="~/Views/Home/Login.cshtml">Login</a>-->
+                                @Html.ActionLink("Register", "Register", "Home", new { area = "" }, new { @class = "nav-link text-black" })
+                            </li>
+                        </ul>
+                        <ul class="nav-item">
+                            <li>
+                                @*<a class="nav-link text-black">Signup</a>*@
+                                @Html.ActionLink("Signup", "Login", "Home", new { area = "" }, new { @class = "nav-link text-black" })
+                            </li>
+                        </ul>
+                    }
+                    else
+                    {
                     <ul class="nav-item">
                         <li>
                             <!--<a class="nav-link text-black" href="~/Views/Home/Login.cshtml">Login</a>-->
-                            @Html.ActionLink("Register", "Register", "Home", new { area = "" }, new { @class = "nav-link text-black" })
+                            @Html.ActionLink(Session["LoginID"].ToString(), "Register", "Home", new { area = "" }, new { @class = "nav-link text-black" })
                         </li>
                     </ul>
-                    <ul class="nav-item">
-                        <li>
-                            @*<a class="nav-link text-black">Signup</a>*@
-                            @Html.ActionLink("Signup", "Login", "Home", new { area = "" }, new { @class = "nav-link text-black" })
-                        </li>
-                    </ul>
+                    
+                    }
                 </div>
             </div>
         </nav>
