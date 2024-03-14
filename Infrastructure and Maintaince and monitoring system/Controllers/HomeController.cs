@@ -191,6 +191,10 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
         }
         public ActionResult Login()
         {
+            if (Session["LoginID"] != null || !Session.Equals(""))
+            {
+                return RedirectToAction("Index");
+            }
             return View();
         }
         public string GenerateRandomNumber(int numberOfDigits)
