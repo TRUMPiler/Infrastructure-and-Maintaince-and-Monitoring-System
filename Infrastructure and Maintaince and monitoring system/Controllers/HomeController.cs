@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.IO;
 using Infrastructure_and_Maintaince_and_monitoring_system.Models;
 using System.Data.SqlClient;
 using System.Net;
@@ -22,7 +23,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
         string Result = "";
         [HandleError]
 
-        public string SendMail(String To)
+        public string SendMail(String To,String subject,bool verification)
         {
             es.Email = "dashtaxigg@gmail.com";
             es.To = To;
@@ -32,11 +33,20 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
             {
                 
 
-                es.Body = "Your Otp is " + randomNum;
-                
-                es.Password = "cgqgsvvqvjwswyyq";
+                if(verification)
+                {
+                    es.Body = "Your Otp is " + randomNum;
+                    es.Subject = "verification Email";
+                }
+                else
+                {
+                    es.Body = "Your Password for User ID:"+Session["LoginID"]+" is "+subject;
+                    es.Subject = "Your Password ";
+                }
+                    es.Password = "cgqgsvvqvjwswyyq";
 
-                es.Subject = "Your One Time Password";
+
+                
                 mm.Subject = es.Subject;
                 mm.Body = es.Body;
                 mm.IsBodyHtml = false;
@@ -61,7 +71,47 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
         {
             con.ConnectionString = "data source=ASUSTUFGAMING\\SQLEXPRESS; database=IMMS; integrated security=SSPI";
         }
-        public ActionResult Register()
+        [HttpPost]
+        public ActionResult Register1(HttpPostedFileBase file)
+        {
+            
+            if (file != null && file.ContentLength > 0)
+            {
+                try
+                {
+                    
+                    string fileName = Path.GetFileName(file.FileName);
+                    string path = Path.Combine(Server.MapPath("~\\App_Data"), fileName);
+                    file.SaveAs(path);
+                    String Query = "BULK insert Tbl_Users "+
+                    " from '"+path+"'"
+                    +" WITH("
+                    +" FORMAT = 'CSV',"
+                    +" FIRSTROW = 2,"
+                    +" FIELDTERMINATOR = ',',"
+                    + " ROWTERMINATOR = '\\n'"
+                    + " )";
+                    
+                    ConnectionString();
+                    con.Open();
+                    com.Connection = con;
+                    com.CommandText = Query;
+                    com.ExecuteNonQuery();
+                    return View("Register", model: "File uploaded");
+                }
+                catch (Exception ex)
+                {
+                    return View("Register", model: ex.Message); 
+                }
+            }
+            else
+            {
+                return View("Register", model: "please select a file");
+            }
+            
+        }
+    
+    public ActionResult Register()
         {
             return View();
         }
@@ -81,7 +131,11 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
             otp = Session["otp"].ToString();
                 if (this.otp.Equals(otps))
                 {
-                    return RedirectToAction("ChangePass");
+                SendMail(Session["Email"].ToString(), Session["Password"].ToString(), false);
+                Session["Email"] = null;
+                Session["Password"] = null;
+                Session["LoginID"] = null;
+                return RedirectToAction("Login");
                 }
                 
                 
@@ -91,7 +145,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
         [HttpPost]
         public ActionResult Login(GetData gd)
         {
-            String Query = "select * from Tbl_Users where LoginID='"+gd.LoginID+"' and Password ='"+gd.Password+"'";
+            String Query = "select LoginID,Email,Role from Tbl_Users where LoginID='"+gd.LoginID+"' and Password ='"+gd.Password+"'";
             ConnectionString();
             con.Open();
             com.Connection = con;
@@ -99,43 +153,27 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
             dr = com.ExecuteReader();
             if (dr.HasRows)
             {
-                Session["LoginID"] = gd.LoginID;
+               while(dr.Read())
+                {
+                    gd.Email = dr[1].ToString();
+                    gd.Role = dr[2].ToString();
+                    Session["Role"] = gd.Role;
+                    Session["Email"] = gd.Email;
+                    Session["LoginID"] = gd.LoginID;
+                }
                 Session["UserVerified"] = "true";
-                return View("Index");
+                if(gd.Role.Equals("Student"))
+                {
+                    return RedirectToAction("StudentProfile","Student");
+
+                }
+                return View();
             }
             else
             {
                 return View("Login",model:"Invalid Crendiatls");
             }
-            
-            //}
         }
-
-        
-        public ActionResult ChangePass()
-        {
-            if(Session["LoginID"]==null)
-            {
-                return RedirectToAction("Login");
-                
-            }
-            return View();
-        }
-        [HttpPost]
-        public ActionResult ChangePass(string Newpass,string oldPass)
-        {
-            if (Newpass.Equals(oldPass))
-            {
-                String Query = "update Tbl_User Password='" + oldPass + "' where LoginID='" + Session["LoginID"] + "'";
-                return View("Success");
-            }
-            else
-            {
-                return View(model:"Password Does not Match");
-            }
-        }
-     
-       
         public ActionResult ForgetPass()
         {
             if (Session["LoginID"] != null)
@@ -144,14 +182,11 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
             }
             return View();
         }
-        public void ResultSetGG()
-        {
-            
-        }
+
         [HttpPost]
         public ActionResult VerifyLoginID(GetData gs)
         {
-            String Query = "Select Email from Tbl_Users where LoginID='"+gs.LoginID+"'";
+            String Query = "Select Email,Password from Tbl_Users where LoginID='"+gs.LoginID+"'";
             ConnectionString();
             con.Open();
             com.Connection = con;
@@ -162,8 +197,11 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
                 while (dr.Read())
                 {
                     Session["LoginID"] = gs.LoginID;
+                    Session["Password"] = dr[1].ToString();
+                    Session["Email"] = dr[0].ToString();
                     String Email= dr[0].ToString();
-                    SendMail(Email); 
+                    
+                    SendMail(Email,"",true); 
                     
                 }
                 

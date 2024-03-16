@@ -144,6 +144,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\StudentController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -194,7 +195,7 @@
     <Content Include="Views\Error\Error.cshtml" />
     <Content Include="Views\Home\View.cshtml" />
     <Content Include="Views\Home\VerifyOtp.cshtml" />
-    <Content Include="Views\Home\ChangePass.cshtml" />
+    <Content Include="Views\Student\StudentProfile.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

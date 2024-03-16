@@ -40,7 +40,8 @@
                 <span>or use your email/password</span>
                 <input type="text" placeholder="Email" name="LoginID">
                 <input type="password" placeholder="Password" name="Password">
-                <a href="#">Forget your Password?</a>
+                @* <a href="">Forget your Password?</a>*@
+                @Html.ActionLink("Forget Password", "ForgetPass", "Home", new { area = "" }, new { @class = "" })
                 <button>Sign In</button>
             </form>
         </div>
