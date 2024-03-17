@@ -4,4 +4,23 @@
 }
 
 <h2>Success</h2>
+<p>Redirecting in <span id="counter">5</span> seconds</p>
+
+<script>
+    alert('@Model');
+    let counterElement = document.getElementById('counter');
+    let count = 5;
+
+    // Function to update the counter and redirect
+    function updateCounter() {
+        counterElement.innerText = count;
+        count--;
+
+        if (count < 0) {
+            clearInterval(intervalId);
+            window.location.replace('Index'); 
+        }
+    }
+    let intervalId = setInterval(updateCounter, 1000);
+</script>
 

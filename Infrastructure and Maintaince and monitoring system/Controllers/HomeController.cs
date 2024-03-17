@@ -135,7 +135,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
                 Session["Email"] = null;
                 Session["Password"] = null;
                 Session["LoginID"] = null;
-                return RedirectToAction("Login");
+                return View("Success",model:"Your password was sent to your email");
                 }
                 
                 
@@ -145,7 +145,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
         [HttpPost]
         public ActionResult Login(GetData gd)
         {
-            String Query = "select LoginID,Email,Role from Tbl_Users where LoginID='"+gd.LoginID+"' and Password ='"+gd.Password+"'";
+            String Query = "select LoginID,Email,Role,Name from Tbl_Users where LoginID='"+gd.LoginID+"' and Password ='"+gd.Password+"'";
             ConnectionString();
             con.Open();
             com.Connection = con;
@@ -157,9 +157,11 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
                 {
                     gd.Email = dr[1].ToString();
                     gd.Role = dr[2].ToString();
+                    gd.Name = dr[3].ToString();
                     Session["Role"] = gd.Role;
                     Session["Email"] = gd.Email;
                     Session["LoginID"] = gd.LoginID;
+                    Session["Name"] = gd.Name;
                 }
                 Session["UserVerified"] = "true";
                 if(gd.Role.Equals("Student"))
@@ -182,7 +184,10 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
             }
             return View();
         }
-
+        public ActionResult Success()
+        {
+            return View(model:"nothing to show");
+        }
         [HttpPost]
         public ActionResult VerifyLoginID(GetData gs)
         {

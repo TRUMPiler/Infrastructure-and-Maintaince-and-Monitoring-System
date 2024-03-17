@@ -143,6 +143,7 @@
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
+    <Compile Include="Controllers\FacultyController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\StudentController.cs" />
     <Compile Include="Global.asax.cs">
@@ -196,6 +197,7 @@
     <Content Include="Views\Home\View.cshtml" />
     <Content Include="Views\Home\VerifyOtp.cshtml" />
     <Content Include="Views\Student\StudentProfile.cshtml" />
+    <Content Include="Views\Faculty\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
