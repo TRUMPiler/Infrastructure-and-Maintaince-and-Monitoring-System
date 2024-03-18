@@ -198,6 +198,7 @@
     <Content Include="Views\Home\VerifyOtp.cshtml" />
     <Content Include="Views\Student\StudentProfile.cshtml" />
     <Content Include="Views\Faculty\Index.cshtml" />
+    <Content Include="Views\Faculty\Profile.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
