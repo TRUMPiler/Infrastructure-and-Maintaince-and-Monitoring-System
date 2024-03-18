@@ -3,8 +3,14 @@
     ViewBag.Title = "Profile";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
+    @if(Session["LoginID"]==null)
+     {
+        <script>
+            window.location = "/Home/Login";
+        </script>
+     }
 <h2>Profile</h2>
 <h4>Your profile</h4>
+
 
 

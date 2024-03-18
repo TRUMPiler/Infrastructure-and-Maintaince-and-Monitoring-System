@@ -13,5 +13,9 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
         {
             return View();
         }
+        public ActionResult Profile()
+        {
+            return View();
+        }
     }
 }
