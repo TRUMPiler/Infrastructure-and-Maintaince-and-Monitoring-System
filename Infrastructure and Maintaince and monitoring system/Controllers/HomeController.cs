@@ -119,6 +119,21 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
 
         public ActionResult Index()
         {
+            if(Session["Role"]!=null)
+            {
+                if(Session["Role"].ToString().Equals("Student"))
+                {
+                    return RedirectToAction("StudentProfile", "Student");
+                }
+                else
+                {
+                    if (Session["Role"].ToString().Equals("Faculty"))
+                    {
+                        return RedirectToAction("Profile", "Faculty");
+                    }
+                }
+
+            }
             return View();
         }
         
