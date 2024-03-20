@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="558d91cd11f242d9b0bdb8bff6262e7a" Name="Diagram1">
+        <EntityTypeShape EntityType="IMMSModel.Tbl_Asset" Width="1.5" PointX="3" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="IMMSModel.Tbl_Asset_Transfer" Width="1.5" PointX="5.25" PointY="3.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="IMMSModel.Tbl_Complain" Width="1.5" PointX="3" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="IMMSModel.Tbl_Complaint_User" Width="1.5" PointX="5.25" PointY="9.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="IMMSModel.Tbl_ComplaintType" Width="1.5" PointX="0.75" PointY="9.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="IMMSModel.Tbl_Feedback" Width="1.5" PointX="5.25" PointY="11.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="IMMSModel.Tbl_Room" Width="1.5" PointX="3" PointY="3.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="IMMSModel.Tbl_Room_Asset" Width="1.5" PointX="8.25" PointY="3.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="IMMSModel.Tbl_RoomType" Width="1.5" PointX="0.75" PointY="3.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="IMMSModel.Tbl_Students" Width="1.5" PointX="5.25" PointY="15.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="IMMSModel.Tbl_Users" Width="1.5" PointX="3" PointY="12.625" IsExpanded="true" />
+        <AssociationConnector Association="IMMSModel.FK_Tbl_Asset_Transfer_Tbl_Asset" ManuallyRouted="false" />
+        <AssociationConnector Association="IMMSModel.FK_Tbl_Room_Asset_Tbl_Asset" ManuallyRouted="false" />
+        <AssociationConnector Association="IMMSModel.FK_Tbl_Asset_Transfer_Tbl_Room" ManuallyRouted="false" />
+        <AssociationConnector Association="IMMSModel.FK_Tbl_Asset_Transfer_Tbl_Room1" ManuallyRouted="false" />
+        <AssociationConnector Association="IMMSModel.FK_Tbl_Complain_Tbl_ComplaintType" ManuallyRouted="false" />
+        <AssociationConnector Association="IMMSModel.FK_Tbl_Complaint_User_Tbl_Complain" ManuallyRouted="false" />
+        <AssociationConnector Association="IMMSModel.FK_Tbl_Feedback_Tbl_Complain" ManuallyRouted="false" />
+        <AssociationConnector Association="IMMSModel.FK_Tbl_Complaint_User_Tbl_Users" ManuallyRouted="false" />
+        <AssociationConnector Association="IMMSModel.FK_Tbl_Room_Asset_Tbl_Room" ManuallyRouted="false" />
+        <AssociationConnector Association="IMMSModel.FK_Tbl_Room_Tbl_RoomType" ManuallyRouted="false" />
+        <AssociationConnector Association="IMMSModel.FK_Tbl_Students_Tbl_Users" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

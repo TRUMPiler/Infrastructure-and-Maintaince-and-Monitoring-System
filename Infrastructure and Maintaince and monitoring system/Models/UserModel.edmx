@@ -1,0 +1,750 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="IMMSModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Tbl_Asset">
+          <Key>
+            <PropertyRef Name="AssetID" />
+          </Key>
+          <Property Name="AssetID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AssetName" Type="varchar" MaxLength="20" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Tbl_Asset_Transfer">
+          <Key>
+            <PropertyRef Name="ATid" />
+          </Key>
+          <Property Name="ATid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TransferDate" Type="date" Nullable="false" />
+          <Property Name="From_RoomID" Type="int" Nullable="false" />
+          <Property Name="To_RoomID" Type="int" Nullable="false" />
+          <Property Name="AssetID" Type="int" Nullable="false" />
+          <Property Name="Quantity" Type="smallint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Tbl_Complain">
+          <Key>
+            <PropertyRef Name="ComplainID" />
+          </Key>
+          <Property Name="ComplainID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Description" Type="varchar" MaxLength="250" Nullable="false" />
+          <Property Name="ComplaintType" Type="int" Nullable="false" />
+          <Property Name="ClassID" Type="int" Nullable="false" />
+          <Property Name="Image" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Status" Type="varchar" MaxLength="20" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Tbl_Complaint_User">
+          <Key>
+            <PropertyRef Name="CUid" />
+          </Key>
+          <Property Name="CUid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="ComplainID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Tbl_ComplaintType">
+          <Key>
+            <PropertyRef Name="Complaint_TypeID" />
+          </Key>
+          <Property Name="Complaint_TypeID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ComplaintType" Type="varchar" MaxLength="20" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Tbl_Feedback">
+          <Key>
+            <PropertyRef Name="FeedbackID" />
+          </Key>
+          <Property Name="FeedbackID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ComplainID" Type="int" Nullable="false" />
+          <Property Name="Description" Type="varchar" MaxLength="250" Nullable="false" />
+          <Property Name="Rating" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Tbl_Room">
+          <Key>
+            <PropertyRef Name="RoomID" />
+          </Key>
+          <Property Name="RoomID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RoomType" Type="int" Nullable="false" />
+          <Property Name="Wing" Type="char" MaxLength="1" Nullable="false" />
+          <Property Name="RoomNo" Type="smallint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Tbl_Room_Asset">
+          <Key>
+            <PropertyRef Name="RAid" />
+          </Key>
+          <Property Name="RAid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RoomID" Type="int" Nullable="false" />
+          <Property Name="AssetID" Type="int" Nullable="false" />
+          <Property Name="Quantity" Type="smallint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Tbl_RoomType">
+          <Key>
+            <PropertyRef Name="RoomTypeID" />
+          </Key>
+          <Property Name="RoomTypeID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RoomtType" Type="varchar" MaxLength="12" />
+        </EntityType>
+        <EntityType Name="Tbl_Students">
+          <Key>
+            <PropertyRef Name="SID" />
+          </Key>
+          <Property Name="SID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="Semster" Type="smallint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Tbl_Users">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="Email" Type="varchar" MaxLength="254" Nullable="false" />
+          <Property Name="PhoneNo" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="LoginID" Type="varchar" MaxLength="254" Nullable="false" />
+          <Property Name="Gender" Type="char" MaxLength="1" Nullable="false" />
+          <Property Name="Role" Type="varchar" MaxLength="25" Nullable="false" />
+          <Property Name="Password" Type="varchar" MaxLength="150" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Tbl_Asset_Transfer_Tbl_Asset">
+          <End Role="Tbl_Asset" Type="Self.Tbl_Asset" Multiplicity="1" />
+          <End Role="Tbl_Asset_Transfer" Type="Self.Tbl_Asset_Transfer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Asset">
+              <PropertyRef Name="AssetID" />
+            </Principal>
+            <Dependent Role="Tbl_Asset_Transfer">
+              <PropertyRef Name="AssetID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tbl_Asset_Transfer_Tbl_Room">
+          <End Role="Tbl_Room" Type="Self.Tbl_Room" Multiplicity="1" />
+          <End Role="Tbl_Asset_Transfer" Type="Self.Tbl_Asset_Transfer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Room">
+              <PropertyRef Name="RoomID" />
+            </Principal>
+            <Dependent Role="Tbl_Asset_Transfer">
+              <PropertyRef Name="From_RoomID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tbl_Asset_Transfer_Tbl_Room1">
+          <End Role="Tbl_Room" Type="Self.Tbl_Room" Multiplicity="1" />
+          <End Role="Tbl_Asset_Transfer" Type="Self.Tbl_Asset_Transfer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Room">
+              <PropertyRef Name="RoomID" />
+            </Principal>
+            <Dependent Role="Tbl_Asset_Transfer">
+              <PropertyRef Name="To_RoomID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tbl_Complain_Tbl_ComplaintType">
+          <End Role="Tbl_ComplaintType" Type="Self.Tbl_ComplaintType" Multiplicity="1" />
+          <End Role="Tbl_Complain" Type="Self.Tbl_Complain" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_ComplaintType">
+              <PropertyRef Name="Complaint_TypeID" />
+            </Principal>
+            <Dependent Role="Tbl_Complain">
+              <PropertyRef Name="ComplaintType" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tbl_Complaint_User_Tbl_Complain">
+          <End Role="Tbl_Complain" Type="Self.Tbl_Complain" Multiplicity="1" />
+          <End Role="Tbl_Complaint_User" Type="Self.Tbl_Complaint_User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Complain">
+              <PropertyRef Name="ComplainID" />
+            </Principal>
+            <Dependent Role="Tbl_Complaint_User">
+              <PropertyRef Name="ComplainID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tbl_Complaint_User_Tbl_Users">
+          <End Role="Tbl_Users" Type="Self.Tbl_Users" Multiplicity="1" />
+          <End Role="Tbl_Complaint_User" Type="Self.Tbl_Complaint_User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Tbl_Complaint_User">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tbl_Feedback_Tbl_Complain">
+          <End Role="Tbl_Complain" Type="Self.Tbl_Complain" Multiplicity="1" />
+          <End Role="Tbl_Feedback" Type="Self.Tbl_Feedback" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Complain">
+              <PropertyRef Name="ComplainID" />
+            </Principal>
+            <Dependent Role="Tbl_Feedback">
+              <PropertyRef Name="ComplainID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tbl_Room_Asset_Tbl_Asset">
+          <End Role="Tbl_Asset" Type="Self.Tbl_Asset" Multiplicity="1" />
+          <End Role="Tbl_Room_Asset" Type="Self.Tbl_Room_Asset" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Asset">
+              <PropertyRef Name="AssetID" />
+            </Principal>
+            <Dependent Role="Tbl_Room_Asset">
+              <PropertyRef Name="AssetID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tbl_Room_Asset_Tbl_Room">
+          <End Role="Tbl_Room" Type="Self.Tbl_Room" Multiplicity="1" />
+          <End Role="Tbl_Room_Asset" Type="Self.Tbl_Room_Asset" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Room">
+              <PropertyRef Name="RoomID" />
+            </Principal>
+            <Dependent Role="Tbl_Room_Asset">
+              <PropertyRef Name="RoomID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tbl_Room_Tbl_RoomType">
+          <End Role="Tbl_RoomType" Type="Self.Tbl_RoomType" Multiplicity="1" />
+          <End Role="Tbl_Room" Type="Self.Tbl_Room" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_RoomType">
+              <PropertyRef Name="RoomTypeID" />
+            </Principal>
+            <Dependent Role="Tbl_Room">
+              <PropertyRef Name="RoomType" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tbl_Students_Tbl_Users">
+          <End Role="Tbl_Users" Type="Self.Tbl_Users" Multiplicity="1" />
+          <End Role="Tbl_Students" Type="Self.Tbl_Students" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Tbl_Students">
+              <PropertyRef Name="SID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="IMMSModelStoreContainer">
+          <EntitySet Name="Tbl_Asset" EntityType="Self.Tbl_Asset" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tbl_Asset_Transfer" EntityType="Self.Tbl_Asset_Transfer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tbl_Complain" EntityType="Self.Tbl_Complain" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tbl_Complaint_User" EntityType="Self.Tbl_Complaint_User" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tbl_ComplaintType" EntityType="Self.Tbl_ComplaintType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tbl_Feedback" EntityType="Self.Tbl_Feedback" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tbl_Room" EntityType="Self.Tbl_Room" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tbl_Room_Asset" EntityType="Self.Tbl_Room_Asset" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tbl_RoomType" EntityType="Self.Tbl_RoomType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tbl_Students" EntityType="Self.Tbl_Students" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tbl_Users" EntityType="Self.Tbl_Users" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Tbl_Asset_Transfer_Tbl_Asset" Association="Self.FK_Tbl_Asset_Transfer_Tbl_Asset">
+            <End Role="Tbl_Asset" EntitySet="Tbl_Asset" />
+            <End Role="Tbl_Asset_Transfer" EntitySet="Tbl_Asset_Transfer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tbl_Asset_Transfer_Tbl_Room" Association="Self.FK_Tbl_Asset_Transfer_Tbl_Room">
+            <End Role="Tbl_Room" EntitySet="Tbl_Room" />
+            <End Role="Tbl_Asset_Transfer" EntitySet="Tbl_Asset_Transfer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tbl_Asset_Transfer_Tbl_Room1" Association="Self.FK_Tbl_Asset_Transfer_Tbl_Room1">
+            <End Role="Tbl_Room" EntitySet="Tbl_Room" />
+            <End Role="Tbl_Asset_Transfer" EntitySet="Tbl_Asset_Transfer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tbl_Complain_Tbl_ComplaintType" Association="Self.FK_Tbl_Complain_Tbl_ComplaintType">
+            <End Role="Tbl_ComplaintType" EntitySet="Tbl_ComplaintType" />
+            <End Role="Tbl_Complain" EntitySet="Tbl_Complain" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tbl_Complaint_User_Tbl_Complain" Association="Self.FK_Tbl_Complaint_User_Tbl_Complain">
+            <End Role="Tbl_Complain" EntitySet="Tbl_Complain" />
+            <End Role="Tbl_Complaint_User" EntitySet="Tbl_Complaint_User" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tbl_Complaint_User_Tbl_Users" Association="Self.FK_Tbl_Complaint_User_Tbl_Users">
+            <End Role="Tbl_Users" EntitySet="Tbl_Users" />
+            <End Role="Tbl_Complaint_User" EntitySet="Tbl_Complaint_User" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tbl_Feedback_Tbl_Complain" Association="Self.FK_Tbl_Feedback_Tbl_Complain">
+            <End Role="Tbl_Complain" EntitySet="Tbl_Complain" />
+            <End Role="Tbl_Feedback" EntitySet="Tbl_Feedback" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tbl_Room_Asset_Tbl_Asset" Association="Self.FK_Tbl_Room_Asset_Tbl_Asset">
+            <End Role="Tbl_Asset" EntitySet="Tbl_Asset" />
+            <End Role="Tbl_Room_Asset" EntitySet="Tbl_Room_Asset" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tbl_Room_Asset_Tbl_Room" Association="Self.FK_Tbl_Room_Asset_Tbl_Room">
+            <End Role="Tbl_Room" EntitySet="Tbl_Room" />
+            <End Role="Tbl_Room_Asset" EntitySet="Tbl_Room_Asset" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tbl_Room_Tbl_RoomType" Association="Self.FK_Tbl_Room_Tbl_RoomType">
+            <End Role="Tbl_RoomType" EntitySet="Tbl_RoomType" />
+            <End Role="Tbl_Room" EntitySet="Tbl_Room" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tbl_Students_Tbl_Users" Association="Self.FK_Tbl_Students_Tbl_Users">
+            <End Role="Tbl_Users" EntitySet="Tbl_Users" />
+            <End Role="Tbl_Students" EntitySet="Tbl_Students" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="IMMSModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Tbl_Asset">
+          <Key>
+            <PropertyRef Name="AssetID" />
+          </Key>
+          <Property Name="AssetID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AssetName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Tbl_Asset_Transfer" Relationship="Self.FK_Tbl_Asset_Transfer_Tbl_Asset" FromRole="Tbl_Asset" ToRole="Tbl_Asset_Transfer" />
+          <NavigationProperty Name="Tbl_Room_Asset" Relationship="Self.FK_Tbl_Room_Asset_Tbl_Asset" FromRole="Tbl_Asset" ToRole="Tbl_Room_Asset" />
+        </EntityType>
+        <EntityType Name="Tbl_Asset_Transfer">
+          <Key>
+            <PropertyRef Name="ATid" />
+          </Key>
+          <Property Name="ATid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TransferDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="From_RoomID" Type="Int32" Nullable="false" />
+          <Property Name="To_RoomID" Type="Int32" Nullable="false" />
+          <Property Name="AssetID" Type="Int32" Nullable="false" />
+          <Property Name="Quantity" Type="Int16" Nullable="false" />
+          <NavigationProperty Name="Tbl_Asset" Relationship="Self.FK_Tbl_Asset_Transfer_Tbl_Asset" FromRole="Tbl_Asset_Transfer" ToRole="Tbl_Asset" />
+          <NavigationProperty Name="Tbl_Room" Relationship="Self.FK_Tbl_Asset_Transfer_Tbl_Room" FromRole="Tbl_Asset_Transfer" ToRole="Tbl_Room" />
+          <NavigationProperty Name="Tbl_Room1" Relationship="Self.FK_Tbl_Asset_Transfer_Tbl_Room1" FromRole="Tbl_Asset_Transfer" ToRole="Tbl_Room" />
+        </EntityType>
+        <EntityType Name="Tbl_Complain">
+          <Key>
+            <PropertyRef Name="ComplainID" />
+          </Key>
+          <Property Name="ComplainID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Description" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ComplaintType" Type="Int32" Nullable="false" />
+          <Property Name="ClassID" Type="Int32" Nullable="false" />
+          <Property Name="Image" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Status" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Tbl_ComplaintType" Relationship="Self.FK_Tbl_Complain_Tbl_ComplaintType" FromRole="Tbl_Complain" ToRole="Tbl_ComplaintType" />
+          <NavigationProperty Name="Tbl_Complaint_User" Relationship="Self.FK_Tbl_Complaint_User_Tbl_Complain" FromRole="Tbl_Complain" ToRole="Tbl_Complaint_User" />
+          <NavigationProperty Name="Tbl_Feedback" Relationship="Self.FK_Tbl_Feedback_Tbl_Complain" FromRole="Tbl_Complain" ToRole="Tbl_Feedback" />
+        </EntityType>
+        <EntityType Name="Tbl_Complaint_User">
+          <Key>
+            <PropertyRef Name="CUid" />
+          </Key>
+          <Property Name="CUid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="ComplainID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Tbl_Complain" Relationship="Self.FK_Tbl_Complaint_User_Tbl_Complain" FromRole="Tbl_Complaint_User" ToRole="Tbl_Complain" />
+          <NavigationProperty Name="Tbl_Users" Relationship="Self.FK_Tbl_Complaint_User_Tbl_Users" FromRole="Tbl_Complaint_User" ToRole="Tbl_Users" />
+        </EntityType>
+        <EntityType Name="Tbl_ComplaintType">
+          <Key>
+            <PropertyRef Name="Complaint_TypeID" />
+          </Key>
+          <Property Name="Complaint_TypeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ComplaintType" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Tbl_Complain" Relationship="Self.FK_Tbl_Complain_Tbl_ComplaintType" FromRole="Tbl_ComplaintType" ToRole="Tbl_Complain" />
+        </EntityType>
+        <EntityType Name="Tbl_Feedback">
+          <Key>
+            <PropertyRef Name="FeedbackID" />
+          </Key>
+          <Property Name="FeedbackID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ComplainID" Type="Int32" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Rating" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Tbl_Complain" Relationship="Self.FK_Tbl_Feedback_Tbl_Complain" FromRole="Tbl_Feedback" ToRole="Tbl_Complain" />
+        </EntityType>
+        <EntityType Name="Tbl_Room">
+          <Key>
+            <PropertyRef Name="RoomID" />
+          </Key>
+          <Property Name="RoomID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RoomType" Type="Int32" Nullable="false" />
+          <Property Name="Wing" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="RoomNo" Type="Int16" Nullable="false" />
+          <NavigationProperty Name="Tbl_Asset_Transfer" Relationship="Self.FK_Tbl_Asset_Transfer_Tbl_Room" FromRole="Tbl_Room" ToRole="Tbl_Asset_Transfer" />
+          <NavigationProperty Name="Tbl_Asset_Transfer1" Relationship="Self.FK_Tbl_Asset_Transfer_Tbl_Room1" FromRole="Tbl_Room" ToRole="Tbl_Asset_Transfer" />
+          <NavigationProperty Name="Tbl_Room_Asset" Relationship="Self.FK_Tbl_Room_Asset_Tbl_Room" FromRole="Tbl_Room" ToRole="Tbl_Room_Asset" />
+          <NavigationProperty Name="Tbl_RoomType" Relationship="Self.FK_Tbl_Room_Tbl_RoomType" FromRole="Tbl_Room" ToRole="Tbl_RoomType" />
+        </EntityType>
+        <EntityType Name="Tbl_Room_Asset">
+          <Key>
+            <PropertyRef Name="RAid" />
+          </Key>
+          <Property Name="RAid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RoomID" Type="Int32" Nullable="false" />
+          <Property Name="AssetID" Type="Int32" Nullable="false" />
+          <Property Name="Quantity" Type="Int16" Nullable="false" />
+          <NavigationProperty Name="Tbl_Asset" Relationship="Self.FK_Tbl_Room_Asset_Tbl_Asset" FromRole="Tbl_Room_Asset" ToRole="Tbl_Asset" />
+          <NavigationProperty Name="Tbl_Room" Relationship="Self.FK_Tbl_Room_Asset_Tbl_Room" FromRole="Tbl_Room_Asset" ToRole="Tbl_Room" />
+        </EntityType>
+        <EntityType Name="Tbl_RoomType">
+          <Key>
+            <PropertyRef Name="RoomTypeID" />
+          </Key>
+          <Property Name="RoomTypeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RoomtType" Type="String" MaxLength="12" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Tbl_Room" Relationship="Self.FK_Tbl_Room_Tbl_RoomType" FromRole="Tbl_RoomType" ToRole="Tbl_Room" />
+        </EntityType>
+        <EntityType Name="Tbl_Students">
+          <Key>
+            <PropertyRef Name="SID" />
+          </Key>
+          <Property Name="SID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="Semster" Type="Int16" Nullable="false" />
+          <NavigationProperty Name="Tbl_Users" Relationship="Self.FK_Tbl_Students_Tbl_Users" FromRole="Tbl_Students" ToRole="Tbl_Users" />
+        </EntityType>
+        <EntityType Name="Tbl_Users">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="254" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="PhoneNo" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="LoginID" Type="String" MaxLength="254" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Gender" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="Role" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Tbl_Complaint_User" Relationship="Self.FK_Tbl_Complaint_User_Tbl_Users" FromRole="Tbl_Users" ToRole="Tbl_Complaint_User" />
+          <NavigationProperty Name="Tbl_Students" Relationship="Self.FK_Tbl_Students_Tbl_Users" FromRole="Tbl_Users" ToRole="Tbl_Students" />
+        </EntityType>
+        <Association Name="FK_Tbl_Asset_Transfer_Tbl_Asset">
+          <End Role="Tbl_Asset" Type="Self.Tbl_Asset" Multiplicity="1" />
+          <End Role="Tbl_Asset_Transfer" Type="Self.Tbl_Asset_Transfer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Asset">
+              <PropertyRef Name="AssetID" />
+            </Principal>
+            <Dependent Role="Tbl_Asset_Transfer">
+              <PropertyRef Name="AssetID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tbl_Room_Asset_Tbl_Asset">
+          <End Role="Tbl_Asset" Type="Self.Tbl_Asset" Multiplicity="1" />
+          <End Role="Tbl_Room_Asset" Type="Self.Tbl_Room_Asset" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Asset">
+              <PropertyRef Name="AssetID" />
+            </Principal>
+            <Dependent Role="Tbl_Room_Asset">
+              <PropertyRef Name="AssetID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tbl_Asset_Transfer_Tbl_Room">
+          <End Role="Tbl_Room" Type="Self.Tbl_Room" Multiplicity="1" />
+          <End Role="Tbl_Asset_Transfer" Type="Self.Tbl_Asset_Transfer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Room">
+              <PropertyRef Name="RoomID" />
+            </Principal>
+            <Dependent Role="Tbl_Asset_Transfer">
+              <PropertyRef Name="From_RoomID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tbl_Asset_Transfer_Tbl_Room1">
+          <End Role="Tbl_Room" Type="Self.Tbl_Room" Multiplicity="1" />
+          <End Role="Tbl_Asset_Transfer" Type="Self.Tbl_Asset_Transfer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Room">
+              <PropertyRef Name="RoomID" />
+            </Principal>
+            <Dependent Role="Tbl_Asset_Transfer">
+              <PropertyRef Name="To_RoomID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tbl_Complain_Tbl_ComplaintType">
+          <End Role="Tbl_ComplaintType" Type="Self.Tbl_ComplaintType" Multiplicity="1" />
+          <End Role="Tbl_Complain" Type="Self.Tbl_Complain" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_ComplaintType">
+              <PropertyRef Name="Complaint_TypeID" />
+            </Principal>
+            <Dependent Role="Tbl_Complain">
+              <PropertyRef Name="ComplaintType" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tbl_Complaint_User_Tbl_Complain">
+          <End Role="Tbl_Complain" Type="Self.Tbl_Complain" Multiplicity="1" />
+          <End Role="Tbl_Complaint_User" Type="Self.Tbl_Complaint_User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Complain">
+              <PropertyRef Name="ComplainID" />
+            </Principal>
+            <Dependent Role="Tbl_Complaint_User">
+              <PropertyRef Name="ComplainID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tbl_Feedback_Tbl_Complain">
+          <End Role="Tbl_Complain" Type="Self.Tbl_Complain" Multiplicity="1" />
+          <End Role="Tbl_Feedback" Type="Self.Tbl_Feedback" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Complain">
+              <PropertyRef Name="ComplainID" />
+            </Principal>
+            <Dependent Role="Tbl_Feedback">
+              <PropertyRef Name="ComplainID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tbl_Complaint_User_Tbl_Users">
+          <End Role="Tbl_Users" Type="Self.Tbl_Users" Multiplicity="1" />
+          <End Role="Tbl_Complaint_User" Type="Self.Tbl_Complaint_User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Tbl_Complaint_User">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tbl_Room_Asset_Tbl_Room">
+          <End Role="Tbl_Room" Type="Self.Tbl_Room" Multiplicity="1" />
+          <End Role="Tbl_Room_Asset" Type="Self.Tbl_Room_Asset" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Room">
+              <PropertyRef Name="RoomID" />
+            </Principal>
+            <Dependent Role="Tbl_Room_Asset">
+              <PropertyRef Name="RoomID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tbl_Room_Tbl_RoomType">
+          <End Role="Tbl_RoomType" Type="Self.Tbl_RoomType" Multiplicity="1" />
+          <End Role="Tbl_Room" Type="Self.Tbl_Room" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_RoomType">
+              <PropertyRef Name="RoomTypeID" />
+            </Principal>
+            <Dependent Role="Tbl_Room">
+              <PropertyRef Name="RoomType" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tbl_Students_Tbl_Users">
+          <End Role="Tbl_Users" Type="Self.Tbl_Users" Multiplicity="1" />
+          <End Role="Tbl_Students" Type="Self.Tbl_Students" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Tbl_Students">
+              <PropertyRef Name="SID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="IMMSEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Tbl_Asset" EntityType="Self.Tbl_Asset" />
+          <EntitySet Name="Tbl_Asset_Transfer" EntityType="Self.Tbl_Asset_Transfer" />
+          <EntitySet Name="Tbl_Complain" EntityType="Self.Tbl_Complain" />
+          <EntitySet Name="Tbl_Complaint_User" EntityType="Self.Tbl_Complaint_User" />
+          <EntitySet Name="Tbl_ComplaintType" EntityType="Self.Tbl_ComplaintType" />
+          <EntitySet Name="Tbl_Feedback" EntityType="Self.Tbl_Feedback" />
+          <EntitySet Name="Tbl_Room" EntityType="Self.Tbl_Room" />
+          <EntitySet Name="Tbl_Room_Asset" EntityType="Self.Tbl_Room_Asset" />
+          <EntitySet Name="Tbl_RoomType" EntityType="Self.Tbl_RoomType" />
+          <EntitySet Name="Tbl_Students" EntityType="Self.Tbl_Students" />
+          <EntitySet Name="Tbl_Users" EntityType="Self.Tbl_Users" />
+          <AssociationSet Name="FK_Tbl_Asset_Transfer_Tbl_Asset" Association="Self.FK_Tbl_Asset_Transfer_Tbl_Asset">
+            <End Role="Tbl_Asset" EntitySet="Tbl_Asset" />
+            <End Role="Tbl_Asset_Transfer" EntitySet="Tbl_Asset_Transfer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tbl_Room_Asset_Tbl_Asset" Association="Self.FK_Tbl_Room_Asset_Tbl_Asset">
+            <End Role="Tbl_Asset" EntitySet="Tbl_Asset" />
+            <End Role="Tbl_Room_Asset" EntitySet="Tbl_Room_Asset" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tbl_Asset_Transfer_Tbl_Room" Association="Self.FK_Tbl_Asset_Transfer_Tbl_Room">
+            <End Role="Tbl_Room" EntitySet="Tbl_Room" />
+            <End Role="Tbl_Asset_Transfer" EntitySet="Tbl_Asset_Transfer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tbl_Asset_Transfer_Tbl_Room1" Association="Self.FK_Tbl_Asset_Transfer_Tbl_Room1">
+            <End Role="Tbl_Room" EntitySet="Tbl_Room" />
+            <End Role="Tbl_Asset_Transfer" EntitySet="Tbl_Asset_Transfer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tbl_Complain_Tbl_ComplaintType" Association="Self.FK_Tbl_Complain_Tbl_ComplaintType">
+            <End Role="Tbl_ComplaintType" EntitySet="Tbl_ComplaintType" />
+            <End Role="Tbl_Complain" EntitySet="Tbl_Complain" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tbl_Complaint_User_Tbl_Complain" Association="Self.FK_Tbl_Complaint_User_Tbl_Complain">
+            <End Role="Tbl_Complain" EntitySet="Tbl_Complain" />
+            <End Role="Tbl_Complaint_User" EntitySet="Tbl_Complaint_User" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tbl_Feedback_Tbl_Complain" Association="Self.FK_Tbl_Feedback_Tbl_Complain">
+            <End Role="Tbl_Complain" EntitySet="Tbl_Complain" />
+            <End Role="Tbl_Feedback" EntitySet="Tbl_Feedback" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tbl_Complaint_User_Tbl_Users" Association="Self.FK_Tbl_Complaint_User_Tbl_Users">
+            <End Role="Tbl_Users" EntitySet="Tbl_Users" />
+            <End Role="Tbl_Complaint_User" EntitySet="Tbl_Complaint_User" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tbl_Room_Asset_Tbl_Room" Association="Self.FK_Tbl_Room_Asset_Tbl_Room">
+            <End Role="Tbl_Room" EntitySet="Tbl_Room" />
+            <End Role="Tbl_Room_Asset" EntitySet="Tbl_Room_Asset" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tbl_Room_Tbl_RoomType" Association="Self.FK_Tbl_Room_Tbl_RoomType">
+            <End Role="Tbl_RoomType" EntitySet="Tbl_RoomType" />
+            <End Role="Tbl_Room" EntitySet="Tbl_Room" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tbl_Students_Tbl_Users" Association="Self.FK_Tbl_Students_Tbl_Users">
+            <End Role="Tbl_Users" EntitySet="Tbl_Users" />
+            <End Role="Tbl_Students" EntitySet="Tbl_Students" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="IMMSModelStoreContainer" CdmEntityContainer="IMMSEntities">
+          <EntitySetMapping Name="Tbl_Asset">
+            <EntityTypeMapping TypeName="IMMSModel.Tbl_Asset">
+              <MappingFragment StoreEntitySet="Tbl_Asset">
+                <ScalarProperty Name="AssetID" ColumnName="AssetID" />
+                <ScalarProperty Name="AssetName" ColumnName="AssetName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tbl_Asset_Transfer">
+            <EntityTypeMapping TypeName="IMMSModel.Tbl_Asset_Transfer">
+              <MappingFragment StoreEntitySet="Tbl_Asset_Transfer">
+                <ScalarProperty Name="ATid" ColumnName="ATid" />
+                <ScalarProperty Name="TransferDate" ColumnName="TransferDate" />
+                <ScalarProperty Name="From_RoomID" ColumnName="From_RoomID" />
+                <ScalarProperty Name="To_RoomID" ColumnName="To_RoomID" />
+                <ScalarProperty Name="AssetID" ColumnName="AssetID" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tbl_Complain">
+            <EntityTypeMapping TypeName="IMMSModel.Tbl_Complain">
+              <MappingFragment StoreEntitySet="Tbl_Complain">
+                <ScalarProperty Name="ComplainID" ColumnName="ComplainID" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="ComplaintType" ColumnName="ComplaintType" />
+                <ScalarProperty Name="ClassID" ColumnName="ClassID" />
+                <ScalarProperty Name="Image" ColumnName="Image" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tbl_Complaint_User">
+            <EntityTypeMapping TypeName="IMMSModel.Tbl_Complaint_User">
+              <MappingFragment StoreEntitySet="Tbl_Complaint_User">
+                <ScalarProperty Name="CUid" ColumnName="CUid" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="ComplainID" ColumnName="ComplainID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tbl_ComplaintType">
+            <EntityTypeMapping TypeName="IMMSModel.Tbl_ComplaintType">
+              <MappingFragment StoreEntitySet="Tbl_ComplaintType">
+                <ScalarProperty Name="Complaint_TypeID" ColumnName="Complaint_TypeID" />
+                <ScalarProperty Name="ComplaintType" ColumnName="ComplaintType" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tbl_Feedback">
+            <EntityTypeMapping TypeName="IMMSModel.Tbl_Feedback">
+              <MappingFragment StoreEntitySet="Tbl_Feedback">
+                <ScalarProperty Name="FeedbackID" ColumnName="FeedbackID" />
+                <ScalarProperty Name="ComplainID" ColumnName="ComplainID" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Rating" ColumnName="Rating" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tbl_Room">
+            <EntityTypeMapping TypeName="IMMSModel.Tbl_Room">
+              <MappingFragment StoreEntitySet="Tbl_Room">
+                <ScalarProperty Name="RoomID" ColumnName="RoomID" />
+                <ScalarProperty Name="RoomType" ColumnName="RoomType" />
+                <ScalarProperty Name="Wing" ColumnName="Wing" />
+                <ScalarProperty Name="RoomNo" ColumnName="RoomNo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tbl_Room_Asset">
+            <EntityTypeMapping TypeName="IMMSModel.Tbl_Room_Asset">
+              <MappingFragment StoreEntitySet="Tbl_Room_Asset">
+                <ScalarProperty Name="RAid" ColumnName="RAid" />
+                <ScalarProperty Name="RoomID" ColumnName="RoomID" />
+                <ScalarProperty Name="AssetID" ColumnName="AssetID" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tbl_RoomType">
+            <EntityTypeMapping TypeName="IMMSModel.Tbl_RoomType">
+              <MappingFragment StoreEntitySet="Tbl_RoomType">
+                <ScalarProperty Name="RoomTypeID" ColumnName="RoomTypeID" />
+                <ScalarProperty Name="RoomtType" ColumnName="RoomtType" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tbl_Students">
+            <EntityTypeMapping TypeName="IMMSModel.Tbl_Students">
+              <MappingFragment StoreEntitySet="Tbl_Students">
+                <ScalarProperty Name="SID" ColumnName="SID" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Semster" ColumnName="Semster" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tbl_Users">
+            <EntityTypeMapping TypeName="IMMSModel.Tbl_Users">
+              <MappingFragment StoreEntitySet="Tbl_Users">
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="PhoneNo" ColumnName="PhoneNo" />
+                <ScalarProperty Name="LoginID" ColumnName="LoginID" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
+                <ScalarProperty Name="Role" ColumnName="Role" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

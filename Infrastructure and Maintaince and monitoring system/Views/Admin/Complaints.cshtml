@@ -84,13 +84,13 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="./Users" class="nav-link active">
+                            <a href="./Users" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Users</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="./Complaints" class="nav-link">
+                            <a href="./Complaints" class="nav-link active">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Complains</p>
                             </a>
@@ -115,7 +115,7 @@
     </div>
     <!-- /.sidebar -->
 </aside>
-    
+
 
 
 <!-- Content Wrapper. Contains page content -->
@@ -125,7 +125,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>DataTables</h1>
+                    <h1>Complaints</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
@@ -152,44 +152,38 @@
                             <table id="example1" class="table table-bordered table-striped">
                                 <thead>
                                     <tr>
-                                        <th>UserID</th>
-                                        <th>Name</th>
-                                        <th>Email</th>
-                                        <th>PhoneNo</th>
-                                        <th>LoginID</th>
-                                        <th>Gender</th>
-                                        <th>Role</th>
-                                        <th>Password</th>
+                                        <th>Complaint ID</th>
+                                        <th>ComplaintType</th>
+                                        <th>ClassID</th>
+                                        <th>Image</th>
+                                        <th>Status</th>
+                                        <th>Users</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @model List<Infrastructure_and_Maintaince_and_monitoring_system.Models.GetData>
-                                    @foreach (var item in Model)
+                                    @model List<Infrastructure_and_Maintaince_and_monitoring_system.Models.Complaint>
+                                    @foreach (var complaint in Model)
                                     {
                                         <tr>
-                                            <td>@item.UserID</td>
-                                            <td>@item.Name</td>
-                                            <td>@item.Email</td>
-                                            <td>@item.PhoneNo</td>
-                                            <td>@item.LoginID</td>
-                                            <td>@item.Gender</td>
-                                            <td>@item.Role</td>
-                                            <td>@item.Password</td>
+                                            <td>@complaint.ComplaintID</td>
+                                            <td>@complaint.Description</td>
+                                            <td>@complaint.ComplaintType</td>
+                                            <td><img src=".\App_Data\2.png" /></td>
+                                            <td>@complaint.Status</td>
+                                            <td>@complaint.User</td>
                                             <td>Edit/Delete Buttons</td>
                                         </tr>
                                     }
                                 </tbody>
                                 <tfoot>
                                     <tr>
-                                        <th>UserID</th>
-                                        <th>Name</th>
-                                        <th>Email</th>
-                                        <th>PhoneNo</th>
-                                        <th>LoginID</th>
-                                        <th>Gender</th>
-                                        <th>Role</th>
-                                        <th>Password</th>
+                                        <th>Complaint ID</th>
+                                        <th>ComplaintType</th>
+                                        <th>ClassID</th>
+                                        <th>Image</th>
+                                        <th>Status</th>
+                                        <th>Users</th>
                                         <th>Action</th>
                                     </tr>
                                 </tfoot>
@@ -208,9 +202,7 @@
     <!-- /.content -->
 </div>
 <!-- /.content-wrapper -->
-
 <!-- /.control-sidebar -->
-
 <!-- ./wrapper -->
 <!-- jQuery -->
 <script src="~/Admins/plugins/jquery/jquery.min.js"></script>
