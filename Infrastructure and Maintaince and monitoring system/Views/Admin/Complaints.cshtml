@@ -52,10 +52,10 @@
         <!-- Sidebar user panel (optional) -->
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
             <div class="image">
-                <img src="~/Admins/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+                <img src="~/Admins/dist/img/varshaMAM.png" class="img-circle elevation-2" alt="User Image">
             </div>
             <div class="info">
-                <a href="#" class="d-block">Alexander Pierce</a>
+                <a href="#" class="d-block">Varsha Patel</a>
             </div>
         </div>
 
@@ -153,8 +153,8 @@
                                 <thead>
                                     <tr>
                                         <th>Complaint ID</th>
-                                        <th>ComplaintType</th>
-                                        <th>ClassID</th>
+                                        <th>Description</th>
+                                        <th>Complaint Type</th>
                                         <th>Image</th>
                                         <th>Status</th>
                                         <th>Users</th>
@@ -165,22 +165,23 @@
                                     @model List<Infrastructure_and_Maintaince_and_monitoring_system.Models.Complaint>
                                     @foreach (var complaint in Model)
                                     {
-                                        <tr>
-                                            <td>@complaint.ComplaintID</td>
-                                            <td>@complaint.Description</td>
-                                            <td>@complaint.ComplaintType</td>
-                                            <td><img src=".\App_Data\2.png" /></td>
-                                            <td>@complaint.Status</td>
-                                            <td>@complaint.User</td>
-                                            <td>Edit/Delete Buttons</td>
-                                        </tr>
+                                    <tr>
+                                        <td>@complaint.ComplaintID</td>
+                                        <td>@complaint.Description</td>
+                                        <td>@complaint.ComplaintType</td>
+                                      
+                                        <td><a href="~/Admins/dist/img/2.png" target="_blank">Click to View</a></td>
+                                        <td>@complaint.Status</td>
+                                        <td>@complaint.User</td>
+                                        <td>Edit/Delete Buttons</td>
+                                    </tr>
                                     }
                                 </tbody>
                                 <tfoot>
                                     <tr>
                                         <th>Complaint ID</th>
-                                        <th>ComplaintType</th>
-                                        <th>ClassID</th>
+                                        <th>Description</th>
+                                        <th>Complaint Type</th>
                                         <th>Image</th>
                                         <th>Status</th>
                                         <th>Users</th>

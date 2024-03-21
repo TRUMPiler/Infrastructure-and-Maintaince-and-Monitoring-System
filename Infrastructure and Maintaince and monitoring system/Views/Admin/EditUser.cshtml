@@ -1,0 +1,301 @@
+﻿@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_AdminTablePage.cshtml";
+}
+@model Infrastructure_and_Maintaince_and_monitoring_system.Models.GetData
+<div class="preloader flex-column justify-content-center align-items-center">
+    <img class="animation__shake" src="~/Admins/dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
+</div>
+<!-- Navbar -->
+<nav class="main-header navbar navbar-expand navbar-white navbar-light">
+    <!-- Left navbar links -->
+    <ul class="navbar-nav">
+        <li class="nav-item">
+            <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+            <a href="Index" class="nav-link">Home</a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+            <a href="#" class="nav-link">Contact</a>
+        </li>
+    </ul>
+
+    <!-- Right navbar links -->
+    <ul class="navbar-nav ml-auto">
+        <!-- Navbar Search -->
+        <li class="nav-item">
+            <a class="nav-link" data-widget="fullscreen" href="#" role="button">
+                <i class="fas fa-expand-arrows-alt"></i>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-widget="control-sidebar" data-controlsidebar-slide="true" href="#" role="button">
+                <i class="fas fa-th-large"></i>
+            </a>
+        </li>
+    </ul>
+</nav>
+<!-- /.navbar -->
+<aside class="main-sidebar sidebar-dark-primary elevation-4">
+    <!-- Brand Logo -->
+    <a href="#" class="brand-link">
+        <img src="~/Admins/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+        <span class="brand-text font-weight-light">Infrastructure</span>
+    </a>
+    <div class="sidebar">
+        <!-- Sidebar user panel (optional) -->
+        <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+            <div class="image">
+                <img src="~/Admins/dist/img/varshaMAM.png" class="img-circle elevation-2" alt="User Image">
+            </div>
+            <div class="info">
+                <a href="#" class="d-block">Varsha Patel</a>
+            </div>
+        </div>
+        <!-- Sidebar -->
+        <!-- Sidebar Menu -->
+        <nav class="mt-2">
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                <!-- Add icons to the links using the .nav-icon class
+                     with font-awesome or any other icon font library -->
+                <li class="nav-item">
+                    <a href="#" class="nav-link active">
+                        <i class="nav-icon fas fa-table"></i>
+                        <p>
+                            Tables
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="./Users" class="nav-link active">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Users</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="./Complaints" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Complains</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="pages/tables/jsgrid.html" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>jsGrid</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-header">EXAMPLES</li>
+                <li class="nav-header">MISCELLANEOUS</li>
+            </ul>
+        </nav>
+        <!-- /.sidebar-menu -->
+    </div>
+    <!-- /.sidebar -->
+</aside>
+
+<!-- Content Wrapper. Contains page content -->
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>User Details</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active">Validation</li>
+                    </ol>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <!-- left column -->
+                <div class="col-md-12">
+                    <!-- jquery validation -->
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <h3 class="card-title">Edit Details<small></small></h3>
+                        </div>
+                        <!-- /.card-header -->
+                        <!-- form start -->
+
+                        <form id="quickForm" method="post" action="EditUser1">
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <label for="exampleInputName">ID</label>
+                                    <input type="text" name="UserID" class="form-control" id="exampleInputID" value="@Model.UserID" placeholder="Enter name" disabled>
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputName">Name</label>
+                                    <input type="text" name="Name" class="form-control" id="exampleInputName" value="@Model.Name" placeholder="Enter name">
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Email address</label>
+                                    <input type="email" name="Email" class="form-control" id="exampleInputEmail1" value="@Model.Email" placeholder="Enter email">
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputPassword1">Password</label>
+                                    <input type="text" name="Password" class="form-control" id="exampleInputPassword1" value="@Model.Password" placeholder="Password">
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputPassword1">PhoneNo</label>
+                                    <input type="number" name="PhoneNo" class="form-control" id="exampleInputPhoneNo1" value="@Model.PhoneNo" placeholder="Enter Your PhoneNo">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="exampleInputPassword1">LoginID</label>
+                                    <input type="text" name="LoginID" class="form-control" id="exampleInputLoginID1" value="@Model.LoginID" placeholder="Enter Your PhoneNo">
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputPassword1">Gender</label><br />
+                                    @if (Model.Gender.Equals("M"))
+                                    {
+                                        <input type="radio" name="Gender" value="M" checked/>
+                                        <label for="exampleInputPassword1">Male</label><br />
+                                        <input type="radio" name="Gender" value="F"  />
+                                        <label for="exampleInputPassword1">Female</label>
+                                    }
+                                    else
+                                    {
+
+                                        <input type="radio" name="Gender" value="M" />
+                                        <label for="exampleInputPassword1">Male</label><br />
+                                        <input type="radio" name="Gender" value="F" checked />
+                                        <label for="exampleInputPassword1">Female</label>
+                                    }
+
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputPassword1">Role</label>
+                                    <input type="text" name="Role" class="form-control" id="exampleInputRole1" value="@Model.Role" placeholder="Enter Your PhoneNo" disabled>
+                                </div>
+
+                            </div>
+                            <!-- /.card-body -->
+                            <div class="card-footer">
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- /.card -->
+                </div>
+                <!--/.col (left) -->
+                <!-- right column -->
+                <div class="col-md-6">
+
+                </div>
+                <!--/.col (right) -->
+            </div>
+            <!-- /.row -->
+        </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+</div>
+
+<!-- jQuery -->
+<script src="~/Admins/plugins/jquery/jquery.min.js"></script>
+<!-- Bootstrap 4 -->
+<script src="~/Admins/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- jquery-validation -->
+<!-- AdminLTE App -->
+<script src="~/Admins/dist/js/adminlte.min.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="~/Admins/dist/js/demo.js"></script>
+<script src="~/Admins/plugins/jquery-validation/jquery.validate.min.js"></script>
+<script src="~/Admins/plugins/jquery-validation/additional-methods.min.js"></script>
+<script>
+    $(function () {
+        $.validator.setDefaults({
+           
+        });
+        $.validator.addMethod("letterswithspaces", function (value, element) {
+            return this.optional(element) || /^[a-zA-Z\s]*$/.test(value);
+        }, "Please enter only letters and spaces");
+        $('#quickForm').validate({
+            rules: {
+                Name:
+                {
+                    required: true,
+                    minlength: 2,
+                    letterswithspaces: true, // Using the custom rule here
+                    maxlength: 50
+                },
+                PhoneNo:
+                {
+                    required: true,
+                    maxlength: 10,
+                    minlength:10,
+                },
+                LoginID:
+                {
+                    required: true,
+                    minlength: 15
+                    // Using the custom rule here
+                },
+                Email: {
+                    required: true,
+                    email: true,
+                },
+                Password: {
+                    required: true,
+                    minlength: 8
+                },
+                terms: {
+                    required: true
+                },
+            },
+            messages: {
+                PhoneNo:
+                {
+                    required: "Enter User's PhoneNo",
+                    maxlength: "User's Phone number can't be more than 10 digits",
+                    minlength: "User's Phone Number can't be less than 10 digits"
+                },
+                    LoginID:
+                    {
+                        required: "Please enter User's LoginID",
+                        minlength:"User's LoginID can't be less than 15"
+                    },
+                Name:
+                {
+                    required: "Please enter User's Name",
+                    letterswithspaces: "Please enter only letters and spaces",
+                    maxlength: "User's  name must not exceed 50 characters",
+                    minlength:"User's  name should be more than 2 letters"
+                },
+                Email: {
+                    required: "Please enter User's email address",
+                    email: "Please enter User's valid email address"
+                },
+                Password: {
+                    required: "Please provide User's password",
+                    minlength: "User's password must be at least 5 characters long"
+                },
+                terms: "Please accept our terms"
+            },
+            errorElement: 'span',
+            errorPlacement: function (error, element) {
+                error.addClass('invalid-feedback');
+                element.closest('.form-group').append(error);
+            },
+            highlight: function (element, errorClass, validClass) {
+                $(element).addClass('is-invalid');
+            },
+            unhighlight: function (element, errorClass, validClass) {
+                $(element).removeClass('is-invalid');
+            }
+        });
+    });
+</script>

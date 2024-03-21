@@ -114,6 +114,9 @@
     <Content Include="Admins\dist\css\alt\adminlte.pages.min.css" />
     <Content Include="Admins\dist\css\alt\adminlte.plugins.css" />
     <Content Include="Admins\dist\css\alt\adminlte.plugins.min.css" />
+    <Content Include="Admins\dist\img\2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Admins\dist\img\AdminLTELogo.png" />
     <Content Include="Admins\dist\img\avatar.png" />
     <Content Include="Admins\dist\img\avatar2.png" />
@@ -147,6 +150,7 @@
     <Content Include="Admins\dist\img\user6-128x128.jpg" />
     <Content Include="Admins\dist\img\user7-128x128.jpg" />
     <Content Include="Admins\dist\img\user8-128x128.jpg" />
+    <Content Include="Admins\dist\img\varshaMAM.png" />
     <Content Include="Admins\dist\js\adminlte.js" />
     <Content Include="Admins\dist\js\adminlte.min.js" />
     <Content Include="Admins\dist\js\demo.js" />
@@ -2047,6 +2051,7 @@
     <Content Include="App_Data\2.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="App_Data\varshaMAM.png" />
     <Content Include="Content\assets\css\Login.css" />
     <Content Include="Content\assets\css\main.css" />
     <Content Include="Content\assets\js\Login.js" />
@@ -2451,6 +2456,7 @@
     <Content Include="Views\Admin\Users.cshtml" />
     <Content Include="Views\Shared\_AdminTablePage.cshtml" />
     <Content Include="Views\Admin\Complaints.cshtml" />
+    <Content Include="Views\Admin\EditUser.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

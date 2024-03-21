@@ -13,6 +13,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Models
         public String Image { get; set; }
         public String Status { get; set; }
         public String User { get; set; }
+        public String ClassID { get; set; }
 
     }
 }

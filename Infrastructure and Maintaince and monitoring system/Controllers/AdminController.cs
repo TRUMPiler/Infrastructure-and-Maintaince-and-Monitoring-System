@@ -13,11 +13,57 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
         SqlConnection con = new SqlConnection();
         SqlCommand com = new SqlCommand();
         SqlDataReader dr;
-        // GET: Admin
+        string connectionString = "data source=ASUSTUFGAMING\\SQLEXPRESS; database=IMMS; integrated security=SSPI";
+
         [HandleError]
-        public ActionResult Index()
+        public int GetCount()
         {
-            return View();
+            int count = 0;
+            string query = "SELECT COUNT(ComplainID) AS Count FROM Tbl_Complain WHERE Status='Pending';";
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            using (SqlCommand com = new SqlCommand(query, con))
+            {
+                con.Open();
+                count = (int)com.ExecuteScalar();
+            }
+
+            return count;
+        }
+        public int GetDoneCount()
+        {
+            int count = 0;
+            string query = "SELECT COUNT(ComplainID) AS Count FROM Tbl_Complain WHERE Status='Completed';";
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            using (SqlCommand com = new SqlCommand(query, con))
+            {
+                con.Open();
+                count = (int)com.ExecuteScalar();
+            }
+
+            return count;
+        }
+        public List<string> GetComplaints()
+        {
+            List<string> complaints = new List<string>();
+            string query = "SELECT Description FROM Tbl_Complain WHERE Status='Pending';";
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            using (SqlCommand com = new SqlCommand(query, con))
+            {
+                con.Open();
+                using (SqlDataReader dr = com.ExecuteReader())
+                {
+                    while (dr.Read())
+                    {
+                        string complaint = dr["Description"].ToString();
+                        complaints.Add(complaint);
+                    }
+                }
+            }
+
+            return complaints;
         }
         void ConnectionString()
         {
@@ -56,9 +102,9 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
         {
 
             String Query = "SELECT "
-    +"C.ComplainID, "
-    +"C.Description, "
-    +"CT.ComplaintType, "
+    + "C.ComplainID, "
+    + "C.Description, "
+    + "CT.ComplaintType, "
     + "C.Image, "
     + "C.Status, "
     + "U.Name AS UserWhoComplained "
@@ -98,5 +144,87 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
 
             return View(complaints);
         }
+        public ActionResult Index()
+        {
+            AdminPanel ap = new AdminPanel
+            { completed = GetDoneCount(),
+                count = GetCount(),
+                todo = GetComplaints(),
+                avg=(GetDoneCount()+GetCount())/2
+            };
+            return View(ap);
+        }
+
+        [HttpPost]
+        public ActionResult EditUser1(GetData gd)
+        {
+            if(Session["UserID"]==null)
+            {
+                return RedirectToAction("Users");
+            }
+            int userId = Convert.ToInt32(Session["UserID"]);
+            String Query = "update Tbl_Users set Name='"+gd.Name+ "', Email='" + gd.Email + "', PhoneNo='" + gd.PhoneNo + "', Gender='" + gd.Gender + "', LoginID='" + gd.LoginID + "' where UserID=" + userId;
+            ConnectionString();
+            con.Open();
+            com.Connection = con;
+            com.CommandText = Query;
+            try
+            {
+                int i = com.ExecuteNonQuery();
+                if (i >= 1)
+                {
+                    JavaScript("<script>alert('User's Data was successfully updated');</script>");
+                }
+                else
+                {
+                    JavaScript("<script>alert('User's Data was not successfully updated');</script>");
+                }
+            }catch(Exception e)
+            {
+                return RedirectToAction("Error", "Error");
+            }
+            
+            
+            return RedirectToAction("Users");
+        }
+        public ActionResult EditUser(int? userId)
+        {
+            if(userId.HasValue)
+            {
+
+                Session["UserID"] = userId;
+                String Query = "select * from Tbl_Users where UserID="+userId;
+                ConnectionString();
+                con.Open();
+                com.Connection = con;
+                com.CommandText = Query;
+
+                SqlDataReader reader = com.ExecuteReader();
+                GetData getData;
+                while (reader.Read())
+                {
+                    getData = new GetData
+                    {
+                        UserID = (int)reader["UserID"],
+                        Email = reader["Email"].ToString(),
+                        Gender = reader["Gender"].ToString(),
+                        Role = reader["Role"].ToString(),
+                        PhoneNo = reader["PhoneNo"].ToString(),
+                        Name = reader["Name"].ToString(),
+                        LoginID = reader["LoginID"].ToString(),
+                        Password = reader["Password"].ToString()
+                    };
+                    return View(getData);
+
+                }
+                
+            }
+            else
+            {
+                return RedirectToAction("Index");
+            }
+            return View();
+        }       
+    
     }
 }
