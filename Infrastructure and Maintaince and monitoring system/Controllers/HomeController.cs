@@ -14,6 +14,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
     public class HomeController : Controller
     {
 
+        HttpCookie cookieLogin, cookieName, cookieRole;
         EmailSending es = new EmailSending();
         SqlConnection con = new SqlConnection();
         SqlCommand com = new SqlCommand();
@@ -67,6 +68,20 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
 
 
         }
+        public ActionResult Logout()
+        {
+            Session.RemoveAll();
+            cookieLogin = Request.Cookies["Login"];
+            cookieName = Request.Cookies["Name"];
+            cookieRole = Request.Cookies["Role"];
+            cookieLogin.Expires = DateTime.Now.AddSeconds(0);
+            cookieName.Expires = DateTime.Now.AddSeconds(0);
+            cookieRole.Expires = DateTime.Now.AddSeconds(0);
+            Response.Cookies.Add(cookieLogin);
+            Response.Cookies.Add(cookieName);
+            Response.Cookies.Add(cookieRole);
+            return RedirectToAction("Index", "Home");
+        }
         void ConnectionString()
         {
             con.ConnectionString = "data source=ASUSTUFGAMING\\SQLEXPRESS; database=IMMS; integrated security=SSPI";
@@ -119,9 +134,22 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
 
         public ActionResult Index()
         {
-            if(Session["Role"]!=null)
+            cookieLogin = Request.Cookies["Login"];
+            cookieName = Request.Cookies["Name"];
+            cookieRole = Request.Cookies["Role"];
+            if (cookieLogin!=null)
             {
-                if(Session["Role"].ToString().Equals("Student"))
+                Session["LoginID"] = cookieLogin.Value;
+                Session["Name"] = cookieName.Value;
+                Session["Role"] = cookieRole.Value;
+            }
+            if (Session["Role"]!=null)
+            {
+                if (Session["Role"].ToString().Equals("admin"))
+                {
+                    return RedirectToAction("Index", "Admin");
+                }
+                if (Session["Role"].ToString().Equals("Student"))
                 {
                     return RedirectToAction("StudentProfile", "Student");
                 }
@@ -131,6 +159,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
                     {
                         return RedirectToAction("Profile", "Faculty");
                     }
+                    
                 }
 
             }
@@ -160,10 +189,26 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
         [HttpPost]
         public ActionResult Login(GetData gd)
         {
+            
+            
             if(gd.LoginID.Equals("admin"))
             {
                 if(gd.Password.Equals("admin"))
                 {
+                    
+                    
+                    cookieRole = new HttpCookie("Role", "admin");
+                    cookieLogin = new HttpCookie("Login", gd.LoginID);
+                    cookieName = new HttpCookie("Name", "Varsha Patel");
+                    cookieRole.Expires = DateTime.Now.AddDays(2);
+                    cookieLogin.Expires = DateTime.Now.AddDays(2);
+                    cookieName.Expires = DateTime.Now.AddDays(2);
+                    Response.Cookies.Add(cookieLogin);
+                    Response.Cookies.Add(cookieName);
+                    Session["Role"] = "admin";
+                    Session["LoginID"] = gd.LoginID;
+                    Session["Name"] = "Varsha Parel";
+                    Response.Cookies.Add(cookieRole);
                     return RedirectToAction("Index", "Admin");
                 }    
             }
@@ -177,6 +222,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
             {
                while(dr.Read())
                 {
+                  
                     gd.Email = dr[1].ToString();
                     gd.Role = dr[2].ToString();
                     gd.Name = dr[3].ToString();
@@ -184,10 +230,21 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
                     Session["Email"] = gd.Email;
                     Session["LoginID"] = gd.LoginID;
                     Session["Name"] = gd.Name;
+                    cookieRole = new HttpCookie("Role", gd.Role);
+                    cookieLogin = new HttpCookie("Login", gd.LoginID);
+                    cookieName = new HttpCookie("Name", gd.Name);
+                    cookieRole.Expires = DateTime.Now.AddDays(2);
+                    cookieLogin.Expires = DateTime.Now.AddDays(2);
+                    cookieName.Expires = DateTime.Now.AddDays(2);
+                    Response.Cookies.Add(cookieLogin);
+                    Response.Cookies.Add(cookieName);
+                    Response.Cookies.Add(cookieRole);
+
                 }
                 Session["UserVerified"] = "true";
                 if(gd.Role.Equals("Student"))
                 {
+                    
                     return RedirectToAction("StudentProfile","Student");
 
                 }

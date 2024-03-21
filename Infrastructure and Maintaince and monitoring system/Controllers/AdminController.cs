@@ -10,12 +10,14 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
 {
     public class AdminController : Controller
     {
+        HttpCookie cookieLogin, cookieName, cookieRole;
         SqlConnection con = new SqlConnection();
         SqlCommand com = new SqlCommand();
         SqlDataReader dr;
         string connectionString = "data source=ASUSTUFGAMING\\SQLEXPRESS; database=IMMS; integrated security=SSPI";
 
         [HandleError]
+
         public int GetCount()
         {
             int count = 0;
@@ -44,6 +46,20 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
 
             return count;
         }
+        public ActionResult Logout()
+        {
+            Session.RemoveAll();
+            cookieLogin = Request.Cookies["Login"];
+            cookieName = Request.Cookies["Name"];
+            cookieRole = Request.Cookies["Role"];
+            cookieLogin.Expires = DateTime.Now.AddSeconds(0);
+            cookieName.Expires = DateTime.Now.AddSeconds(0);
+            cookieRole.Expires = DateTime.Now.AddSeconds(0);
+            Response.Cookies.Add(cookieLogin);
+            Response.Cookies.Add(cookieName);
+            Response.Cookies.Add(cookieRole);
+            return RedirectToAction("Index", "Home");
+        }
         public List<string> GetComplaints()
         {
             List<string> complaints = new List<string>();
@@ -71,7 +87,10 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
         }
         public ActionResult Users()
         {
-
+            if (!Session["Role"].Equals("admin"))
+            {
+                return RedirectToAction("Index", "Home");
+            }
             String Query = "select * from Tbl_Users";
             ConnectionString();
             con.Open();
@@ -100,7 +119,10 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
         }
         public ActionResult Complaints()
         {
-
+            if (!Session["Role"].Equals("admin"))
+            {
+                return RedirectToAction("Index", "Home");
+            }
             String Query = "SELECT "
     + "C.ComplainID, "
     + "C.Description, "
@@ -146,6 +168,10 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
         }
         public ActionResult Index()
         {
+            if (!Session["Role"].Equals("admin"))
+            {
+                return RedirectToAction("Index", "Home");
+            }
             AdminPanel ap = new AdminPanel
             { completed = GetDoneCount(),
                 count = GetCount(),
@@ -158,6 +184,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
         [HttpPost]
         public ActionResult EditUser1(GetData gd)
         {
+
             if(Session["UserID"]==null)
             {
                 return RedirectToAction("Users");
@@ -181,7 +208,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
                 }
             }catch(Exception e)
             {
-                return RedirectToAction("Error", "Error");
+                return RedirectToAction("Error?error="+e+"", "Error");
             }
             
             
@@ -191,7 +218,10 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
         {
             if(userId.HasValue)
             {
-
+                if (!Session["Role"].Equals("admin"))
+                {
+                    return RedirectToAction("Index", "Home");
+                }
                 Session["UserID"] = userId;
                 String Query = "select * from Tbl_Users where UserID="+userId;
                 ConnectionString();
