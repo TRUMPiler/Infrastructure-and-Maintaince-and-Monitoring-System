@@ -56,7 +56,7 @@
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                 <!-- Add icons to the links using the .nav-icon class
-                     with font-awesome or any other icon font library -->
+         with font-awesome or any other icon font library -->
                 <li class="nav-item">
                     <a href="#" class="nav-link active">
                         <i class="nav-icon fas fa-table"></i>
@@ -88,6 +88,12 @@
                 </li>
                 <li class="nav-header">EXAMPLES</li>
                 <li class="nav-header">MISCELLANEOUS</li>
+                <li class="nav-item">
+                    <a href="/Admin/Register" class="nav-link">
+                        <i class="nav-icon fas fa-file"></i>
+                        <p>Registeration</p>
+                    </a>
+                </li>
             </ul>
         </nav>
         <!-- /.sidebar-menu -->
@@ -152,7 +158,7 @@
                                             <td>@item.Gender</td>
                                             <td>@item.Role</td>
                                             <td>@item.Password</td>
-                                            <td> <button onclick="window.location.href='@Url.Action("EditUser", "Admin", new { userId = item.UserID })'">Edit</button> </td>
+                                            <td> <button onclick="window.location.href='@Url.Action("EditUser", "Admin", new { userId = item.UserID })'">Edit</button><button onclick="window.location.href='@Url.Action("Delete", "Admin", new { userId = item.UserID })'">Delete</button> </td>
                                         </tr>
                                     }
                                 </tbody>

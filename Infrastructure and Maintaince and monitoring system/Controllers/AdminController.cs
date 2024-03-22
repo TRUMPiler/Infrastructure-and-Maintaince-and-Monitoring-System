@@ -5,6 +5,7 @@ using System.Web;
 using Infrastructure_and_Maintaince_and_monitoring_system.Models;
 using System.Data.SqlClient;
 using System.Web.Mvc;
+using System.IO;
 
 namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
 {
@@ -166,6 +167,85 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
 
             return View(complaints);
         }
+        public ActionResult Delete(int? userID)
+        {
+            
+
+                if (!userID.HasValue)
+                {
+                    return RedirectToAction("Users");
+                }
+                
+                String Query = "delete from Tbl_Users where UserID=" + userID;
+                ConnectionString();
+                con.Open();
+                com.Connection = con;
+                com.CommandText = Query;
+                try
+                {
+                    int i = com.ExecuteNonQuery();
+                    if (i >= 1)
+                    {
+                        string script = "<script>alert('User deleted Successfully');window.location='/Admin/Users'</script>";
+                        return Content(script, "text/html");
+                    }
+                    else
+                    {
+                        string script = "<script>alert('User deleted Unsuccessfully');window.location='/Admin/Users'</script>";
+                        return Content(script, "text/html");
+                    }
+                }
+                catch (Exception e)
+                {
+                    if(e.ToString().Contains("REFERENCE constraint"))
+                    {
+                        string script = "<script>alert('User cannot be deleted as it has some records assoicated with it ');window.location='/Admin/Users'</script>";
+                        return Content(script, "text/html");
+                    }
+                    return RedirectToAction("Error?error=" + e + "", "Error");
+                }
+
+
+                return RedirectToAction("Users");
+
+            }
+        [HttpPost]
+        public ActionResult Register1(HttpPostedFileBase file)
+        {
+            if (file != null && file.ContentLength > 0)
+            {
+                try
+                {
+
+                    string fileName = Path.GetFileName(file.FileName);
+                    string path = Path.Combine(Server.MapPath("~\\App_Data"), fileName);
+                    file.SaveAs(path);
+                    String Query = "BULK insert Tbl_Users " +
+                    " from '" + path + "'"
+                    + " WITH("
+                    + " FORMAT = 'CSV',"
+                    + " FIRSTROW = 2,"
+                    + " FIELDTERMINATOR = ',',"
+                    + " ROWTERMINATOR = '\\n'"
+                    + " )";
+
+                    ConnectionString();
+                    con.Open();
+                    com.Connection = con;
+                    com.CommandText = Query;
+                    com.ExecuteNonQuery();
+                    return View("Register", model: "File uploaded");
+                }
+                catch (Exception ex)
+                {
+                    return View("Register", model: ex.Message);
+                }
+            }
+            else
+            {
+                return View("Register", model: "please select a file");
+            }
+        }
         public ActionResult Index()
         {
             if (!Session["Role"].Equals("admin"))
@@ -198,13 +278,15 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
             try
             {
                 int i = com.ExecuteNonQuery();
-                if (i >= 1)
+                if(i>=1)
                 {
-                    JavaScript("<script>alert('User's Data was successfully updated');</script>");
+                    string script = "<script>alert('User data was updated Successfully');window.location='/Admin/Users'</script>";
+                    return Content(script, "text/html");
                 }
                 else
                 {
-                    JavaScript("<script>alert('User's Data was not successfully updated');</script>");
+                    string script = "<script>alert('User data was updated Unsuccessfully');window.location='/Admin/Users'</script>";
+                    return Content(script, "text/html");
                 }
             }catch(Exception e)
             {
@@ -213,6 +295,10 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
             
             
             return RedirectToAction("Users");
+        }
+        public ActionResult Register()
+        {
+            return View();
         }
         public ActionResult EditUser(int? userId)
         {

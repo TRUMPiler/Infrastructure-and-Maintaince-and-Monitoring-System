@@ -86,51 +86,9 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
         {
             con.ConnectionString = "data source=ASUSTUFGAMING\\SQLEXPRESS; database=IMMS; integrated security=SSPI";
         }
-        [HttpPost]
-        public ActionResult Register1(HttpPostedFileBase file)
-        {
             
-            if (file != null && file.ContentLength > 0)
-            {
-                try
-                {
-                    
-                    string fileName = Path.GetFileName(file.FileName);
-                    string path = Path.Combine(Server.MapPath("~\\App_Data"), fileName);
-                    file.SaveAs(path);
-                    String Query = "BULK insert Tbl_Users "+
-                    " from '"+path+"'"
-                    +" WITH("
-                    +" FORMAT = 'CSV',"
-                    +" FIRSTROW = 2,"
-                    +" FIELDTERMINATOR = ',',"
-                    + " ROWTERMINATOR = '\\n'"
-                    + " )";
-                    
-                    ConnectionString();
-                    con.Open();
-                    com.Connection = con;
-                    com.CommandText = Query;
-                    com.ExecuteNonQuery();
-                    return View("Register", model: "File uploaded");
-                }
-                catch (Exception ex)
-                {
-                    return View("Register", model: ex.Message); 
-                }
-            }
-            else
-            {
-                return View("Register", model: "please select a file");
-            }
-            
-        }
     
-    public ActionResult Register()
-        {
-            return View();
-        }
-       
+   
 
         public ActionResult Index()
         {
