@@ -15,7 +15,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
         SqlConnection con = new SqlConnection();
         SqlCommand com = new SqlCommand();
         SqlDataReader dr;
-        string connectionString = "data source=ASUSTUFGAMING\\SQLEXPRESS; database=IMMS; integrated security=SSPI";
+        string connectionString = "data source=DESKTOP-K4C46LA\\SQLEXPRESS; database=IMMS; integrated security=SSPI";
 
         [HandleError]
 
@@ -84,7 +84,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
         }
         void ConnectionString()
         {
-            con.ConnectionString = "data source=ASUSTUFGAMING\\SQLEXPRESS; database=IMMS; integrated security=SSPI";
+            con.ConnectionString = "data source=DESKTOP-K4C46LA\\SQLEXPRESS; database=IMMS; integrated security=SSPI";
         }
         public ActionResult Users()
         {
@@ -223,7 +223,6 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
                     String Query = "BULK insert Tbl_Users " +
                     " from '" + path + "'"
                     + " WITH("
-                    + " FORMAT = 'CSV',"
                     + " FIRSTROW = 2,"
                     + " FIELDTERMINATOR = ',',"
                     + " ROWTERMINATOR = '\\n'"
