@@ -84,7 +84,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
         }
         void ConnectionString()
         {
-            con.ConnectionString = "data source=ASUSTUFGAMING\\SQLEXPRESS;; database=IMMS; integrated security=SSPI";
+            con.ConnectionString = "data source=DESKTOP-2B100SL\\SQLEXPRESS;; database=IMMS; integrated security=SSPI";
         }
             
     
