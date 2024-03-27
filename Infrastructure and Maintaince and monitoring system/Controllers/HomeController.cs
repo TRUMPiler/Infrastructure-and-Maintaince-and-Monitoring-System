@@ -144,6 +144,10 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
             return View(model: "Coundn't Verify Otp"+ (this.otp.Equals(otps))+ Result);
 
         }
+        public ActionResult abc()
+        {
+            return View();
+        }
         [HttpPost]
         public ActionResult Login(GetData gd)
         {

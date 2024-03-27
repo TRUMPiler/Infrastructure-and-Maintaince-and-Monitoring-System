@@ -1,13 +1,18 @@
 ﻿
 @{
     ViewBag.Title = "Forget Password";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = null;
 }
-<h2>Change Password</h2>
+<link rel="stylesheet" href="~/Content/assets/css/Login.css" />
 @Model
-<form method="post" action="VerifyLoginID">
-    <label>Login ID</label>
-    <input type="Text" name="LoginID" /><br />
-    <input type="submit" value="Submit" /><br />
-</form>
+<body>
+    <div class="main">
+        <form method="post" action="VerifyLoginID">
+            <label>Change Password</label>
+            <input type="Text" name="LoginID" placeholder="User ID" />
+            <button type="submit" value="Submit" style="background: #ffffff; color: #1d2431">Submit</button>
+        </form>
+    </div>
+</body>
+
 
