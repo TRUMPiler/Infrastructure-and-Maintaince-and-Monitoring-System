@@ -5,9 +5,8 @@ using System.Web;
 
 namespace Infrastructure_and_Maintaince_and_monitoring_system.Models
 {
-    public class ComplaintTypes
+    public class ComplaintTypr
     {
-        public int ComplaintTypeID { get; set; }
-        public String ComplaintType { get; set; }
+
     }
 }

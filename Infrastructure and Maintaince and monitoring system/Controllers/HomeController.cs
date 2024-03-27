@@ -147,10 +147,14 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
         [HttpPost]
         public ActionResult Login(GetData gd)
         {
+            
+            
             if(gd.LoginID.Equals("admin"))
             {
                 if(gd.Password.Equals("admin"))
                 {
+                    
+                    
                     cookieRole = new HttpCookie("Role", "admin");
                     cookieLogin = new HttpCookie("Login", gd.LoginID);
                     cookieName = new HttpCookie("Name", "Varsha Patel");
@@ -196,16 +200,10 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
 
                 }
                 Session["UserVerified"] = "true";
-                if(gd.Role.Contains("Student"))
+                if(gd.Role.Equals("Student"))
                 {
                     
                     return RedirectToAction("StudentProfile","Student");
-
-                }
-                else if (gd.Role.Contains("Faculty"))
-                {
-
-                    return RedirectToAction("Index", "Faculty");
 
                 }
                 return View();
