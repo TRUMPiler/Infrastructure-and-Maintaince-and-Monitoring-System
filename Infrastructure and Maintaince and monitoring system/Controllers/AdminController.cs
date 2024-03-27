@@ -84,7 +84,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
         }
         void ConnectionString()
         {
-            con.ConnectionString = "data source=DESKTOP-K4C46LA\\SQLEXPRESS; database=IMMS; integrated security=SSPI";
+            con.ConnectionString = "data source=ASUSTUFGAMING\\SQLEXPRESS; database=IMMS; integrated security=SSPI";
         }
         public ActionResult Users()
         {
@@ -247,17 +247,25 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
         }
         public ActionResult Index()
         {
-            if (!Session["Role"].Equals("admin"))
+            if (Session["Role"] != null)
             {
-                return RedirectToAction("Index", "Home");
+                if (!Session["Role"].Equals("admin"))
+                {
+                    return RedirectToAction("Logout");
+                }
+                AdminPanel ap = new AdminPanel
+                { completed = GetDoneCount(),
+                    count = GetCount(),
+                    todo = GetComplaints(),
+                    avg=(GetDoneCount()+GetCount())/2
+                };
+                return View(ap);
             }
-            AdminPanel ap = new AdminPanel
-            { completed = GetDoneCount(),
-                count = GetCount(),
-                todo = GetComplaints(),
-                avg=(GetDoneCount()+GetCount())/2
-            };
-            return View(ap);
+            else
+            {
+                return RedirectToAction("Logout");
+            }    
+            
         }
 
         [HttpPost]
@@ -298,6 +306,38 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
         public ActionResult Register()
         {
             return View();
+        }
+        public ActionResult EditComplaint(int? id)
+        {
+            if(id.HasValue)
+            {
+                if (Session["Role"] != null)
+                {
+                    if (!Session["Role"].Equals("admin"))
+                    {
+                        return RedirectToAction("Logout");
+                    }
+                    String Query = "select * from Tbl_Complain where ComplainID=" + id;
+                    ConnectionString();
+                    con.Open();
+                    com.Connection = con;
+                    com.CommandText = Query;
+                    SqlDataReader reader = com.ExecuteReader();
+                    while(reader.Read())
+                    {
+                        
+                    }
+
+                }
+                
+
+            }
+            else
+            {
+                return RedirectToAction("Complaints");
+            }
+            return View();
+
         }
         public ActionResult EditUser(int? userId)
         {

@@ -14,6 +14,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Models
         public String Status { get; set; }
         public String User { get; set; }
         public String ClassID { get; set; }
+        public List<String> ComplaintTypes{ get; set; }
 
     }
 }
