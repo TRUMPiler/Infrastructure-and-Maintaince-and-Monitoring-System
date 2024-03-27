@@ -307,37 +307,42 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
         {
             return View();
         }
-        public ActionResult EditComplaint(int? id)
+
+        public ActionResult EditComplaint(int? cid)
         {
-            if(id.HasValue)
+            if (cid.HasValue)
             {
-                if (Session["Role"] != null)
+                Complaint cs=new Complaint();
+                String Query = "select * from Tbl_Complain where ComplainID=" + cid;
+                using (SqlConnection con = new SqlConnection(connectionString))
                 {
-                    if (!Session["Role"].Equals("admin"))
+                    using (SqlCommand com = new SqlCommand(Query, con))
                     {
-                        return RedirectToAction("Logout");
-                    }
-                    String Query = "select * from Tbl_Complain where ComplainID=" + id;
-                    ConnectionString();
-                    con.Open();
-                    com.Connection = con;
-                    com.CommandText = Query;
-                    SqlDataReader reader = com.ExecuteReader();
-                    while(reader.Read())
-                    {
-                        
-                    }
+                       
 
+                        con.Open();
+                        SqlDataReader reader = com.ExecuteReader();
+
+                        if (reader.Read())
+                        {
+                            cs = new Complaint()
+                            {
+                                ComplaintID = (int)reader["ComplainID"],
+                                Description = reader["Description"].ToString(),
+                                ComplaintType = reader["ComplaintType"].ToString(),
+                                ClassID = reader["ClassID"].ToString(),
+                                Status = reader["Status"].ToString(),
+                                ComplaintTypes = GetAllComplaintTypes()
+                            };
+                        }
+                    }
                 }
-                
-
+                return View(cs);
             }
             else
             {
                 return RedirectToAction("Complaints");
             }
-            return View();
-
         }
         public ActionResult EditUser(int? userId)
         {
@@ -379,7 +384,34 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
                 return RedirectToAction("Index");
             }
             return View();
-        }       
-    
+        }
+
+        private List<ComplaintTypes> GetAllComplaintTypes()
+        {
+            List<ComplaintTypes> complaintTypes = new List<ComplaintTypes>();
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                string query = "SELECT * FROM Tbl_ComplaintType";
+
+                using (SqlCommand com = new SqlCommand(query, con))
+                {
+                    con.Open();
+                    SqlDataReader reader = com.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        ComplaintTypes ct = new ComplaintTypes()
+                        {
+                            ComplaintType_ID = (int)reader["ComplaintType_ID"],
+                            ComplaintType = reader["ComplaintType"].ToString()
+                        };
+                        complaintTypes.Add(ct);
+                    }
+                }
+            }
+
+            return complaintTypes;
+        }
     }
 }

@@ -1,18 +1,15 @@
 ﻿
 @{
     ViewBag.Title = "VerifyOtp";
-    Layout = null;
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<link rel="stylesheet" href="~/Content/assets/css/Login.css" />
 
-<body>
-    <div class="main">
-        @Model
-        <form method="post" action="VerifyOtp">
-            <label>Enter Your Otp</label>
-            <input type="text" name="otps" />
-            <input type="submit" value="submit" />
-        </form>
-    </div>
-</body>
+<h2>VerifyOtp</h2>
+@Model
+<form method="post" action="VerifyOtp">
+    <label>Enter Your Otp</label>
+    <input type="text" name="otps" />
+    <input type="submit" value="submit" />
+
+</form>
 

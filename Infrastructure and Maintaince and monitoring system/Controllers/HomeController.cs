@@ -144,10 +144,6 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
             return View(model: "Coundn't Verify Otp"+ (this.otp.Equals(otps))+ Result);
 
         }
-        public ActionResult abc()
-        {
-            return View();
-        }
         [HttpPost]
         public ActionResult Login(GetData gd)
         {
@@ -204,12 +200,19 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
 
                 }
                 Session["UserVerified"] = "true";
-                if(gd.Role.Equals("Student"))
+                if(gd.Role.Contains("Student"))
                 {
                     
                     return RedirectToAction("StudentProfile","Student");
 
                 }
+                else if (gd.Role.Contains("Faculty"))
+                {
+
+                    return RedirectToAction("Profile", "Faculty");
+
+                }
+
                 return View();
             }
             else

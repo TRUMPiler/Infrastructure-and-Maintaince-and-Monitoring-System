@@ -2173,7 +2173,7 @@
     </Compile>
     <Compile Include="Models\AdminPanel.cs" />
     <Compile Include="Models\Complaint.cs" />
-    <Compile Include="Models\ComplaintTypr.cs" />
+    <Compile Include="Models\ComplaintTypes.cs" />
     <Compile Include="Models\EmailSending.cs" />
     <Compile Include="Models\GetData.cs" />
     <Compile Include="Models\Tbl_Asset.cs">
@@ -2512,7 +2512,7 @@
     <Content Include="Views\Admin\EditUser.cshtml" />
     <Content Include="Views\Admin\EditComplaint.cshtml" />
     <Content Include="Views\Admin\Register.cshtml" />
-    <Content Include="Views\Home\abc.cshtml" />
+    <Content Include="Views\Shared\_StudentLayout.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -2,7 +2,7 @@
     ViewBag.Title = "Edit";
     Layout = "~/Views/Shared/_AdminTablePage.cshtml";
 }
-@model Infrastructure_and_Maintaince_and_monitoring_system.Models.GetData
+@model Infrastructure_and_Maintaince_and_monitoring_system.Models.Complaint
 <div class="preloader flex-column justify-content-center align-items-center">
     <img class="animation__shake" src="~/Admins/dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
 </div>
@@ -136,52 +136,35 @@
                             <div class="card-body">
                                 <div class="form-group">
                                     <label for="exampleInputName">ComplainID</label>
-                                    <input type="text" name="ComplainID" class="form-control" id="exampleInputID" value="@Model.UserID" placeholder="Enter name" disabled>
+                                    <input type="text" name="ComplainID" class="form-control" id="exampleInputID" value="@Model.ComplaintID" placeholder="Enter name" disabled>
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputName">Description</label>
-                                    <input type="text" name="Description" class="form-control" id="exampleInputName" value="@Model.Name" placeholder="Enter name">
+                                    <input type="text" name="Description" class="form-control" id="exampleInputName" value="@Model.Description" placeholder="Enter name">
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">ComplaintType</label>
-                                    <input type="email" name="Email" class="form-control" id="exampleInputEmail1" value="@Model.Email" placeholder="Enter email">
+                                    <select name="ComplaintType">
+                                        @foreach (var ct in Model.ComplaintTypes)
+                                        {
+                                            
+                {
+
+                }
+
+                                        }
+                                    </select>
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputPassword1">ROOMID</label>
-                                    <input type="text" name="Password" class="form-control" id="exampleInputPassword1" value="@Model.Password" placeholder="Password">
+                                    <input type="text" name="Password" class="form-control" id="exampleInputPassword1" value="@Model.ClassID" placeholder="Password">
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputPassword1">Status</label>
-                                    <input type="number" name="PhoneNo" class="form-control" id="exampleInputPhoneNo1" value="@Model.PhoneNo" placeholder="Enter Your PhoneNo">
+                                    <input type="number" name="PhoneNo" class="form-control" id="exampleInputPhoneNo1" value="@Model.Status" placeholder="Enter Your PhoneNo">
                                 </div>
                                 
-                                <div class="form-group">
-                                    <label for="exampleInputPassword1">LoginID</label>
-                                    <input type="text" name="LoginID" class="form-control" id="exampleInputLoginID1" value="@Model.LoginID" placeholder="Enter Your PhoneNo">
-                                </div>
-                                <div class="form-group">
-                                    <label for="exampleInputPassword1">Gender</label><br />
-                                    @if (Model.Gender.Equals("M"))
-                                    {
-                                        <input type="radio" name="Gender" value="M" checked />
-                                        <label for="exampleInputPassword1">Male</label><br />
-                                        <input type="radio" name="Gender" value="F" />
-                                        <label for="exampleInputPassword1">Female</label>
-                                    }
-                                    else
-                                    {
-
-                                        <input type="radio" name="Gender" value="M" />
-                                        <label for="exampleInputPassword1">Male</label><br />
-                                        <input type="radio" name="Gender" value="F" checked />
-                                        <label for="exampleInputPassword1">Female</label>
-                                    }
-
-                                </div>
-                                <div class="form-group">
-                                    <label for="exampleInputPassword1">Role</label>
-                                    <input type="text" name="Role" class="form-control" id="exampleInputRole1" value="@Model.Role" placeholder="Enter Your PhoneNo" disabled>
-                                </div>
+                              
 
                             </div>
                             <!-- /.card-body -->
