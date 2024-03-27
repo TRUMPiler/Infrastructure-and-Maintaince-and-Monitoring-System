@@ -245,6 +245,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
                 return View("Register", model: "please select a file");
             }
         }
+        
         public ActionResult Index()
         {
             if (Session["Role"] != null)
@@ -307,9 +308,10 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
         {
             return View();
         }
-        public ActionResult EditComplaint(int? id)
+        public ActionResult EditComplaint(int? cid)
         {
-            if(id.HasValue)
+            con.Close();
+            if(cid.HasValue)
             {
                 if (Session["Role"] != null)
                 {
@@ -317,18 +319,35 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
                     {
                         return RedirectToAction("Logout");
                     }
-                    String Query = "select * from Tbl_Complain where ComplainID=" + id;
-                    ConnectionString();
-                    con.Open();
-                    com.Connection = con;
-                    com.CommandText = Query;
-                    SqlDataReader reader = com.ExecuteReader();
-                    while(reader.Read())
+                    String Query = "select * from Tbl_Complain where ComplainID=" + cid;
+                    using (SqlConnection con = new SqlConnection(connectionString))
                     {
+                        using (SqlCommand com = new SqlCommand(Query, con))
+                        {
+                            com.Parameters.AddWithValue("@ComplainID", cid);
+
+                            con.Open();
+                            SqlDataReader reader = com.ExecuteReader();
+
+                            if (reader.Read())
+                            {
+                                 Complaint c = new Complaint()
+                                {
+                                    ComplaintID = (int)reader["ComplainID"],
+                                    Description = reader["Description"].ToString(),
+                                    ComplaintType = reader["ComplaintType"].ToString(),
+                                    ClassID = reader["ClassID"].ToString(),
+                                    Status = reader["Status"].ToString(),
+                                    ComplaintTypes = GetAllComplaintTypes(); 
+                                };
+                            return View(c);
                         
+                        }
+                    }
+                    
                     }
 
-                }
+                
                 
 
             }
@@ -379,7 +398,31 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
                 return RedirectToAction("Index");
             }
             return View();
-        }       
+        }
+        private List<ComplaintTypes> GetAllComplaintTypes()
+        {
+            List<ComplaintTypes> cc = new List<ComplaintTypes>();
+            String Query = "select * from Tbl_ComplaintType";
+            
+            com.Connection = con;
+            com.CommandText = Query;
+
+            SqlDataReader reader = com.ExecuteReader();
+            GetData getData;
+            while (reader.Read())
+            {
+                ComplaintTypes ct = new ComplaintTypes()
+                {
+                    ComplaintTypeID = (int)reader["ComplaintType_ID"],
+                    ComplaintType = reader["ComplaintType"].ToString()
+            };
+            cc.Add(ct);
+               
+            
     
+        }
+            return cc;
+        }
     }
+   
 }

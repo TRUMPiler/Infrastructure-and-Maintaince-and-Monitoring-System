@@ -2054,11 +2054,6 @@
     <Content Include="App_Data\varshaMAM.png" />
     <Content Include="Content\assets\css\Login.css" />
     <Content Include="Content\assets\css\main.css" />
-    <Content Include="Content\assets\img\BgLogin.png" />
-    <Content Include="Content\assets\img\FIcon.png" />
-    <Content Include="Content\assets\img\Logo.jpeg" />
-    <Content Include="Content\assets\img\Logo.png" />
-    <Content Include="Content\assets\img\MIcon.png" />
     <Content Include="Content\assets\js\Login.js" />
     <Content Include="Content\Home\css\bootstrap.css" />
     <Content Include="Content\Home\css\responsive.css" />
@@ -2173,7 +2168,7 @@
     </Compile>
     <Compile Include="Models\AdminPanel.cs" />
     <Compile Include="Models\Complaint.cs" />
-    <Compile Include="Models\ComplaintTypr.cs" />
+    <Compile Include="Models\ComplaintTypes.cs" />
     <Compile Include="Models\EmailSending.cs" />
     <Compile Include="Models\GetData.cs" />
     <Compile Include="Models\Tbl_Asset.cs">

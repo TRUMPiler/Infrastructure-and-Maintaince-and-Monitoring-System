@@ -2,6 +2,7 @@
     ViewBag.Title = "Users";
     Layout = "~/Views/Shared/_AdminTablePage.cshtml";
 }
+@model List<Infrastructure_and_Maintaince_and_monitoring_system.Models.Complaint>
 <div class="preloader flex-column justify-content-center align-items-center">
     <img class="animation__shake" src="~/Admins/dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
 </div>
@@ -26,7 +27,7 @@
         <!-- Navbar Search -->
 
 
-        
+
 
 
         <li class="nav-item">
@@ -67,7 +68,7 @@
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                 <!-- Add icons to the links using the .nav-icon class
-         with font-awesome or any other icon font library -->
+                with font-awesome or any other icon font library -->
 
 
 
@@ -162,19 +163,19 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @model List<Infrastructure_and_Maintaince_and_monitoring_system.Models.Complaint>
+
                                     @foreach (var complaint in Model)
                                     {
-                                    <tr>
-                                        <td>@complaint.ComplaintID</td>
-                                        <td>@complaint.Description</td>
-                                        <td>@complaint.ComplaintType</td>
-                                      
-                                        <td><a href="~/Admins/dist/img/2.png" target="_blank">Click to View</a></td>
-                                        <td>@complaint.Status</td>
-                                        <td>@complaint.User</td>
-                                        <td>Edit/Delete Buttons</td>
-                                    </tr>
+                                        <tr>
+                                            <td>@complaint.ComplaintID</td>
+                                            <td>@complaint.Description</td>
+                                            <td>@complaint.ComplaintType</td>
+
+                                            <td><a href="~/Admins/dist/img/2.png" target="_blank">Click to View</a></td>
+                                            <td>@complaint.Status</td>
+                                            <td>@complaint.User</td>
+                                            <td><button onclick="window.location.href='@Url.Action("EditComplaint", "Admin", new {cid=complaint.ComplaintID})'">Edit</button><button onclick="window.location.href='@Url.Action("Delete", "Admin", new { id = complaint.ComplaintID })'">Delete</button></td>
+                                        </tr>
                                     }
                                 </tbody>
                                 <tfoot>

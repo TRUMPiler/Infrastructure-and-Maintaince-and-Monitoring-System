@@ -8,34 +8,19 @@
         Login
     </title>
 </head>
+
 <body>
-    <div class="main">
-        <input type="checkbox" id="chk" aria-hidden="true">
-        <div class="Logo">
-        
-            <form>
-                <label for="chk" aria-hidden="true">InfraCare</label>
-                <img src="~/Content/assets/img/Logo.jpeg" />
-            </form>
-        </div>
-        <div class="login">
-            @Model
-            <form action="Login" method="post">
-                <label for="chk" aria-hidden="true">Login</label>
-                <input type="text" placeholder="User ID" name="LoginID" required>
-                <input type="password" placeholder="Password" name="Password" required>
-                <a href="~/Views/Home/ForgetPass.cshtml">Forget Password?</a>
-                <button>Login</button>
-            </form>
-        </div>
-    </div>
-</body>
-<!--<body>
     <div class="container" id="container">
         <div class="form-container sign-up">
             <form>
                 <h1>Create Account</h1>
-                
+                <div class="social-icons">
+                    <a href="#" class="icons"><i class="fa-brands fa-google-plus-g"></i></a>
+                    <a href="#" class="icons"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="#" class="icons"><i class="fa-brands fa-github"></i></a>
+                    <a href="#" class="icons"><i class="fa-brands fa-linkedin-in"></i></a>
+                </div>
+                <span>or use your email to registration</span>
                 <input type="text" placeholder="Name">
                 <input type="email" placeholder="Email">
                 <input type="password" placeholder="Password">
@@ -43,13 +28,20 @@
             </form>
         </div>
         <div class="form-container sign-in">
-            
+            @Model
             <form action="Login" method="post">
                 <h1>Sign In</h1>
+                <div class="social-icons">
+                    <a href="#" class="icons"><i class="fa-brands fa-google-plus-g"></i></a>
+                    <a href="#" class="icons"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="#" class="icons"><i class="fa-brands fa-github"></i></a>
+                    <a href="#" class="icons"><i class="fa-brands fa-linkedin-in"></i></a>
+                </div>
+                <span>or use your email/password</span>
                 <input type="text" placeholder="Email" name="LoginID">
-                <input type="password" placeholder="Password" name="Password">-->
+                <input type="password" placeholder="Password" name="Password">
                 @* <a href="">Forget your Password?</a>*@
-                <!--@Html.ActionLink("Forget Password", "ForgetPass", "Home", new { area = "" }, new { @class = "" })
+                @Html.ActionLink("Forget Password", "ForgetPass", "Home", new { area = "" }, new { @class = "" })
                 <button>Sign In</button>
             </form>
         </div>
@@ -69,5 +61,5 @@
         </div>
     </div>
     <script src="~/Content/assets/js/Login.js"></script>
-</body>-->
+</body>
 </html>
