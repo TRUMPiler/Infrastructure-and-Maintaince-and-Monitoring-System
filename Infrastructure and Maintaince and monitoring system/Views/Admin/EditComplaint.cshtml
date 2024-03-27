@@ -144,24 +144,53 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">ComplaintType</label>
-                                    <select name="ComplaintType">
+                                    <select name="Complaint_TypeID">
                                         @foreach (var ct in Model.ComplaintTypes)
                                         {
-                                            
-                {
-
-                }
+                                            if(ct.ComplaintType.Equals(Model.ComplaintType))
+                                            {
+                                                   <option value="@ct.ComplaintType_ID" selected>@ct.ComplaintType</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@ct.ComplaintType_ID">@ct.ComplaintType</option>
+                                            }
 
                                         }
                                     </select>
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputPassword1">ROOMID</label>
-                                    <input type="text" name="Password" class="form-control" id="exampleInputPassword1" value="@Model.ClassID" placeholder="Password">
+                                    <input type="text" name="RoomID" class="form-control" id="exampleInputPassword1" value="@Model.ClassID" placeholder="Password">
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputPassword1">Status</label>
-                                    <input type="number" name="PhoneNo" class="form-control" id="exampleInputPhoneNo1" value="@Model.Status" placeholder="Enter Your PhoneNo">
+                                    <select name="Status">
+                                        @if(Model.Status.ToString().Contains("Pending"))
+                                        {
+                                        <option value="Pending" selected>@Model.Status</option>
+                                        }
+                                        else
+                                        {
+                                        <option value="Pending">Pending</option>
+                                        }
+                                        @if(Model.Status.Contains("In-Progress"))
+                                        {
+                                        <option value="@Model.Status" selected>@Model.Status</option>
+                                        }
+                                        else
+                                        {
+                                        <option value="In-Progress" selected>In-Progress</option>
+                                        }
+                                        @if(Model.Status.Contains("Completed"))
+                                        {
+                                        <option value="@Model.Status" selected>@Model.Status</option>
+                                        }
+                                        else
+                                        {
+                                        <option value="Completed" selected>Completed</option>
+                                        }
+                                    </select>
                                 </div>
                                 
                               
@@ -209,11 +238,10 @@
         }, "Please enter only letters and spaces");
         $('#quickForm').validate({
             rules: {
-                Name:
+                Description:
                 {
                     required: true,
                     minlength: 2,
-                    letterswithspaces: true, // Using the custom rule here
                     maxlength: 50
                 },
                 PhoneNo:
@@ -232,9 +260,10 @@
                     required: true,
                     email: true,
                 },
-                Password: {
+                RoomID: {
                     required: true,
-                    minlength: 8
+                    minlength: 1,
+                    maxlength: 3
                 },
                 terms: {
                     required: true
