@@ -10,7 +10,7 @@ body {
     align-items: center;
     min-height: 100vh;
     font-family: 'Montserrat',sans-serif;
-    background: linear-gradient(to bottom,#0f0c29,#302b63,#2424e);
+    background: linear-gradient(2deg, #1d2431, transparent);
     display: flex;
 }
 .main {
