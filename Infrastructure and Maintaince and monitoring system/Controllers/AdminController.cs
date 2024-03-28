@@ -113,7 +113,8 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
                     PhoneNo = reader["PhoneNo"].ToString(),
                     Name = reader["Name"].ToString(),
                     LoginID = reader["LoginID"].ToString(),
-                    Password = reader["Password"].ToString()
+                    Password = reader["Password"].ToString(),
+                    Status=reader["Status"].ToString()
                 };
 
                 getDataList.Add(getData);
@@ -140,7 +141,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
 + "JOIN "
     + "Tbl_Complaint_User CU ON C.ComplainID = CU.ComplainID "
 + "JOIN "
-    + "Tbl_Users U ON CU.UserID = U.UserID; ";
+    + "Tbl_Users U ON CU.UserID = U.UserID Where U.Status = 'Active'; ";
 
             ConnectionString();
             con.Open();
@@ -178,7 +179,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
                     return RedirectToAction("Users");
                 }
                 
-                String Query = "delete from Tbl_Users where UserID=" + userID;
+                String Query = "update Tbl_Users SET Status='Inactive' where UserID=" + userID;
                 ConnectionString();
                 con.Open();
                 com.Connection = con;
@@ -280,7 +281,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
                 return RedirectToAction("Users");
             }
             int userId = Convert.ToInt32(Session["UserID"]);
-            String Query = "update Tbl_Users set Name='"+gd.Name+ "', Email='" + gd.Email + "', PhoneNo='" + gd.PhoneNo + "', Gender='" + gd.Gender + "', LoginID='" + gd.LoginID + "', Role='"+gd.Role+"' where UserID=" + userId;
+            String Query = "update Tbl_Users set Name='"+gd.Name+ "', Email='" + gd.Email + "', PhoneNo='" + gd.PhoneNo + "', Gender='" + gd.Gender + "', LoginID='" + gd.LoginID + "', Role='"+gd.Role+"', Status='"+gd.Status+"' where UserID=" + userId;
             ConnectionString();
             con.Open();
             com.Connection = con;
@@ -313,7 +314,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
         public int CountAllUsers()
         {
             int count = 0;
-            string query = "SELECT COUNT(LoginID) AS Count FROM Tbl_Users;";
+            string query = "SELECT COUNT(LoginID) AS Count FROM Tbl_Users Where Status='Active'";
 
             using (SqlConnection con = new SqlConnection(connectionString))
             using (SqlCommand com = new SqlCommand(query, con))
@@ -388,7 +389,8 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
                         PhoneNo = reader["PhoneNo"].ToString(),
                         Name = reader["Name"].ToString(),
                         LoginID = reader["LoginID"].ToString(),
-                        Password = reader["Password"].ToString()
+                        Password = reader["Password"].ToString(),
+                        Status=reader["Status"].ToString()
                     };
                     return View(getData);
 

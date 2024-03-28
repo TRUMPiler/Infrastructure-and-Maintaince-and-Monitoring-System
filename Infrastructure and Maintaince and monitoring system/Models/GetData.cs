@@ -16,5 +16,6 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Models
         public String LoginID { get; set; }
         public String Password { get; set; }
 
+        public String Status { get; set; }
     }
 }

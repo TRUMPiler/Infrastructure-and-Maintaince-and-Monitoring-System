@@ -170,7 +170,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
                     return RedirectToAction("Index", "Admin");
                 }    
             }
-            String Query = "select LoginID,Email,Role,Name from Tbl_Users where LoginID='"+gd.LoginID+"' and Password ='"+gd.Password+"'";
+            String Query = "select LoginID,Email,Role,Name from Tbl_Users where LoginID='"+gd.LoginID+"' AND Password ='"+gd.Password+"' AND Status='Active'";
             ConnectionString();
             con.Open();
             com.Connection = con;
@@ -217,7 +217,9 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
             }
             else
             {
-                return View("Login",model:"Invalid Crendiatls");
+
+                string script = "<script>alert('Invalid Credentials');window.location='/Home/'</script>";
+                return Content(script, "text/html");
             }
         }
         public ActionResult ForgetPass()
