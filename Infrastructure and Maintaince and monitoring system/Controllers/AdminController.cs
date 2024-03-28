@@ -84,7 +84,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
         }
         void ConnectionString()
         {
-            con.ConnectionString = "Data Source=DESKTOP-T7RS5U7\\SQLEXPRESS;Initial Catalog=IMMS;Integrated Security=True";
+            con.ConnectionString = "data source=DESKTOP-2B100SL\\SQLEXPRESS; database=IMMS; integrated security=SSPI";
         }
 
         
@@ -259,7 +259,8 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
                 { completed = GetDoneCount(),
                     count = GetCount(),
                     todo = GetComplaints(),
-                    avg=(GetDoneCount()+GetCount())/2
+                    avg=(GetDoneCount()+GetCount())/2,
+                    TotalStudents=CountAllUsers()
                 };
                 return View(ap);
             }
@@ -279,7 +280,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
                 return RedirectToAction("Users");
             }
             int userId = Convert.ToInt32(Session["UserID"]);
-            String Query = "update Tbl_Users set Name='"+gd.Name+ "', Email='" + gd.Email + "', PhoneNo='" + gd.PhoneNo + "', Gender='" + gd.Gender + "', LoginID='" + gd.LoginID + "' where UserID=" + userId;
+            String Query = "update Tbl_Users set Name='"+gd.Name+ "', Email='" + gd.Email + "', PhoneNo='" + gd.PhoneNo + "', Gender='" + gd.Gender + "', LoginID='" + gd.LoginID + "', Role='"+gd.Role+"' where UserID=" + userId;
             ConnectionString();
             con.Open();
             com.Connection = con;
@@ -309,7 +310,20 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
         {
             return View();
         }
+        public int CountAllUsers()
+        {
+            int count = 0;
+            string query = "SELECT COUNT(LoginID) AS Count FROM Tbl_Users;";
 
+            using (SqlConnection con = new SqlConnection(connectionString))
+            using (SqlCommand com = new SqlCommand(query, con))
+            {
+                con.Open();
+                count = (int)com.ExecuteScalar();
+            }
+
+            return count;
+        }
         public ActionResult EditComplaint(int? cid)
         {
             if (cid.HasValue)
