@@ -1,7 +1,7 @@
 ﻿
 @{
     ViewBag.Title = "Index";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_FacultyLayout.cshtml";
 }
 <div class="wrapper">
 
@@ -108,16 +108,17 @@
                                     <p>Complaint history</p>
                                 </a>
                             </li>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>File a Complain</p>
+                                </a>
+                            </li>
                             @if (Session["Role"] != null)
                             {
-                                if (Session["Role"].ToString().Contains("CR") || Session["Role"].ToString().Contains("LR"))
+                                if (Session["Role"].ToString().Contains("Head") || Session["Role"].ToString().Contains(""))
                                 {
-                                    <li class="nav-item">
-                                        <a href="#" class="nav-link">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p>File a Complain</p>
-                                        </a>
-                                    </li>
+
 
                                 }
                             }

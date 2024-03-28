@@ -2514,6 +2514,7 @@
     <Content Include="Views\Admin\EditComplaint.cshtml" />
     <Content Include="Views\Admin\Register.cshtml" />
     <Content Include="Views\Shared\_StudentLayout.cshtml" />
+    <Content Include="Views\Shared\_FacultyLayout.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
