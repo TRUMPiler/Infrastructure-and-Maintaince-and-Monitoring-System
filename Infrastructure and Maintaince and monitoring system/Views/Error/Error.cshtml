@@ -1,10 +1,20 @@
 ﻿
 @{
-    ViewBag.Title = "Error";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    Layout = null;
 }
 
-<h2>Error</h2>
-
-    <h4>@Model</h4>
+<html>
+<head>
+    <link href="~/Content/assets/css/Error.css" rel="stylesheet" />
+    <title>Error</title>
+</head>
+<body>
+    <div class="section">
+        <h1 class="error">404</h1>
+        <div class="page">Ooops!!! The page you are looking for is not found</div>
+        <a class="back-home" href="#!">Back to home</a>
+    </div>
+</body>
+</html>
 

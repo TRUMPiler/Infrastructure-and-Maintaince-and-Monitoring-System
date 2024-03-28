@@ -2054,6 +2054,7 @@
     <Content Include="App_Data\varshaMAM.png" />
     <Content Include="Content\assets\css\Login.css" />
     <Content Include="Content\assets\css\main.css" />
+    <Content Include="Content\assets\css\Error.css" />
     <Content Include="Content\assets\img\BgLogin.png" />
     <Content Include="Content\assets\img\FIcon.png" />
     <Content Include="Content\assets\img\Logo.jpeg" />
