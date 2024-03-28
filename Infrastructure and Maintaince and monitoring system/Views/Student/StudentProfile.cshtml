@@ -3,7 +3,7 @@
     ViewBag.Title = "Student Profile";
     Layout = "~/Views/Shared/_StudentLayout.cshtml";
 }
-@model Infrastructure_and_Maintaince_and_monitoring_system.Models.StudentPanel
+
 <div class="wrapper">
 
     <!-- Preloader -->
@@ -163,7 +163,7 @@
                     <!-- small box -->
                     <div class="small-box bg-info">
                         <div class="inner">
-                            <h3>@Model.count[0]</h3>
+                            <h3>0</h3>
 
                             <p>Pending Complaints</p>
                         </div>
@@ -178,9 +178,9 @@
                     <!-- small box -->
                     <div class="small-box bg-success">
                         <div class="inner">
-                            <h3>@Model.count[1]<sup style="font-size: 20px"></sup></h3>
+                            <h3>0<sup style="font-size: 20px"></sup></h3>
 
-                            <p>Total Complaints</p> 
+                            <p>Total Complaints</p>
                         </div>
                         <div class="icon">
                             <i class="ion ion-stats-bars"></i>
@@ -220,8 +220,6 @@
                 <!-- /.card-header -->
                 <div class="card-body">
                     <ul class="todo-list" data-widget="todo-list">
-                        @foreach(String Des in Model.PendingComplaints)
-                        {
                         <li>
                             <!-- drag handle -->
                             <span class="handle">
@@ -230,7 +228,7 @@
                             </span>
                             <!-- checkbox -->
                             <!-- todo text -->
-                            <span class="text">@Des</span>
+                            <span class="text">Design a nice theme</span>
                             <!-- Emphasis label -->
                             <!-- General tools such as edit or delete-->
                             <div class="tools">
@@ -238,7 +236,7 @@
                                 <i class="fas fa-trash-o"></i>
                             </div>
                         </li>
-                        }
+
                     </ul>
                 </div>
                 <!-- /.card-body -->

@@ -15,7 +15,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
         SqlConnection con = new SqlConnection();
         SqlCommand com = new SqlCommand();
         SqlDataReader dr;
-        string connectionString = "data source=ASUSTUFGAMING\\SQLEXPRESS; database=IMMS; integrated security=SSPI";
+        string connectionString = "data source=DESKTOP-2B100SL\\SQLEXPRESS; database=IMMS; integrated security=SSPI";
 
         [HandleError]
 
@@ -84,8 +84,10 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
         }
         void ConnectionString()
         {
-            con.ConnectionString = "data source=ASUSTUFGAMING\\SQLEXPRESS; database=IMMS; integrated security=SSPI";
+            con.ConnectionString = "data source=DESKTOP-2B100SL\\SQLEXPRESS; database=IMMS; integrated security=SSPI";
         }
+
+        
         public ActionResult Users()
         {
             if (!Session["Role"].Equals("admin"))
@@ -403,7 +405,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
                     {
                         ComplaintTypes ct = new ComplaintTypes()
                         {
-                            ComplaintType_ID = (int)reader["Complaint_TypeID"],
+                            ComplaintType_ID = (int)reader["ComplaintType_ID"],
                             ComplaintType = reader["ComplaintType"].ToString()
                         };
                         complaintTypes.Add(ct);
