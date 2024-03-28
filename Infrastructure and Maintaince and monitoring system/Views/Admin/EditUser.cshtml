@@ -88,7 +88,7 @@
                         </li>
                     </ul>
                 </li>
-                <li class="nav-header">EXAMPLES</li>
+                
                 <li class="nav-header">MISCELLANEOUS</li>
                 <li class="nav-item">
                     <a href="/Admin/Register" class="nav-link">
@@ -185,7 +185,40 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputPassword1">Role</label>
+                                    @if (Model.Role.Contains("Student"))
+                                    {
+                                        <select name="Role">
+                                            @if (Model.Role.Equals("Student LR") && Model.Gender.Equals("F"))
+                                            {
+                                                <option value="Student LR" selected>Student LR</option>
+                                            }
+                                            else if(!Model.Role.Equals("Student LR") && Model.Gender.Equals("F"))
+                                            {
+                                                <option value="Student LR">Student LR</option>
+                                            }
+                                            @if (Model.Role.Equals("Student CR") && Model.Gender.Equals("M"))
+                                            {
+                                                <option value="Student CR" selected>Student CR</option>
+                                            }
+                                            else if (!Model.Role.Equals("Student CR") && Model.Gender.Equals("M"))
+                                            {
+                                                <option value="Student CR">Student CR</option>
+                                            }
+                                            @if (Model.Role.Equals("Student"))
+                                            {
+                                                <option value="Student" selected>Student</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="Student">Student</option>
+                                            }
+                                        </select>
+                                    }
+                                    else
+                                    {
+                                        
                                     <input type="text" name="Role" class="form-control" id="exampleInputRole1" value="@Model.Role" placeholder="Enter Your PhoneNo" disabled>
+                                    }
                                 </div>
 
                             </div>
