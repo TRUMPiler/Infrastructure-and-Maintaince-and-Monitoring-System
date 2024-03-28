@@ -15,7 +15,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
         SqlConnection con = new SqlConnection();
         SqlCommand com = new SqlCommand();
         SqlDataReader dr;
-        string connectionString = "data source=DESKTOP-2B100SL\\SQLEXPRESS; database=IMMS; integrated security=SSPI";
+        string connectionString = "Data Source=DESKTOP-T7RS5U7\\SQLEXPRESS;Initial Catalog=IMMS;Integrated Security=True";
 
         [HandleError]
 
@@ -84,7 +84,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
         }
         void ConnectionString()
         {
-            con.ConnectionString = "data source=DESKTOP-2B100SL\\SQLEXPRESS; database=IMMS; integrated security=SSPI";
+            con.ConnectionString = "Data Source=DESKTOP-T7RS5U7\\SQLEXPRESS;Initial Catalog=IMMS;Integrated Security=True";
         }
 
         
