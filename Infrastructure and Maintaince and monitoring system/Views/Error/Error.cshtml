@@ -6,6 +6,15 @@
 
 <html>
 <head>
+    <script type="text/javascript" language="javascript">
+     function DisableBackButton() {
+       window.history.forward()
+      }
+     DisableBackButton();
+     window.onload = DisableBackButton;
+     window.onpageshow = function(evt) { if (evt.persisted) DisableBackButton() }
+     window.onunload = function() { void (0) }
+    </script>
     <link href="~/Content/assets/css/Error.css" rel="stylesheet" />
     <title>Error</title>
 </head>

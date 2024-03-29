@@ -41,7 +41,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
                 }
                 else
                 {
-                    es.Body = "Your Password for User ID:"+Session["LoginID"]+" is "+subject;
+                    es.Body = "Your Password for User ID:"+Session["TempLoginID"]+" is "+subject;
                     es.Subject = "Your Password ";
                 }
                     es.Password = "cgqgsvvqvjwswyyq";
@@ -71,15 +71,19 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
         public ActionResult Logout()
         {
             Session.RemoveAll();
+            Session.Abandon();
             cookieLogin = Request.Cookies["Login"];
             cookieName = Request.Cookies["Name"];
             cookieRole = Request.Cookies["Role"];
-            cookieLogin.Expires = DateTime.Now.AddSeconds(0);
-            cookieName.Expires = DateTime.Now.AddSeconds(0);
-            cookieRole.Expires = DateTime.Now.AddSeconds(0);
-            Response.Cookies.Add(cookieLogin);
-            Response.Cookies.Add(cookieName);
-            Response.Cookies.Add(cookieRole);
+            if (cookieLogin!=null)
+            {
+                cookieLogin.Expires = DateTime.Now.AddSeconds(0);
+                cookieName.Expires = DateTime.Now.AddSeconds(0);
+                cookieRole.Expires = DateTime.Now.AddSeconds(0);
+                Response.Cookies.Add(cookieLogin);
+                Response.Cookies.Add(cookieName);
+                Response.Cookies.Add(cookieRole);
+            }
             return RedirectToAction("Index", "Home");
         }
         void ConnectionString()
@@ -92,6 +96,10 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
 
         public ActionResult Index()
         {
+            if(Session["Role"]==null&&Session["LoginID"]!=null)
+            {
+                Session["LoginID"] = null;
+            }
             cookieLogin = Request.Cookies["Login"];
             cookieName = Request.Cookies["Name"];
             cookieRole = Request.Cookies["Role"];
@@ -115,11 +123,15 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
                 {
                     if (Session["Role"].ToString().Equals("Faculty"))
                     {
-                        return RedirectToAction("Profile", "Faculty");
-                    }
-                    
-                }
 
+
+                        return RedirectToAction("Profile", "Faculty");
+
+
+                    }
+
+
+                }
             }
             return RedirectToAction("Login");
         }
@@ -133,16 +145,54 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
             otp = Session["otp"].ToString();
                 if (this.otp.Equals(otps))
                 {
-                SendMail(Session["Email"].ToString(), Session["Password"].ToString(), false);
-                Session["Email"] = null;
-                Session["Password"] = null;
-                Session["LoginID"] = null;
-                return View("Success",model:"Your password was sent to your email");
+                
+                
+               
+                return View("ChangePass");
                 }
-                
-                
-            return View(model: "Coundn't Verify Otp"+ (this.otp.Equals(otps))+ Result);
 
+            Session["TempLoginID"] = null;
+            string script = "<script>alert('Otp Verification Failed Please Restart the Process');window.location='/Home/ForgetPass'</script>";
+            return Content(script, "text/html");
+
+        }
+        [HttpPost]
+        public ActionResult ChangePass(String Password, String Cpassword)
+        {
+            if(Password.Equals(Cpassword))
+            {
+                
+                String Query = "update Tbl_Users set Password='"+Password+"' where LoginID='"+Session["LoginID"]+"'";
+                ConnectionString();
+                con.Open();
+                com.Connection = con;
+                com.CommandText = Query;
+                Session["TempLoginID"] = null;
+                com.ExecuteNonQuery();
+                string script = "<script>alert('Password Change Successfully Completed');window.location='/Home/'</script>";
+                return Content(script, "text/html");
+            }
+            else
+            {
+                string script = "<script>alert('Password does not match Please enter your password again');window.location='/Home/ChangePass'</script>";
+                return Content(script, "text/html");
+            }
+            
+            
+        }
+        public ActionResult ChangePass()
+        {
+            if(Session["TempLoginID"]!=null)
+            {
+                return View();
+            }else
+            {
+
+                Session["TempLoginID"] = Session["LoginID"];
+                Session["LoginID"]=null;
+                return View();
+            }
+            
         }
         [HttpPost]
         public ActionResult Login(GetData gd)
@@ -209,7 +259,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
                 else if (gd.Role.Contains("Faculty"))
                 {
 
-                    return RedirectToAction("Profile", "Faculty");
+                    return RedirectToAction("Profile","Faculty");
 
                 }
 
@@ -224,7 +274,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
         }
         public ActionResult ForgetPass()
         {
-            if (Session["LoginID"] != null)
+            if (Session["TempLoginID"] != null)
             {
                 return RedirectToAction("ChangePass");
             }
@@ -247,7 +297,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
             {
                 while (dr.Read())
                 {
-                    Session["LoginID"] = gs.LoginID;
+                    Session["TempLoginID"] = gs.LoginID;
                     Session["Password"] = dr[1].ToString();
                     Session["Email"] = dr[0].ToString();
                     String Email= dr[0].ToString();
@@ -266,9 +316,42 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
         }
         public ActionResult Login()
         {
-            if (Session["LoginID"] != null)
+            if (Session["Role"] == null && Session["LoginID"] != null)
             {
-                return RedirectToAction("Index");
+                Session["LoginID"] = null;
+            }
+            cookieLogin = Request.Cookies["Login"];
+            cookieName = Request.Cookies["Name"];
+            cookieRole = Request.Cookies["Role"];
+            if (cookieLogin != null)
+            {
+                Session["LoginID"] = cookieLogin.Value;
+                Session["Name"] = cookieName.Value;
+                Session["Role"] = cookieRole.Value;
+            }
+            if (Session["Role"] != null)
+            {
+                if (Session["Role"].ToString().Equals("admin"))
+                {
+                    return RedirectToAction("Index", "Admin");
+                }
+                if (Session["Role"].ToString().Equals("Student"))
+                {
+                    return RedirectToAction("StudentProfile", "Student");
+                }
+                else
+                {
+                    if (Session["Role"].ToString().Equals("Faculty"))
+                    {
+
+
+                        return RedirectToAction("Profile", "Faculty");
+
+
+                    }
+
+
+                }
             }
             return View();
         }

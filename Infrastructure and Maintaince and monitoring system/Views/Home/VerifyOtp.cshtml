@@ -1,15 +1,49 @@
-﻿
-@{
-    ViewBag.Title = "VerifyOtp";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+﻿@{
+    Layout = null;
 }
+<html>
+<head>
+    <link rel="stylesheet" href="~/Content/assets/css/Login.css" />
+    <title>
+        Verify LoginID
+    </title>
+    <script type="text/javascript" language="javascript">
+     function DisableBackButton() {
+       window.history.forward()
+      }
+     DisableBackButton();
+     window.onload = DisableBackButton;
+     window.onpageshow = function(evt) { if (evt.persisted) DisableBackButton() }
+     window.onunload = function() { void (0) }
+    </script>
+</head>
+<body>
+    <div class="main">
+        <input type="checkbox" id="chk" aria-hidden="true">
+        <div class="Logo">
 
-<h2>VerifyOtp</h2>
+            <form>
+                <label for="chk" aria-hidden="true">InfraCare</label>
+                <img src="~/Content/assets/img/Logo.jpeg" />
+            </form>
+        </div>
+        <div class="login">
+
+            <form action="VerifyOtp" method="post">
+                <label for="chk" aria-hidden="true">Verify Otp</label>
+
+                <input type="number" name="otps" placeholder="Enter Your Otp" required/>
+                
+                    
+                <button>Submit</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
 @Model
-<form method="post" action="VerifyOtp">
-    <label>Enter Your Otp</label>
-    <input type="text" name="otps" />
-    <input type="submit" value="submit" />
 
-</form>
+
+
+
 

@@ -206,7 +206,7 @@
                                         {
                                             if (Session["Role"].ToString().Contains("Head"))
                                             {
-                                                <td> <button onclick="window.location.href='@Url.Action("EditComplaint", "Admin", new { cid = complaint.ComplaintID })'">Edit</button><button onclick="window.location.href='@Url.Action("Delete", "Admin", new { userId = complaint.ComplaintID })'">Delete</button> </td>
+                                                <td> <button onclick="window.location.href='@Url.Action("EditComplaint", "Admin", new { cid = complaint.ComplaintID })'">Edit</button><button>Reject</button> </td>
 
                                             }
 

@@ -3,7 +3,16 @@
 }
 <html>
 <head>
-    <link rel="stylesheet" href="~/Content/assets/css/Login.css"/>
+    <script type="text/javascript" language="javascript">
+     function DisableBackButton() {
+       window.history.forward()
+      }
+     DisableBackButton();
+     window.onload = DisableBackButton;
+     window.onpageshow = function(evt) { if (evt.persisted) DisableBackButton() }
+     window.onunload = function() { void (0) }
+    </script>
+    <link rel="stylesheet" href="~/Content/assets/css/Login.css" />
     <title>
         Login
     </title>
@@ -25,7 +34,7 @@
                
                 <input type="text" placeholder="User ID" name="LoginID" required>
                 <input type="password" placeholder="Password" name="Password" required>
-                <a href="~/Views/Home/ForgetPass.cshtml">Forget Password?</a>
+                <a href="@Url.Action("ForgetPass","Home")">Forget Password?</a>
                 <button>Login</button>
             </form>
         </div>

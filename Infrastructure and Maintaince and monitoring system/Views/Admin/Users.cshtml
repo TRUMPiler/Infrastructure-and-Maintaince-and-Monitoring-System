@@ -232,7 +232,7 @@
                                             <td>@item.Role</td>
                                             <td>@item.Password</td>
                                             <td>@item.Status</td>
-                                            <td> <button onclick="window.location.href='@Url.Action("EditUser", "Admin", new { userId = item.UserID })'">Edit</button><button onclick="window.location.href='@Url.Action("Deactive", "Admin", new { userId = item.UserID })'">Delete</button> </td>
+                                            <td> <button onclick="window.location.href='@Url.Action("EditUser", "Admin", new { userId = item.UserID })'">Edit</button><button onclick="window.location.href='@Url.Action("Delete", "Admin", new { userId = item.UserID })'">Deactive</button> </td>
                                         </tr>
                                     }
                                 </tbody>

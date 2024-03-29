@@ -17,7 +17,14 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
         // GET: Student
         public ActionResult StudentProfile()
         {
-            int[] count = { GetPendingComplaints(), GetTotalComplaints() };
+            if (Session["Role"] != null)
+            {
+                if (!Session["Role"].ToString().Contains("Student"))
+                {
+                    return RedirectToAction("Logout","Home");
+                }
+            }   
+                int[] count = { GetPendingComplaints(), GetTotalComplaints() };
             List<String> complaints = GetComplaints();
             StudentPanel p = new StudentPanel()
             {

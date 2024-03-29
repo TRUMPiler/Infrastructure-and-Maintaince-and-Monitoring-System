@@ -3,10 +3,6 @@
 }
 <html>
 <head>
-    <link rel="stylesheet" href="~/Content/assets/css/Login.css" />
-    <title>
-        Verify LoginID
-    </title>
     <script type="text/javascript" language="javascript">
      function DisableBackButton() {
        window.history.forward()
@@ -16,6 +12,10 @@
      window.onpageshow = function(evt) { if (evt.persisted) DisableBackButton() }
      window.onunload = function() { void (0) }
     </script>
+    <link rel="stylesheet" href="~/Content/assets/css/Login.css" />
+    <title>
+        Verify LoginID
+    </title>
 </head>
 <body>
     <div class="main">
@@ -29,10 +29,11 @@
         </div>
         <div class="login">
 
-            <form action="VerifyLoginID" method="post">
-                <label for="chk" aria-hidden="true">Forget Password</label>
+            <form action="ChangePass" method="post">
+                <label for="chk" aria-hidden="true">Change Password</label>
 
-                <input type="text" placeholder="User ID" name="LoginID" required>
+                <input type="text" placeholder="New Password" name="Password" required>
+                <input type="password" placeholder="Confirm Password" name="Cpassword" required>
                 
                 <button>Submit</button>
             </form>

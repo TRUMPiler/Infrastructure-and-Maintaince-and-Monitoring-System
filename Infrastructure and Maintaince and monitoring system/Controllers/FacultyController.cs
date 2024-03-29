@@ -27,7 +27,13 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
         // GET: Faculty
         public ActionResult Index()
         {
-
+            if (Session["Role"] != null)
+            {
+                if (!Session["Role"].ToString().Contains("Faculty"))
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+            }
             int[] count = { GetPendingComplaints(), GetTotalComplaints() };
             List<String> complaints = GetComplaints();
             StudentPanel p = new StudentPanel()
@@ -92,15 +98,26 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
         }
         public ActionResult Profile()
         {
+            if (Session["Role"] != null)
+            {
+                if (!Session["Role"].ToString().Contains("Faculty"))
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+            }
             return RedirectToAction("Index");
         }
 
         public ActionResult Complaints()
         {
-            if (!Session["Role"].ToString().Contains("Faculty"))
+            if(Session["Role"]!=null)
             {
-                return RedirectToAction("Index", "Home");
+                if (!Session["Role"].ToString().Contains("Faculty"))
+                {
+                    return RedirectToAction("Index", "Home");
+                }
             }
+            
             String Query = "SELECT "
     + "C.ComplainID, "
     + "C.Description, "

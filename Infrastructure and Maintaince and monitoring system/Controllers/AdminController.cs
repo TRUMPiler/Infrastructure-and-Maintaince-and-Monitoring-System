@@ -50,15 +50,26 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
         public ActionResult Logout()
         {
             Session.RemoveAll();
+            if (Session["Role"] != null)
+            {
+                if (!Session["Role"].ToString().Contains("admin"))
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+            }
             cookieLogin = Request.Cookies["Login"];
             cookieName = Request.Cookies["Name"];
             cookieRole = Request.Cookies["Role"];
-            cookieLogin.Expires = DateTime.Now.AddSeconds(0);
-            cookieName.Expires = DateTime.Now.AddSeconds(0);
-            cookieRole.Expires = DateTime.Now.AddSeconds(0);
-            Response.Cookies.Add(cookieLogin);
-            Response.Cookies.Add(cookieName);
-            Response.Cookies.Add(cookieRole);
+            if(cookieLogin!=null)
+            {
+                cookieLogin.Expires = DateTime.Now.AddSeconds(0);
+                cookieName.Expires = DateTime.Now.AddSeconds(0);
+                cookieRole.Expires = DateTime.Now.AddSeconds(0);
+                Response.Cookies.Add(cookieLogin);
+                Response.Cookies.Add(cookieName);
+                Response.Cookies.Add(cookieRole);
+            }
+            
             return RedirectToAction("Index", "Home");
         }
         public List<string> GetComplaints()
@@ -90,9 +101,12 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
         
         public ActionResult Users()
         {
-            if (!Session["Role"].Equals("admin"))
+            if(Session["Role"]!=null)
             {
-                return RedirectToAction("Index", "Home");
+                if (!Session["Role"].Equals("admin"))
+                {
+                    return RedirectToAction("Index", "Home");
+                }
             }
             String Query = "select * from Tbl_Users";
             ConnectionString();
@@ -215,6 +229,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
         [HttpPost]
         public ActionResult Register1(HttpPostedFileBase file)
         {
+
             if (file != null && file.ContentLength > 0)
             {
                 try
@@ -250,6 +265,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
         }
         public ActionResult Index()
         {
+
             if (Session["Role"] != null)
             {
                 if (!Session["Role"].Equals("admin"))
@@ -309,6 +325,13 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
         }
         public ActionResult Register()
         {
+            if (Session["Role"] != null)
+            {
+                if (!Session["Role"].ToString().Contains("admin"))
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+            }
             return View();
         }
         public int CountAllUsers()
@@ -421,7 +444,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
                     {
                         ComplaintTypes ct = new ComplaintTypes()
                         {
-                            ComplaintType_ID = (int)reader["ComplaintType_ID"],
+                            ComplaintType_ID = (int)reader["Complaint_TypeID"],
                             ComplaintType = reader["ComplaintType"].ToString()
                         };
                         complaintTypes.Add(ct);
