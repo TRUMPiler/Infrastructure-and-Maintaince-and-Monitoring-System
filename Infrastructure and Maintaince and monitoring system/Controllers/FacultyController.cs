@@ -59,6 +59,10 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
 
             return count;
         }
+        public ActionResult ManageRoom()
+        {
+            return View();
+        }
         public List<string> GetComplaints()
         {
             List<string> complaints = new List<string>();
