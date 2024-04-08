@@ -225,7 +225,7 @@
                                             <td>@complaint.Description</td>
                                             <td>@complaint.ComplaintType</td>
 
-                                            <td><a href="~/Admins/dist/img/2.png" target="_blank">Click to View</a></td>
+                                            <td><a href="~/Admins/dist/img/@complaint.Image" target="_blank">Click to View</a></td>
                                             <td>@complaint.Status</td>
                                             <td>@complaint.User</td>
                                             <td> <button onclick="window.location.href='@Url.Action("EditComplaint", "Admin", new { cid = complaint.ComplaintID })'">Edit</button> </td>

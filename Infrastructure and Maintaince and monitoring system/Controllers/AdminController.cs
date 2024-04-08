@@ -203,12 +203,12 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
                     int i = com.ExecuteNonQuery();
                     if (i >= 1)
                     {
-                        string script = "<script>alert('User deleted Successfully');window.location='/Admin/Users'</script>";
+                        string script = "<script>alert('User deactivated Successfully');window.location='/Admin/Users'</script>";
                         return Content(script, "text/html");
                     }
                     else
                     {
-                        string script = "<script>alert('User deleted Unsuccessfully');window.location='/Admin/Users'</script>";
+                        string script = "<script>alert('User deactivated Unsuccessfully');window.location='/Admin/Users'</script>";
                         return Content(script, "text/html");
                     }
                 }

@@ -166,7 +166,7 @@
                                 <div class="form-group">
                                     <label for="exampleInputPassword1">Status</label>
                                     <select name="Status">
-                                        @if (Model.Status.ToString().Contains("Pending"))
+                                        @if (Model.Status.Equals("Pending"))
                                         {
                                             <option value="Pending" selected>@Model.Status</option>
                                         }
@@ -174,21 +174,21 @@
                                         {
                                             <option value="Pending">Pending</option>
                                         }
-                                        @if (Model.Status.Contains("In-Progress"))
+                                        @if (Model.Status.Equals("In-Progress"))
                                         {
                                             <option value="@Model.Status" selected>@Model.Status</option>
                                         }
                                         else
                                         {
-                                            <option value="In-Progress" selected>In-Progress</option>
+                                            <option value="In-Progress">In-Progress</option>
                                         }
-                                        @if (Model.Status.Contains("Completed"))
+                                        @if (Model.Status.Equals("Completed"))
                                         {
                                             <option value="@Model.Status" selected>@Model.Status</option>
                                         }
                                         else
                                         {
-                                            <option value="Completed" selected>Completed</option>
+                                            <option value="Completed">Completed</option>
                                         }
                                     </select>
                                 </div>
