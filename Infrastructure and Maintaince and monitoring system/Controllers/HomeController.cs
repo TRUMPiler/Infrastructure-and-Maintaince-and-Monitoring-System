@@ -111,17 +111,17 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
             }
             if (Session["Role"]!=null)
             {
-                if (Session["Role"].ToString().Equals("admin"))
+                if (Session["Role"].ToString().Contains("admin"))
                 {
                     return RedirectToAction("Index", "Admin");
                 }
-                if (Session["Role"].ToString().Equals("Student"))
+                if (Session["Role"].ToString().Contains("Student"))
                 {
                     return RedirectToAction("StudentProfile", "Student");
                 }
                 else
                 {
-                    if (Session["Role"].ToString().Equals("Faculty"))
+                    if (Session["Role"].ToString().Contains("Faculty"))
                     {
 
 

@@ -90,5 +90,42 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
 
             return complaints;
         }
+        public ActionResult FileComplaint()
+        {
+            Complaint cs = new Complaint()
+            {
+                
+                ComplaintTypes = GetAllComplaintTypes()
+            };
+            return View(cs);
+        }
+        private List<ComplaintTypes> GetAllComplaintTypes()
+        {
+            List<ComplaintTypes> complaintTypes = new List<ComplaintTypes>();
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                string query = "SELECT * FROM Tbl_ComplaintType";
+
+                using (SqlCommand com = new SqlCommand(query, con))
+                {
+                    con.Open();
+                    SqlDataReader reader = com.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        ComplaintTypes ct = new ComplaintTypes()
+                        {
+                            ComplaintType_ID = (int)reader["Complaint_TypeID"],
+                            ComplaintType = reader["ComplaintType"].ToString()
+                        };
+                        complaintTypes.Add(ct);
+                    }
+                }
+            }
+
+            return complaintTypes;
+        }
     }
+    
 }
