@@ -197,7 +197,7 @@
                         <!-- /.card-header -->
                         <!-- form start -->
 
-                        <form id="quickForm" method="post" action="EditUser1">
+                        <form id="quickForm" method="post" action="FileComplaint" enctype="multipart/form-data">
                             <div class="card-body">
 
                                 <div class="form-group">
@@ -206,11 +206,11 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputName">Upload a image</label>
-                                    <input type="file" name="FileUpload" class="form-control" />
+                                    <input type="file" name="ComplaintImage" class="form-control" />
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">ComplaintType</label>
-                                    <select name="Complaint_TypeID">
+                                    <select name="ComplaintType">
                                         @foreach (var ct in Model.ComplaintTypes)
                                         {
                                             <option value="@ct.ComplaintType_ID">@ct.ComplaintType</option>
@@ -220,7 +220,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputPassword1">ROOMID</label>
-                                    <select name="RoomID" id="RoomID">
+                                    <select name="ClassID" id="RoomID">
                                         <option value="">Select a Room</option>
                                         @foreach (var room in Model.Rooms)
                                         {
@@ -234,7 +234,7 @@
                                     @foreach (var user in Model.Users)
                                     {
                                         <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" name="SelectedUsers[]" id="user-@user.UserID" value="@user.UserID">
+                                            <input class="form-check-input" type="checkbox" name="SelectedUser[]" id="user-@user.UserID" value="@user.UserID">
                                             <label class="form-check-label" for="user-@user.UserID">
                                                 @user.LoginID - @user.Name
                                             </label>
@@ -285,20 +285,24 @@
                     minlength: 2,
                     maxlength: 50
                 },
+                
                 Complaint_TypeID: {
                     required: true
                 },
-                RoomID: {
+                ClassID: {
                     required: true,
                     minlength: 1,
                     maxlength: 3
                 },
-                FileUpload: {
+                ComplaintImage: {
                     required: true,
                     accept: "image/jpeg,image/png"
                 }
             },
             messages: {
+                SelectedUsers: {
+                    required: "Please choose a student"
+                },
                 Description: {
                     required: "Please enter a description",
                     minlength: "Description must be at least 2 characters",
@@ -307,12 +311,12 @@
                 Complaint_TypeID: {
                     required: "Please select a complaint type"
                 },
-                RoomID: {
+                ClassID: {
                     required: "Please enter a room ID",
                     minlength: "Room ID must be at least 1 character",
                     maxlength: "Room ID cannot exceed 3 characters"
                 },
-                FileUpload: {
+                ComplaintImage: {
                     required: "Please upload a file"
                 }
             },

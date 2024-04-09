@@ -14,7 +14,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
     public class HomeController : Controller
     {
 
-        HttpCookie cookieLogin, cookieName, cookieRole;
+        HttpCookie cookieLogin, cookieName, cookieRole,cookieID;
         EmailSending es = new EmailSending();
         SqlConnection con = new SqlConnection();
         SqlCommand com = new SqlCommand();
@@ -72,14 +72,17 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
         {
             Session.RemoveAll();
             Session.Abandon();
+            cookieID = Request.Cookies["UserID"];
             cookieLogin = Request.Cookies["Login"];
             cookieName = Request.Cookies["Name"];
             cookieRole = Request.Cookies["Role"];
             if (cookieLogin!=null)
             {
+                cookieID.Expires = DateTime.Now.AddSeconds(0);
                 cookieLogin.Expires = DateTime.Now.AddSeconds(0);
                 cookieName.Expires = DateTime.Now.AddSeconds(0);
                 cookieRole.Expires = DateTime.Now.AddSeconds(0);
+                Response.Cookies.Add(cookieID);
                 Response.Cookies.Add(cookieLogin);
                 Response.Cookies.Add(cookieName);
                 Response.Cookies.Add(cookieRole);
@@ -100,11 +103,13 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
             {
                 Session["LoginID"] = null;
             }
+            cookieID = Request.Cookies["UserID"];
             cookieLogin = Request.Cookies["Login"];
             cookieName = Request.Cookies["Name"];
             cookieRole = Request.Cookies["Role"];
             if (cookieLogin!=null)
             {
+                Session["UserID"] = cookieID.Value;
                 Session["LoginID"] = cookieLogin.Value;
                 Session["Name"] = cookieName.Value;
                 Session["Role"] = cookieRole.Value;
@@ -220,7 +225,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
                     return RedirectToAction("Index", "Admin");
                 }    
             }
-            String Query = "select LoginID,Email,Role,Name from Tbl_Users where LoginID='"+gd.LoginID+"' AND Password ='"+gd.Password+"' AND Status='Active'";
+            String Query = "select LoginID,Email,Role,Name,UserID from Tbl_Users where LoginID='"+gd.LoginID+"' AND Password ='"+gd.Password+"' AND Status='Active'";
             ConnectionString();
             con.Open();
             com.Connection = con;
@@ -230,21 +235,25 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
             {
                while(dr.Read())
                 {
-                  
+                    gd.UserID = Convert.ToInt32(dr[4].ToString());
                     gd.Email = dr[1].ToString();
                     gd.Role = dr[2].ToString();
                     gd.Name = dr[3].ToString();
+                    Session["UserID"] = gd.UserID;
                     Session["Role"] = gd.Role;
                     Session["Email"] = gd.Email;
                     Session["LoginID"] = gd.LoginID;
                     Session["Name"] = gd.Name;
+                    cookieID = new HttpCookie("UserID", gd.UserID.ToString());
                     cookieRole = new HttpCookie("Role", gd.Role);
                     cookieLogin = new HttpCookie("Login", gd.LoginID);
                     cookieName = new HttpCookie("Name", gd.Name);
+                    cookieID.Expires= DateTime.Now.AddDays(2);
                     cookieRole.Expires = DateTime.Now.AddDays(2);
                     cookieLogin.Expires = DateTime.Now.AddDays(2);
                     cookieName.Expires = DateTime.Now.AddDays(2);
                     Response.Cookies.Add(cookieLogin);
+                    Response.Cookies.Add(cookieID);
                     Response.Cookies.Add(cookieName);
                     Response.Cookies.Add(cookieRole);
 
@@ -320,11 +329,13 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
             {
                 Session["LoginID"] = null;
             }
+            cookieID = Request.Cookies["UserID"];
             cookieLogin = Request.Cookies["Login"];
             cookieName = Request.Cookies["Name"];
             cookieRole = Request.Cookies["Role"];
             if (cookieLogin != null)
             {
+                Session["UserID"] = cookieID.Value;
                 Session["LoginID"] = cookieLogin.Value;
                 Session["Name"] = cookieName.Value;
                 Session["Role"] = cookieRole.Value;

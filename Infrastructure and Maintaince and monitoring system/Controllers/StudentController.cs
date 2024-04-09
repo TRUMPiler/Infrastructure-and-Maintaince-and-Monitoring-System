@@ -5,6 +5,8 @@ using System.Web;
 using System.Web.Mvc;
 using System.Data.SqlClient;
 using Infrastructure_and_Maintaince_and_monitoring_system.Models;
+using System.IO;
+using System.Data;
 
 namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
 {
@@ -129,6 +131,40 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
             };
             return View(cs);
         }
+        private void RegisterComplaintUsers(int[] selectedUsers, int complaintId, string connectionString)
+        {
+            // Create connection
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                // Open connection
+                connection.Open();
+
+                // Define query
+                string query = "INSERT INTO Tbl_Complaint_User (UserID, ComplainID) VALUES (@UserID, @ComplainID);";
+
+                // Create command
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    // Add parameters
+                    command.Parameters.AddWithValue("@ComplainID", complaintId);
+                    command.Parameters.AddWithValue("@UserID", Session["UserID"]);
+                    command.ExecuteNonQuery();
+                    // Add each selected user
+                    foreach (int userId in selectedUsers)
+                    {
+                        // Clear previous parameters
+                        command.Parameters.Clear();
+
+                        // Add parameters for the new command
+                        command.CommandText = "INSERT INTO Tbl_Complaint_User (ComplainID, UserID) VALUES (@ComplainID, @UserID)";
+                        command.Parameters.AddWithValue("@ComplainID", complaintId);
+                        command.Parameters.AddWithValue("@UserID", userId);
+                        command.ExecuteNonQuery();
+                    }
+                }
+
+            }
+        }
         public List<GetData> GetAllUsers()
         {
             List<GetData> ls=new List<GetData>();
@@ -164,8 +200,78 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
         [HttpPost]
         public ActionResult FileComplaint(Complaint cs)
         {
+            // Your connection string
             
-            return View(cs);
+
+            // Register the complaint and get its ID
+            int complaintId = RegisterComplaint(cs, connectionString);
+            if(complaintId==0)
+            {
+                string script = "<script>alert('Image is Empty');window.location='/Admin/Users'</script>";
+                return Content(script, "text/html");
+            }
+            else if(complaintId==1)
+            {
+                string script = "<script>alert('Complaint is Empty');window.location='/Admin/Users'</script>";
+                return Content(script, "text/html");
+            }
+            // Register the associated users
+            RegisterComplaintUsers(cs.SelectedUser, complaintId, connectionString);
+
+            // Redirect to the StudentProfile page
+            return RedirectToAction("StudentProfile");
+        }
+
+        private int RegisterComplaint(Complaint cs, string connectionString)
+        {
+            // Create connection
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                // Open connection
+                connection.Open();
+                if(cs.ComplaintImage == null)
+                {
+                    return 1;
+                }
+                if (cs.ComplaintImage != null && cs.ComplaintImage.ContentLength > 0)
+                {
+                    try
+                    {
+
+                        string fileName = Path.GetFileName(cs.ComplaintImage.FileName);
+                        cs.Image = Path.Combine(Server.MapPath("~\\App_Data"), fileName);
+                        cs.ComplaintImage.SaveAs(cs.Image);
+                        
+
+                        
+                    }
+                    catch (Exception ex)
+                    {
+                        
+                    }
+                }
+                if(cs.Image==null)
+                {
+                    string script = "<script>alert('User data was updated Unsuccessfully');window.location='/Admin/Users'</script>";
+                    return 0;
+                }
+                // Define query
+                string query = "INSERT INTO [dbo].[Tbl_Complain]([Description],[ComplaintType],[ClassID],[Image],[Status]) VALUES (@Description, @ComplaintType, @ClassID,@Image, @Status ); SELECT SCOPE_IDENTITY();";
+
+                // Create command
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    // Add parameters
+                    command.Parameters.Add("@Description", SqlDbType.VarChar).Value = cs.Description;
+                    command.Parameters.Add("@ComplaintType", SqlDbType.Int).Value = cs.ComplaintType;
+                    command.Parameters.Add("@Image", SqlDbType.VarChar).Value = cs.Image;
+                    command.Parameters.Add("@Status", SqlDbType.VarChar).Value = "Pending"; // Default status
+                    command.Parameters.Add("@ClassID", SqlDbType.Int).Value = cs.ClassID;
+
+                    // Execute query and get the complaint ID
+                    return Convert.ToInt32(command.ExecuteScalar());
+                }
+            }
         }
         private List<ComplaintTypes> GetAllComplaintTypes()
         {
