@@ -13,7 +13,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
         String connectionString = "data source=ASUSTUFGAMING\\SQLEXPRESS; database=IMMS; integrated security=SSPI";
         SqlConnection con = new SqlConnection();
         SqlCommand com = new SqlCommand();
-        SqlDataReader dr;
+        
         // GET: Student
         public ActionResult StudentProfile()
         {
@@ -134,7 +134,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
             List<GetData> ls=new List<GetData>();
             using (SqlConnection con = new SqlConnection(connectionString))
             {
-                string query = "SELECT * FROM Tbl_Users where Role='Student'";
+                string query = "SELECT * FROM Tbl_Users where Role='Student' And Status='Active'";
 
                 using (SqlCommand com = new SqlCommand(query, con))
                 {

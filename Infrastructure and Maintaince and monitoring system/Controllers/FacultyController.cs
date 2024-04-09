@@ -11,7 +11,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
 {
     public class FacultyController : Controller
     {
-        HttpCookie cookieLogin, cookieName, cookieRole;
+        
         SqlConnection con = new SqlConnection();
         SqlCommand com = new SqlCommand();
         SqlDataReader dr;

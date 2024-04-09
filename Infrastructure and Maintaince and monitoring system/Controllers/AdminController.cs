@@ -223,7 +223,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
                 }
 
 
-                return RedirectToAction("Users");
+                
 
             }
         [HttpPost]
@@ -321,7 +321,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
             }
             
             
-            return RedirectToAction("Users");
+            
         }
         public ActionResult Register()
         {
