@@ -95,7 +95,9 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
         }
         void ConnectionString()
         {
+            
             con.ConnectionString = "Data Source=ASUSTUFGAMING\\SQLEXPRESS;Initial Catalog=IMMS;Integrated Security=True";
+            
         }
 
         
@@ -137,53 +139,100 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
         }
         public ActionResult Complaints()
         {
-            if (!Session["Role"].Equals("admin"))
+            if (Session["Role"] != null)
             {
-                return RedirectToAction("Index", "Home");
+                if (!Session["Role"].Equals("admin"))
+                {
+                    return RedirectToAction("Index", "Home");
+                }
             }
-            String Query = "SELECT "
-    + "C.ComplainID, "
-    + "C.Description, "
-    + "CT.ComplaintType, "
-    + "C.Image, "
-    + "C.Status, "
-    + "U.Name AS UserWhoComplained "
-+ "FROM "
-+ "Tbl_Complain C "
-+ "JOIN "
-+ "Tbl_ComplaintType CT ON C.ComplaintType = CT.Complaint_TypeID "
-+ "JOIN "
-    + "Tbl_Complaint_User CU ON C.ComplainID = CU.ComplainID "
-+ "JOIN "
-    + "Tbl_Users U ON CU.UserID = U.UserID Where U.Status = 'Active'; ";
+            String Query = "SELECT c.ComplainID, " +
+           "ct.ComplaintType, " +
+           "c.Description, " +
+           "c.Image, " +
+           "c.Status, " +
 
-            ConnectionString();
-            con.Open();
-            com.Connection = con;
-            com.CommandText = Query;
+           "c.ClassID " +
+        "FROM Tbl_Complain  c " +
+        "INNER JOIN Tbl_ComplaintType ct ON c.ComplaintType = ct.Complaint_TypeID";
+
 
             List<Complaint> complaints = new List<Complaint>();
-            SqlDataReader reader = com.ExecuteReader();
 
-            while (reader.Read())
+            using (SqlConnection con = new SqlConnection(connectionString))
             {
-                Complaint complaint = new Complaint
+                con.Open();
+                using (SqlCommand com = new SqlCommand(Query, con))
                 {
-                    ComplaintID = (int)reader["ComplainID"],
-                    Description = reader["Description"].ToString(),
-                    ComplaintType = reader["ComplaintType"].ToString(),
-                    Image = reader["Image"].ToString(),
-                    Status = reader["Status"].ToString(),
-                    User = reader["UserWhoComplained"].ToString()
-                };
+                    SqlDataReader reader = com.ExecuteReader();
 
-                complaints.Add(complaint);
+                    while (reader.Read())
+                    {
+                        Complaint complaint = new Complaint
+                        {
+                            ComplaintID = (int)reader["ComplainID"],
+                            Description = reader["Description"].ToString(),
+                            ComplaintType = reader["ComplaintType"].ToString(),
+                            Image = reader["Image"].ToString(),
+                            Status = reader["Status"].ToString(),
+                            Users = GETCOMPLAINTUSERS((int)reader["ComplainID"])
+                        };
+
+                        complaints.Add(complaint);
+                    }
+                }
             }
-
-            con.Close(); // Close the connection
 
             return View(complaints);
         }
+
+        public List<GetData> GETCOMPLAINTUSERS(int COMPLAINTID)
+        {
+
+            List<GetData> ls = new List<GetData>();
+            String Query = "SELECT u.UserID, " +
+           "u.Email, " +
+           "u.Gender, " +
+           "u.Role, " +
+           "u.PhoneNo, " +
+           "u.Name, " +
+           "u.LoginID, " +
+           "u.Password, " +
+           "u.Status " +
+        "FROM Tbl_Users u " +
+        "INNER JOIN Tbl_Complaint_User cu ON u.UserID = cu.UserID " +
+        "WHERE cu.ComplainID = " + COMPLAINTID + "";
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                con.Open();
+                using (SqlCommand com = new SqlCommand(Query, con))
+                {
+                    SqlDataReader reader = com.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        GetData gd = new GetData()
+                        {
+                            UserID = (int)reader["UserID"],
+                            Email = reader["Email"].ToString(),
+                            Gender = reader["Gender"].ToString(),
+                            Role = reader["Role"].ToString(),
+                            PhoneNo = reader["PhoneNo"].ToString(),
+                            Name = reader["Name"].ToString(),
+                            LoginID = reader["LoginID"].ToString(),
+                            Password = reader["Password"].ToString(),
+                            Status = reader["Status"].ToString()
+                        };
+
+                        ls.Add(gd);
+                    }
+                }
+            }
+
+            return ls;
+        }
+
         public ActionResult Delete(int? userID)
         {
             

@@ -236,7 +236,14 @@
 
                                         <td><a href="~/Admins/dist/img/@complaint.Image" target="_blank">Click to View</a></td>
                                         <td>@complaint.Status</td>
-                                        <td>@complaint.User</td>
+                                        <td>
+                                            @foreach (var user in complaint.Users)
+                                            {
+                                                <span>@user.LoginID @Html.Raw("-") @user.Name</span><br>
+                                            }
+
+
+                                        </td>
                                         @if (Session["Role"] != null)
                                         {
                                             if (Session["Role"].ToString().Contains("Head"))
