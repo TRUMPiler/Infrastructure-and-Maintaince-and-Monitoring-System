@@ -2177,6 +2177,7 @@
     <Compile Include="Models\ComplaintTypes.cs" />
     <Compile Include="Models\EmailSending.cs" />
     <Compile Include="Models\GetData.cs" />
+    <Compile Include="Models\Room.cs" />
     <Compile Include="Models\StudentPanel.cs" />
     <Compile Include="Models\Tbl_Asset.cs">
       <DependentUpon>UserModel.tt</DependentUpon>

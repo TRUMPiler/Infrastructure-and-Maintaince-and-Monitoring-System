@@ -90,13 +90,81 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
 
             return complaints;
         }
+        private List<Room> GetAllRooms()
+        {
+            List<Room> rooms = new List<Room>();
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                string query = "SELECT RoomID, RoomNo FROM Tbl_Room"; // Adjust based on your actual column names
+
+                using (SqlCommand cmd = new SqlCommand(query, con))
+                {
+                    con.Open();
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        Room room = new Room()
+                        {
+                            RoomID = (int)reader["RoomID"], // Adjust the column name as necessary
+                            RoomNo = reader["RoomNo"].ToString()
+                        };
+                        rooms.Add(room);
+                    }
+                }
+            }
+
+            return rooms;
+        }
+      
         public ActionResult FileComplaint()
         {
             Complaint cs = new Complaint()
             {
                 
-                ComplaintTypes = GetAllComplaintTypes()
+                ComplaintTypes = GetAllComplaintTypes(),
+                Rooms=GetAllRooms(),
+                Users=GetAllUsers()
             };
+            return View(cs);
+        }
+        public List<GetData> GetAllUsers()
+        {
+            List<GetData> ls=new List<GetData>();
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                string query = "SELECT * FROM Tbl_Users where Role='Student'";
+
+                using (SqlCommand com = new SqlCommand(query, con))
+                {
+                    con.Open();
+                    SqlDataReader reader = com.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        GetData gd = new GetData()
+                        {
+                            UserID = (int)reader["UserID"],
+                            Email = reader["Email"].ToString(),
+                            Gender = reader["Gender"].ToString(),
+                            Role = reader["Role"].ToString(),
+                            PhoneNo = reader["PhoneNo"].ToString(),
+                            Name = reader["Name"].ToString(),
+                            LoginID = reader["LoginID"].ToString(),
+                            Password = reader["Password"].ToString(),
+                            Status = reader["Status"].ToString()
+                        };
+                        ls.Add(gd);
+                    }
+                }
+            }
+            return ls;
+        }
+        [HttpPost]
+        public ActionResult FileComplaint(Complaint cs)
+        {
+            
             return View(cs);
         }
         private List<ComplaintTypes> GetAllComplaintTypes()

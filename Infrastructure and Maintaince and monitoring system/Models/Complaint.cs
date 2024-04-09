@@ -16,6 +16,9 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Models
         public String ClassID { get; set; }
         public List<ComplaintTypes> ComplaintTypes{ get; set; }
         public HttpPostedFile ComplaintImage { get; set; }
-
+        public List<Room> Rooms { get; set; }
+        public List<GetData> Users { get; set; }
+        public int SelectedRoomID { get; set; }
+        public int SelectedUser { get; set; }
     }
 }

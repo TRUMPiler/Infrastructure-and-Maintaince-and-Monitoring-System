@@ -171,7 +171,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>User Details</h1>
+                    <h1>Complaint Filing</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
@@ -192,7 +192,7 @@
                     <!-- jquery validation -->
                     <div class="card card-primary">
                         <div class="card-header">
-                            <h3 class="card-title">Edit Details<small></small></h3>
+                            <h3 class="card-title"<small>File a complaint</small></h3>
                         </div>
                         <!-- /.card-header -->
                         <!-- form start -->
@@ -220,9 +220,27 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputPassword1">ROOMID</label>
-                                    <input type="text" name="RoomID" class="form-control" id="exampleInputPassword1" placeholder="Password">
-                                </div>
+                                    <select name="RoomID" id="RoomID">
+                                        <option value="">Select a Room</option>
+                                        @foreach (var room in Model.Rooms)
+                                        {
+                                            <option value="@room.RoomID">@room.RoomNo</option>
+                                        }
+                                    </select>
 
+                                </div>
+                                <div class="form-group">
+                                    <label>Users</label><br>
+                                    @foreach (var user in Model.Users)
+                                    {
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="SelectedUsers[]" id="user-@user.UserID" value="@user.UserID">
+                                            <label class="form-check-label" for="user-@user.UserID">
+                                                @user.Name
+                                            </label>
+                                        </div>
+                                    }
+                                </div>
 
 
                             </div>
