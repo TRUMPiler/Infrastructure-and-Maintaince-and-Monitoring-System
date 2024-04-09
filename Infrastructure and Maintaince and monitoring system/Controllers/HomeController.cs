@@ -107,9 +107,15 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
             cookieLogin = Request.Cookies["Login"];
             cookieName = Request.Cookies["Name"];
             cookieRole = Request.Cookies["Role"];
-            if (cookieLogin!=null)
+            if (cookieLogin!=null && !cookieRole.Value.Equals("admin"))
             {
                 Session["UserID"] = cookieID.Value;
+                Session["LoginID"] = cookieLogin.Value;
+                Session["Name"] = cookieName.Value;
+                Session["Role"] = cookieRole.Value;
+            }
+            else if(cookieLogin != null)
+            {
                 Session["LoginID"] = cookieLogin.Value;
                 Session["Name"] = cookieName.Value;
                 Session["Role"] = cookieRole.Value;

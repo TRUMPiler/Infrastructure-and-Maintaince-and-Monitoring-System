@@ -239,8 +239,9 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
                     {
 
                         string fileName = Path.GetFileName(cs.ComplaintImage.FileName);
-                        cs.Image = Path.Combine(Server.MapPath("~\\App_Data"), fileName);
-                        cs.ComplaintImage.SaveAs(cs.Image);
+                        String path = Path.Combine(Server.MapPath("~\\Admins\\dist\\img"), fileName);
+                        cs.ComplaintImage.SaveAs(path);
+                        cs.Image = fileName;
                         
 
                         
