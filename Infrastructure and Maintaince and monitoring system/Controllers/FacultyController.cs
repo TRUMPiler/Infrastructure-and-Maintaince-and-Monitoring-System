@@ -286,7 +286,34 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
                     return RedirectToAction("Index", "Home");
                 }
             }
-            String Query = "SELECT c.ComplainID, " +
+            String Query;
+            if (Session["Role"].ToString().Contains("Head"))
+            {
+                 Query = "SELECT c.ComplainID, " +
+           "ct.ComplaintType, " +
+           "c.Description, " +
+           "c.Image, " +
+           "c.Status, " +
+
+           "c.ClassID " +
+        "FROM Tbl_Complain  c " +
+        "INNER JOIN Tbl_ComplaintType ct ON c.ComplaintType = ct.Complaint_TypeID where ct.Complaint_TypeID!=1";
+            }
+            else if (Session["Role"].ToString().Contains("Lab"))
+            {
+                Query = "SELECT c.ComplainID, " +
+           "ct.ComplaintType, " +
+           "c.Description, " +
+           "c.Image, " +
+           "c.Status, " +
+
+           "c.ClassID " +
+        "FROM Tbl_Complain  c " +
+        "INNER JOIN Tbl_ComplaintType ct ON c.ComplaintType = ct.Complaint_TypeID where ct.Complaint_TypeID=1";
+            }
+            else
+            {
+                Query = "SELECT c.ComplainID, " +
            "ct.ComplaintType, " +
            "c.Description, " +
            "c.Image, " +
@@ -295,8 +322,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
            "c.ClassID " +
         "FROM Tbl_Complain  c " +
         "INNER JOIN Tbl_ComplaintType ct ON c.ComplaintType = ct.Complaint_TypeID";
-
-
+            }    
             List<Complaint> complaints = new List<Complaint>();
 
             using (SqlConnection con = new SqlConnection(connectionString))
