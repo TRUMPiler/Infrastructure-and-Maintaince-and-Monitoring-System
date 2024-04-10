@@ -51,6 +51,96 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
 
             return count;
         }
+        public List<GetData> GETCOMPLAINTUSERS(int COMPLAINTID)
+        {
+
+            List<GetData> ls = new List<GetData>();
+            String Query = "SELECT u.UserID, " +
+           "u.Email, " +
+           "u.Gender, " +
+           "u.Role, " +
+           "u.PhoneNo, " +
+           "u.Name, " +
+           "u.LoginID, " +
+           "u.Password, " +
+           "u.Status " +
+        "FROM Tbl_Users u " +
+        "INNER JOIN Tbl_Complaint_User cu ON u.UserID = cu.UserID " +
+        "WHERE cu.ComplainID = " + COMPLAINTID + "";
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                con.Open();
+                using (SqlCommand com = new SqlCommand(Query, con))
+                {
+                    SqlDataReader reader = com.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        GetData gd = new GetData()
+                        {
+                            UserID = (int)reader["UserID"],
+                            Email = reader["Email"].ToString(),
+                            Gender = reader["Gender"].ToString(),
+                            Role = reader["Role"].ToString(),
+                            PhoneNo = reader["PhoneNo"].ToString(),
+                            Name = reader["Name"].ToString(),
+                            LoginID = reader["LoginID"].ToString(),
+                            Password = reader["Password"].ToString(),
+                            Status = reader.GetBoolean(reader.GetOrdinal("Status"))
+                        };
+
+                        ls.Add(gd);
+                    }
+                }
+            }
+
+            return ls;
+        }
+        public ActionResult ComplaintHistory()
+        {
+            String Query = "SELECT "+
+    "C.ComplainID, " +
+    "C.Description, " +
+    "CT.ComplaintType, " +
+    "C.Status,C.Image " +
+    "FROM " +
+    "Tbl_Complain C " +
+"INNER JOIN " +
+    "Tbl_Complaint_User CU ON C.ComplainID = CU.ComplainID " +
+"INNER JOIN " +
+    "Tbl_ComplaintType CT ON C.ComplaintType = CT.Complaint_TypeID " +
+"WHERE " +
+    "C.Status = 'Pending' AND " +
+    "CU.UserID =(SELECT UserID FROM Tbl_Users WHERE LoginID ='"+Session["LoginID"]+"');";
+            List<Complaint> complaints = new List<Complaint>();
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                con.Open();
+                using (SqlCommand com = new SqlCommand(Query, con))
+                {
+                    SqlDataReader reader = com.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        Complaint complaint = new Complaint
+                        {
+                            ComplaintID = (int)reader["ComplainID"],
+                            Description = reader["Description"].ToString(),
+                            ComplaintType = reader["ComplaintType"].ToString(),
+                            Image = reader["Image"].ToString(),
+                            Status = reader["Status"].ToString(),
+                            Users = GETCOMPLAINTUSERS((int)reader["ComplainID"])
+                        };
+
+                        complaints.Add(complaint);
+                    }
+                }
+            }
+
+            return View(complaints);
+        }
         public int GetPendingComplaints()
         {
             int count = 0;

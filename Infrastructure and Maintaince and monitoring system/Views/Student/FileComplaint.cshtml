@@ -278,12 +278,14 @@
 <script src="~/Admins/plugins/jquery-validation/additional-methods.min.js"></script>
 <script>
     $(function () {
+        
         $('#quickForm').validate({
             rules: {
                 Description: {
                     required: true,
-                    minlength: 2,
-                    maxlength: 50
+                    minlength: 5,
+                    
+                    maxlength: 245
                 },
                 
                 Complaint_TypeID: {
@@ -305,8 +307,9 @@
                 },
                 Description: {
                     required: "Please enter a description",
-                    minlength: "Description must be at least 2 characters",
-                    maxlength: "Description cannot exceed 50 characters"
+                    
+                    minlength: "Description must be at least 5 characters",
+                    maxlength: "Description cannot exceed 245 characters"
                 },
                 Complaint_TypeID: {
                     required: "Please select a complaint type"
