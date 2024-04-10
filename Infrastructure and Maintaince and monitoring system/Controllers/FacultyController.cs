@@ -197,7 +197,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
                             Name = reader["Name"].ToString(),
                             LoginID = reader["LoginID"].ToString(),
                             Password = reader["Password"].ToString(),
-                            Status = reader["Status"].ToString()
+                            Status = reader.GetBoolean(reader.GetOrdinal("Status"))
                         };
 
                         ls.Add(gd);

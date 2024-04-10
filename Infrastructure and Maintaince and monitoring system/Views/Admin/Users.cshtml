@@ -231,7 +231,15 @@
                                             <td>@item.Gender</td>
                                             <td>@item.Role</td>
                                             <td>@item.Password</td>
-                                            <td>@item.Status</td>
+                                            @if(item.Status==false)
+                                            {
+                                                <td>Inactive</td>    
+                                            }
+                                            else
+                                            {
+                                                <td>Active</td>
+                                            }
+
                                             <td> <button onclick="window.location.href='@Url.Action("EditUser", "Admin", new { userId = item.UserID })'">Edit</button><button onclick="window.location.href='@Url.Action("Delete", "Admin", new { userId = item.UserID })'">Deactive</button> </td>
                                         </tr>
                                     }
