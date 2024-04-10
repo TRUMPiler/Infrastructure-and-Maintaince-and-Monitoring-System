@@ -1,0 +1,328 @@
+﻿﻿@{
+    ViewBag.Title = "File A Complaint";
+    Layout = "~/Views/Shared/_AdminTablePage.cshtml";
+}
+@model Infrastructure_and_Maintaince_and_monitoring_system.Models.Complaint
+<div class="preloader flex-column justify-content-center align-items-center">
+    <img class="animation__shake" src="~/Admins/dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
+</div>
+<!-- Navbar -->
+<nav class="main-header navbar navbar-expand navbar-white navbar-light">
+    <!-- Left navbar links -->
+    <ul class="navbar-nav">
+        <li class="nav-item">
+            <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+            <a href="/Student/StudentProfile" class="nav-link">Home</a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+            <a href="@Url.Action("ChangePass","Home")" class="nav-link">Change Password</a>
+        </li>
+    </ul>
+
+    <!-- Right navbar links -->
+    <ul class="navbar-nav ml-auto">
+        <!-- Navbar Search -->
+        <!-- Navbar Search -->
+        <li class="nav-item">
+            <a class="nav-link" data-widget="navbar-search" href="#" role="button">
+                <i class="fas fa-search"></i>
+            </a>
+            <div class="navbar-search-block">
+                <form class="form-inline">
+                    <div class="input-group input-group-sm">
+                        <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
+                        <div class="input-group-append">
+                            <button class="btn btn-navbar" type="submit">
+                                <i class="fas fa-search"></i>
+                            </button>
+                            <button class="btn btn-navbar" type="button" data-widget="navbar-search">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </li>
+
+
+        <!-- Notifications Dropdown Menu -->
+        <li class="nav-item dropdown">
+            <a class="nav-link" data-toggle="dropdown" href="#">
+                <i class="far fa-bell"></i>
+                <span class="badge badge-warning navbar-badge"></span>
+            </a>
+            <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+
+
+                <div class="dropdown-divider"></div>
+
+                <div class="dropdown-divider"></div>
+                <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
+            </div>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link" data-widget="fullscreen" href="#" role="button">
+                <i class="fas fa-expand-arrows-alt"></i>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-widget="control-sidebar" data-controlsidebar-slide="true" href="#" role="button">
+                <i class="fas fa-th-large"></i>
+            </a>
+        </li>
+        <li class="nav-item">
+            <button type="button" class="btn btn-primary float-right" onclick="window.location.href='@Url.Action("Logout", "Home")'">
+                Logout
+            </button>
+        </li>
+    </ul>
+</nav>
+<!-- /.navbar -->
+<aside class="main-sidebar sidebar-dark-primary elevation-4">
+    <!-- Brand Logo -->
+    <a href="#" class="brand-link">
+        <img src="~/Admins/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+        <span class="brand-text font-weight-light">Infrastructure</span>
+    </a>
+    <div class="sidebar">
+        <!-- Sidebar user panel (optional) -->
+        <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+            <div class="image">
+
+            </div>
+            <div class="info">
+                @if (Session["LoginID"] != null)
+                {
+                    if (Session["Name"] != null)
+                    {
+                        <a href="#" class="d-block">@Session["Name"]</a>
+                    }
+                    else
+                    {
+                        @Html.Action("Logout", "Home");
+                    }
+                }
+
+            </div>
+        </div>
+
+
+
+
+        <!-- Sidebar -->
+        <!-- Sidebar Menu -->
+        <nav class="mt-2">
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                <!-- Add icons to the links using the .nav-icon class
+                     with font-awesome or any other icon font library -->
+
+
+
+
+
+
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-table"></i>
+                        <p>
+                            More Info
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Complaint history</p>
+                            </a>
+                        </li>
+                        @if (Session["Role"] != null)
+                        {
+                            if (Session["Role"].ToString().Contains("CR") || Session["Role"].ToString().Contains("LR"))
+                            {
+                                <li class="nav-item">
+                                    <a href="FileComplaint" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>File a Complain</p>
+                                    </a>
+                                </li>
+
+                            }
+                        }
+
+                    </ul>
+                </li>
+
+
+            </ul>
+        </nav>
+        <!-- /.sidebar-menu -->
+    </div>
+    <!-- /.sidebar -->
+</aside>
+<!-- Content Wrapper. Contains page content -->
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Complaint Filing</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active">Validation</li>
+                    </ol>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <!-- left column -->
+                <div class="col-md-12">
+                    <!-- jquery validation -->
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <h3 class="card-title"><small>File a complaint</small></h3>
+                        </div>
+                        <!-- /.card-header -->
+                        <!-- form start -->
+
+                        <form id="quickForm" method="post" action="FileComplaint" enctype="multipart/form-data">
+                            <div class="card-body">
+
+                                <div class="form-group">
+                                    <label for="exampleInputName">Description</label>
+                                    <input type="text" name="Description" class="form-control" id="exampleInputName" placeholder="Enter name">
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputName">Upload a image</label>
+                                    <input type="file" name="ComplaintImage" class="form-control" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">ComplaintType</label>
+                                    <select name="ComplaintType">
+                                        @foreach (var ct in Model.ComplaintTypes)
+                                        {
+                                            <option value="@ct.ComplaintType_ID">@ct.ComplaintType</option>
+
+                                        }
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputPassword1">ROOMID</label>
+                                    <select name="ClassID" id="RoomID">
+                                        <option value="">Select a Room</option>
+                                        @foreach (var room in Model.Rooms)
+                                        {
+                                            <option value="@room.RoomID">@room.RoomNo</option>
+                                        }
+                                    </select>
+
+                                </div>
+                              
+
+
+                            </div>
+                            <!-- /.card-body -->
+                            <div class="card-footer">
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- /.card -->
+                </div>
+                <!--/.col (left) -->
+                <!-- right column -->
+                <div class="col-md-6">
+
+                </div>
+                <!--/.col (right) -->
+            </div>
+            <!-- /.row -->
+        </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+</div>
+
+<!-- jQuery -->
+<script src="~/Admins/plugins/jquery/jquery.min.js"></script>
+<!-- Bootstrap 4 -->
+<script src="~/Admins/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- jquery-validation -->
+<!-- AdminLTE App -->
+<script src="~/Admins/dist/js/adminlte.min.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="~/Admins/dist/js/demo.js"></script>
+<script src="~/Admins/plugins/jquery-validation/jquery.validate.min.js"></script>
+<script src="~/Admins/plugins/jquery-validation/additional-methods.min.js"></script>
+<script>
+    $(function () {
+
+        $('#quickForm').validate({
+            rules: {
+                Description: {
+                    required: true,
+                    minlength: 5,
+
+                    maxlength: 245
+                },
+
+                Complaint_TypeID: {
+                    required: true
+                },
+                ClassID: {
+                    required: true,
+                    minlength: 1,
+                    maxlength: 3
+                },
+                ComplaintImage: {
+                    required: true,
+                    accept: "image/jpeg,image/png"
+                }
+            },
+            messages: {
+                SelectedUsers: {
+                    required: "Please choose a student"
+                },
+                Description: {
+                    required: "Please enter a description",
+
+                    minlength: "Description must be at least 5 characters",
+                    maxlength: "Description cannot exceed 245 characters"
+                },
+                Complaint_TypeID: {
+                    required: "Please select a complaint type"
+                },
+                ClassID: {
+                    required: "Please enter a room ID",
+                    minlength: "Room ID must be at least 1 character",
+                    maxlength: "Room ID cannot exceed 3 characters"
+                },
+                ComplaintImage: {
+                    required: "Please upload a file"
+                }
+            },
+            errorElement: 'span',
+            errorPlacement: function (error, element) {
+                error.addClass('invalid-feedback');
+                element.closest('.form-group').append(error);
+            },
+            highlight: function (element, errorClass, validClass) {
+                $(element).addClass('is-invalid');
+            },
+            unhighlight: function (element, errorClass, validClass) {
+                $(element).removeClass('is-invalid');
+            }
+        });
+    });
+</script>

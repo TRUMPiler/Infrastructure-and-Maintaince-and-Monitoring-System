@@ -15,7 +15,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
         SqlConnection con = new SqlConnection();
         SqlCommand com = new SqlCommand();
         SqlDataReader dr;
-        string connectionString = "Data Source=DESKTOP-T7RS5U7\\SQLEXPRESS;Initial Catalog=IMMS;Integrated Security=True";
+        string connectionString = "Data Source=ASUSTUFGAMING\\SQLEXPRESS;Initial Catalog=IMMS;Integrated Security=True";
 
         [HandleError]
 
@@ -96,7 +96,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
         void ConnectionString()
         {
             
-            con.ConnectionString = "Data Source=DESKTOP-T7RS5U7\\SQLEXPRESS;Initial Catalog=IMMS;Integrated Security=True";
+            con.ConnectionString = "Data Source=ASUSTUFGAMING\\SQLEXPRESS;Initial Catalog=IMMS;Integrated Security=True";
             
         }
 
@@ -151,10 +151,9 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
            "c.Description, " +
            "c.Image, " +
            "c.Status, " +
-
            "c.ClassID " +
         "FROM Tbl_Complain  c " +
-        "INNER JOIN Tbl_ComplaintType ct ON c.ComplaintType = ct.Complaint_TypeID";
+        "INNER JOIN Tbl_ComplaintType ct ON c.ComplaintType = ct.Complaint_TypeID where c.Status!='Pending'";
 
 
             List<Complaint> complaints = new List<Complaint>();
