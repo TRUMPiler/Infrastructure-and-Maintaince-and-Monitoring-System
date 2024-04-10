@@ -254,21 +254,21 @@
                                     <label for="exampleInputPassword1">Status</label>
                                    
                                     <select name="Status">
-                                        @if (Model.Status.ToString().Equals("Active"))
+                                        @if (Model.Status==true)
                                         {
-                                            <option value="Active" selected>Active</option>
+                                            <option value="true" selected>Active</option>
                                         }
                                         else
                                         {
-                                            <option value="Active">Active</option>
+                                            <option value="true">Active</option>
                                         }
-                                        @if (Model.Status.ToString().Equals("Inactive"))
+                                        @if (Model.Status==false)
                                         {
-                                            <option value="Inactive" selected>Inactive</option>
+                                            <option value="false" selected>Inactive</option>
                                         }
                                         else
                                         {
-                                            <option value="Inactive">Inactive</option>
+                                            <option value="false">Inactive</option>
                                         }
                                     </select>
                                     

@@ -231,7 +231,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
                     return RedirectToAction("Index", "Admin");
                 }    
             }
-            String Query = "select LoginID,Email,Role,Name,UserID from Tbl_Users where LoginID='"+gd.LoginID+"' AND Password ='"+gd.Password+"' AND Status='Active'";
+            String Query = "select LoginID,Email,Role,Name,UserID from Tbl_Users where LoginID='"+gd.LoginID+"' AND Password ='"+gd.Password+"' AND Status=1";
             ConnectionString();
             con.Open();
             com.Connection = con;

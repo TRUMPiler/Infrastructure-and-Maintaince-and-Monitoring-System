@@ -130,7 +130,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
                     Name = reader["Name"].ToString(),
                     LoginID = reader["LoginID"].ToString(),
                     Password = reader["Password"].ToString(),
-                    Status=reader["Status"].ToString()
+                    Status = reader.GetBoolean(reader.GetOrdinal("Status"))
                 };
 
                 getDataList.Add(getData);
@@ -222,7 +222,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
                             Name = reader["Name"].ToString(),
                             LoginID = reader["LoginID"].ToString(),
                             Password = reader["Password"].ToString(),
-                            Status = reader["Status"].ToString()
+                            Status = reader.GetBoolean(reader.GetOrdinal("Status"))
                         };
 
                         ls.Add(gd);
@@ -242,7 +242,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
                     return RedirectToAction("Users");
                 }
                 
-                String Query = "update Tbl_Users SET Status='Inactive' where UserID=" + userID;
+                String Query = "update Tbl_Users SET Status=0 where UserID=" + userID;
                 ConnectionString();
                 con.Open();
                 com.Connection = con;
@@ -386,7 +386,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
         public int CountAllUsers()
         {
             int count = 0;
-            string query = "SELECT COUNT(LoginID) AS Count FROM Tbl_Users Where Status='Active'";
+            string query = "SELECT COUNT(LoginID) AS Count FROM Tbl_Users Where Status=1";
 
             using (SqlConnection con = new SqlConnection(connectionString))
             using (SqlCommand com = new SqlCommand(query, con))
@@ -462,7 +462,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
                         Name = reader["Name"].ToString(),
                         LoginID = reader["LoginID"].ToString(),
                         Password = reader["Password"].ToString(),
-                        Status=reader["Status"].ToString()
+                        Status= reader.GetBoolean(reader.GetOrdinal("Status"))
                     };
                     return View(getData);
 

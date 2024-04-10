@@ -170,7 +170,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
             List<GetData> ls=new List<GetData>();
             using (SqlConnection con = new SqlConnection(connectionString))
             {
-                string query = "SELECT * FROM Tbl_Users where Role='Student' And Status='Active'";
+                string query = "SELECT * FROM Tbl_Users where Role='Student' And Status=1";
 
                 using (SqlCommand com = new SqlCommand(query, con))
                 {
@@ -189,7 +189,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
                             Name = reader["Name"].ToString(),
                             LoginID = reader["LoginID"].ToString(),
                             Password = reader["Password"].ToString(),
-                            Status = reader["Status"].ToString()
+                            Status = reader.GetBoolean(reader.GetOrdinal("Status"))
                         };
                         ls.Add(gd);
                     }
