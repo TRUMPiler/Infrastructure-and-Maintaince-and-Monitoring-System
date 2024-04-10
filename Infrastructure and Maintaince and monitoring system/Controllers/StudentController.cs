@@ -12,7 +12,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
 {
     public class StudentController : Controller
     {
-        String connectionString = "data source=ASUSTUFGAMING\\SQLEXPRESS; database=IMMS; integrated security=SSPI";
+        String connectionString = "Data Source=DESKTOP-T7RS5U7\\SQLEXPRESS;Initial Catalog=IMMS;Integrated Security=True";
         SqlConnection con = new SqlConnection();
         SqlCommand com = new SqlCommand();
         
