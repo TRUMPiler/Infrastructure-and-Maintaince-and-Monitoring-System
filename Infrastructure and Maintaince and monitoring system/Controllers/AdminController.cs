@@ -153,7 +153,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
            "c.Status, " +
            "c.ClassID " +
         "FROM Tbl_Complain  c " +
-        "INNER JOIN Tbl_ComplaintType ct ON c.ComplaintType = ct.Complaint_TypeID where c.Status!='Pending'";
+        "INNER JOIN Tbl_ComplaintType ct ON c.ComplaintType = ct.Complaint_TypeID WHERE c.Status NOT IN ('Pending', 'Rejected')";
 
 
             List<Complaint> complaints = new List<Complaint>();
