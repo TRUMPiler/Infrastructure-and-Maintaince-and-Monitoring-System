@@ -198,9 +198,34 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
 
             return count;
         }
-        public ActionResult ManageRoom()
+        public ActionResult ManageRoom(Room room)
         {
-            return View();
+
+            if (Session["UserID"] != null)
+            {
+                return RedirectToAction("Users");
+            }
+            string query = "Select * from Tbl_Room";
+            ConnectionString();
+            con.Open();
+            com.Connection = con;
+            com.CommandText = query;
+            List<Room> rooms = new List<Room>;
+            SqlDataReader reader = com.ExecuteReader();
+
+            while (reader.Read())
+            {
+                Room getrooms = new Room
+                {
+                    RoomID = (int)reader["RoomID"],
+                    RoomType = (int)reader["RoomType"],
+                    Wing = (char)reader["Wing"],
+                    RoomNo = reader["RoomNo"].ToString()
+                };
+
+                rooms.Add(getrooms);
+            }
+            return View(rooms);
         }
         public List<string> GetComplaints()
         {
