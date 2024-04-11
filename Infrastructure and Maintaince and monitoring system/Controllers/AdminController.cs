@@ -14,7 +14,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
     public class AdminController : Controller
     {
         HttpCookie cookieLogin, cookieName, cookieRole;
-        SqlConnection con = new SqlConnection();
+        SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString);
         SqlCommand com = new SqlCommand();
         SqlDataReader dr;
         string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
@@ -239,7 +239,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
                 }
                 
                 String Query = "update Tbl_Users SET Status=0 where UserID=" + userID;
-                ConnectionString();
+                
                 con.Open();
                 com.Connection = con;
                 com.CommandText = Query;
@@ -282,7 +282,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
                     string path = Path.Combine(Server.MapPath("~\\App_Data"), fileName);
                     file.SaveAs(path);
 
-                    ConnectionString();
+                    
                     con.Open();
                     com.Connection = con;
 
@@ -380,7 +380,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
             }
             int userId = Convert.ToInt32(Session["UserID"]);
             String Query = "update Tbl_Users set Name='"+gd.Name+ "', Email='" + gd.Email + "', PhoneNo='" + gd.PhoneNo + "', Gender='" + gd.Gender + "', LoginID='" + gd.LoginID + "', Role='"+gd.Role+"', Status='"+gd.Status+"' where UserID=" + userId;
-            ConnectionString();
+           
             con.Open();
             com.Connection = con;
             com.CommandText = Query;
@@ -476,7 +476,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
                 }
                 Session["UserID"] = userId;
                 String Query = "select * from Tbl_Users where UserID="+userId;
-                ConnectionString();
+                
                 con.Open();
                 com.Connection = con;
                 com.CommandText = Query;

@@ -271,7 +271,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
 "u.Status " +
 "FROM Tbl_Users u " +
 "INNER JOIN Tbl_Students s ON u.UserID = s.UserID " +
-"WHERE s.Semster = (SELECT Semster FROM Tbl_Students WHERE UserId = (SELECT UserID FROM Tbl_Users WHERE LoginID = '" + Session["LoginID"] + "')) AND u.UserID != (SELECT UserID FROM Tbl_Users WHERE LoginID = '" + Session["LoginID"] + "')";
+"WHERE s.Semster = (SELECT Semster FROM Tbl_Students WHERE UserId = (SELECT UserID FROM Tbl_Users WHERE LoginID = '" + Session["LoginID"] + "')) AND u.Status = 1 AND u.UserID != (SELECT UserID FROM Tbl_Users WHERE LoginID = '" + Session["LoginID"] + "')";
 
                 using (SqlCommand com = new SqlCommand(query, con))
                 {
@@ -297,6 +297,19 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
                 }
             }
             return ls;
+        }
+        public ActionResult GiveFeedback(int? Complaintid)
+        {
+            if(Complaintid.HasValue)
+            {
+                Session["ComplaintID"] = Complaintid;
+                return View();
+            }
+            else
+            {
+                string script = "<script>alert('ComplaintID is Missing');window.location='/Faculty/'</script>";
+                return Content(script, "text/html");
+            }
         }
         [HttpPost]
         public ActionResult FileComplaint(Complaint cs)
@@ -343,19 +356,18 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
                         String path = Path.Combine(Server.MapPath("~\\Admins\\dist\\img"), fileName);
                         cs.ComplaintImage.SaveAs(path);
                         cs.Image = fileName;
-                        
 
-                        
+
+
                     }
                     catch (Exception ex)
                     {
-                        
+
                     }
                 }
-                if(cs.Image==null)
+                else
                 {
-                    string script = "<script>alert('User data was updated Unsuccessfully');window.location='/Admin/Users'</script>";
-                    return 0;
+                    cs.Image = "No Image";
                 }
                 // Define query
                 string query = "INSERT INTO [dbo].[Tbl_Complain]([Description],[ComplaintType],[ClassID],[Image],[Status]) VALUES (@Description, @ComplaintType, @ClassID,@Image, @Status ); SELECT SCOPE_IDENTITY();";

@@ -2532,6 +2532,7 @@
     <Content Include="Views\Asset\Asset.cshtml" />
     <Content Include="Views\Asset\Update.cshtml" />
     <Content Include="Views\Asset\Create.cshtml" />
+    <Content Include="Views\Student\GiveFeedback.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
