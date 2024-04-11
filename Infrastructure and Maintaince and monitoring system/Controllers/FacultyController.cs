@@ -9,6 +9,7 @@ using Infrastructure_and_Maintaince_and_monitoring_system.Models;
 using System.IO;
 using System.Net.Mail;
 using System.Net;
+using System.Configuration;
 
 namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
 {
@@ -18,13 +19,13 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
         SqlConnection con = new SqlConnection();
         SqlCommand com = new SqlCommand();
         SqlDataReader dr;
-        string connectionString = "Data Source=ASUSTUFGAMING\\SQLEXPRESS;Initial Catalog=IMMS;Integrated Security=True";
+        string connectionString;
 
         [HandleError]
 
         void ConnectionString()
         {
-            con.ConnectionString = "Data Source=ASUSTUFGAMING\\SQLEXPRESS;Initial Catalog=IMMS;Integrated Security=True";
+            con.ConnectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
         }
 
         // GET: Faculty

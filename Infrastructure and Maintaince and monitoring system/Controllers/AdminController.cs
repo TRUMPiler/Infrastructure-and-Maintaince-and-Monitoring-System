@@ -7,6 +7,7 @@ using System.Data.SqlClient;
 using System.Web.Mvc;
 using System.IO;
 using Microsoft.VisualBasic.FileIO;
+using System.Configuration;
 
 namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
 {
@@ -16,7 +17,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
         SqlConnection con = new SqlConnection();
         SqlCommand com = new SqlCommand();
         SqlDataReader dr;
-        string connectionString = "Data Source=ASUSTUFGAMING\\SQLEXPRESS;Initial Catalog=IMMS;Integrated Security=True";
+        string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
 
         [HandleError]
 
