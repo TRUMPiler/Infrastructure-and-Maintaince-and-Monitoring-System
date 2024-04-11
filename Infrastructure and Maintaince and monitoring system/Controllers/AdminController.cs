@@ -6,6 +6,7 @@ using Infrastructure_and_Maintaince_and_monitoring_system.Models;
 using System.Data.SqlClient;
 using System.Web.Mvc;
 using System.IO;
+using Microsoft.VisualBasic.FileIO;
 
 namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
 {
@@ -15,7 +16,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
         SqlConnection con = new SqlConnection();
         SqlCommand com = new SqlCommand();
         SqlDataReader dr;
-        string connectionString = "Data Source=DESKTOP-T7RS5U7\\SQLEXPRESS;Initial Catalog=IMMS;Integrated Security=True";
+        string connectionString = "Data Source=ASUSTUFGAMING\\SQLEXPRESS;Initial Catalog=IMMS;Integrated Security=True";
 
         [HandleError]
 
@@ -96,7 +97,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
         void ConnectionString()
         {
             
-            con.ConnectionString = "Data Source=DESKTOP-T7RS5U7\\SQLEXPRESS;Initial Catalog=IMMS;Integrated Security=True";
+            con.ConnectionString = "Data Source=ASUSTUFGAMING\\SQLEXPRESS;Initial Catalog=IMMS;Integrated Security=True";
             
         }
 
@@ -277,33 +278,68 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
         [HttpPost]
         public ActionResult Register1(HttpPostedFileBase file)
         {
-
             if (file != null && file.ContentLength > 0)
             {
                 try
                 {
-
                     string fileName = Path.GetFileName(file.FileName);
                     string path = Path.Combine(Server.MapPath("~\\App_Data"), fileName);
                     file.SaveAs(path);
-                    String Query = "BULK insert Tbl_Users " +
-                    " from '" + path + "'"
-                    + " WITH("
-                    + " FIRSTROW = 2,"
-                    + " FIELDTERMINATOR = ',',"
-                    + " ROWTERMINATOR = '\\n'"
-                    + " )";
 
                     ConnectionString();
                     con.Open();
                     com.Connection = con;
-                    com.CommandText = Query;
-                    com.ExecuteNonQuery();
+
+                    // Read the CSV file using StreamReader
+                    using (StreamReader reader = new StreamReader(path))
+                    {
+                        // Skip the header row
+                        reader.ReadLine();
+
+                        while (!reader.EndOfStream)
+                        {
+                            string line = reader.ReadLine();
+                            string[] fields = line.Split(',');
+
+                            // Convert 'Status' string to boolean
+                            bool status = Convert.ToBoolean(fields[8]);
+
+                            // Insert data into Tbl_Users
+                            com.CommandText = "INSERT INTO Tbl_Users (Name, Email, PhoneNo, LoginID, Gender, Role, Password, Status) VALUES (@Name, @Email, @PhoneNo, @LoginID, @Gender, @Role, @Password, @Status); SELECT SCOPE_IDENTITY()";
+                            com.Parameters.AddWithValue("@Name", fields[1]);
+                            com.Parameters.AddWithValue("@Email", fields[2]);
+                            com.Parameters.AddWithValue("@PhoneNo", fields[3]);
+                            com.Parameters.AddWithValue("@LoginID", fields[4]);
+                            com.Parameters.AddWithValue("@Gender", fields[5]);
+                            com.Parameters.AddWithValue("@Role", fields[6]);
+                            com.Parameters.AddWithValue("@Password", fields[7]);
+                            com.Parameters.AddWithValue("@Status", status);
+
+                            int userID = Convert.ToInt32(com.ExecuteScalar());
+                            
+
+                            // Insert data into Tbl_Student
+                            com.CommandText = "INSERT INTO Tbl_Students (UserId, Semster) VALUES (@UserID, @Sem)";
+                                com.Parameters.Clear();
+                                com.Parameters.AddWithValue("@UserID", userID);
+                                com.Parameters.AddWithValue("@Sem", Convert.ToInt32(fields[9]));
+
+                                com.ExecuteNonQuery();
+                            com.CommandText = "DELETE FROM Tbl_Students WHERE Semster = 15";
+                            com.ExecuteNonQuery();
+                        }
+                    }
+
                     return View("Register", model: "File uploaded");
                 }
                 catch (Exception ex)
                 {
                     return View("Register", model: ex.Message);
+                }
+                finally
+                {
+                    
+                    con.Close(); // Close the connection
                 }
             }
             else
@@ -311,6 +347,8 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
                 return View("Register", model: "please select a file");
             }
         }
+
+
         public ActionResult Index()
         {
 

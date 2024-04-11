@@ -14,7 +14,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
 {
     public class FacultyController : Controller
     {
-        
+
         SqlConnection con = new SqlConnection();
         SqlCommand com = new SqlCommand();
         SqlDataReader dr;
@@ -144,31 +144,31 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
                 return Content(script, "text/html");
             }
 
-            
+
             string query = "UPDATE Tbl_Complain SET Status = 'Rejected' WHERE ComplainID = @ComplainID";
 
-            
+
             using (SqlConnection con = new SqlConnection(connectionString))
             {
-                
+
                 con.Open();
 
-                
+
                 using (SqlCommand cmd = new SqlCommand(query, con))
                 {
-                    
+
                     cmd.Parameters.AddWithValue("@ComplainID", complaintid);
 
-                    
+
                     int result = cmd.ExecuteNonQuery();
 
-                    
+
                     if (result > 0)
                     {
-                        SendEmailToComplaintUsers((int)complaintid,"Rejected");
+                        SendEmailToComplaintUsers((int)complaintid, "Rejected");
                         string script = "<script>alert('Complaint status updated to Rejected.');window.location='/Faculty/'</script>";
                         return Content(script, "text/html");
-                       
+
                     }
                     else
                     {
@@ -178,7 +178,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
                 }
             }
 
-            
+
             return RedirectToAction("Complaints");
         }
 
@@ -278,7 +278,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
 
                 ComplaintTypes = GetAllComplaintTypes(),
                 Rooms = GetAllRooms()
-               
+
             };
             return View(cs);
         }
@@ -355,7 +355,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
                     command.Parameters.AddWithValue("@UserID", Session["UserID"]);
                     command.ExecuteNonQuery();
                     // Add each selected user
-                    
+
                 }
 
             }
@@ -459,15 +459,15 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
             String Query;
             if (Session["Role"].ToString().Contains("Head"))
             {
-                 Query = "SELECT c.ComplainID, " +
-           "ct.ComplaintType, " +
-           "c.Description, " +
-           "c.Image, " +
-           "c.Status, " +
+                Query = "SELECT c.ComplainID, " +
+          "ct.ComplaintType, " +
+          "c.Description, " +
+          "c.Image, " +
+          "c.Status, " +
 
-           "c.ClassID " +
-        "FROM Tbl_Complain  c " +
-        "INNER JOIN Tbl_ComplaintType ct ON c.ComplaintType = ct.Complaint_TypeID where ct.Complaint_TypeID!=1";
+          "c.ClassID " +
+       "FROM Tbl_Complain  c " +
+       "INNER JOIN Tbl_ComplaintType ct ON c.ComplaintType = ct.Complaint_TypeID where ct.Complaint_TypeID!=1";
             }
             else if (Session["Role"].ToString().Contains("Lab"))
             {
@@ -492,7 +492,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
            "c.ClassID " +
         "FROM Tbl_Complain  c " +
         "INNER JOIN Tbl_ComplaintType ct ON c.ComplaintType = ct.Complaint_TypeID";
-            }    
+            }
             List<Complaint> complaints = new List<Complaint>();
 
             using (SqlConnection con = new SqlConnection(connectionString))
@@ -521,7 +521,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
 
             return View(complaints);
         }
-        private void SendEmailToComplaintUsers(int complaintId,String Status)
+        private void SendEmailToComplaintUsers(int complaintId, String Status)
         {
             // Fetch user emails for the given complaint ID
             var users = GETCOMPLAINTUSERS(complaintId);
