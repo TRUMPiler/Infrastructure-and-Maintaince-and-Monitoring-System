@@ -9,6 +9,8 @@ using System.Data.SqlClient;
 using System.Net;
 using System.Net.Mail;
 using System.Web.Helpers;
+using System.Configuration;
+
 namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
 {
     public class HomeController : Controller
@@ -91,7 +93,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
         }
         void ConnectionString()
         {
-            con.ConnectionString = "Data Source=ASUSTUFGAMING\\SQLEXPRESS;Initial Catalog=IMMS;Integrated Security=True";
+            con.ConnectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
         }
             
     

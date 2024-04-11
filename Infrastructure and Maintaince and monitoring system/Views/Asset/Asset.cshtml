@@ -1,0 +1,39 @@
+﻿
+@model IEnumerable<Infrastructure_and_Maintaince_and_monitoring_system.Models.Asset>
+
+@{
+    ViewBag.Title = "Asset Management";
+}
+
+<h2>Asset Management</h2>
+
+<p>
+    @Html.ActionLink("Add Asset", "Create", null, new { @class = "btn btn-primary" })
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Asset ID</th>
+            <th>Asset Name</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.AssetID</td>
+                <td>@item.AssetName</td>
+                <td>
+                    @Html.ActionLink("Edit", "Update", new { id = item.AssetID }, new { @class = "btn btn-info" })
+                    @using (Html.BeginForm("DeleteConfirmed", "Asset", new { id = item.AssetID }, FormMethod.Post, new { @class = "form-inline" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <input type="submit" value="Delete" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this asset?');" />
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

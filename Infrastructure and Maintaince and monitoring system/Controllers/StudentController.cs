@@ -7,12 +7,13 @@ using System.Data.SqlClient;
 using Infrastructure_and_Maintaince_and_monitoring_system.Models;
 using System.IO;
 using System.Data;
+using System.Configuration;
 
 namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
 {
     public class StudentController : Controller
     {
-        String connectionString = "Data Source=ASUSTUFGAMING\\SQLEXPRESS;Initial Catalog=IMMS;Integrated Security=True";
+        String connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
         SqlConnection con = new SqlConnection();
         SqlCommand com = new SqlCommand();
         

@@ -2166,6 +2166,7 @@
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\AssetController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\FacultyController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -2174,6 +2175,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AdminPanel.cs" />
+    <Compile Include="Models\Asset.cs" />
     <Compile Include="Models\Complaint.cs" />
     <Compile Include="Models\ComplaintTypes.cs" />
     <Compile Include="Models\EmailSending.cs" />
@@ -2527,6 +2529,7 @@
     <Content Include="Views\Student\ComplaintHistory.cshtml" />
     <Content Include="Views\Faculty\FileComplaint.cshtml" />
     <Content Include="Views\Faculty\AddRoom.cshtml" />
+    <Content Include="Views\Asset\Asset.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
