@@ -260,18 +260,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
             List<GetData> ls=new List<GetData>();
             using (SqlConnection con = new SqlConnection(connectionString))
             {
-                string query = "SELECT u.UserID, " +
-       "u.Email, " +
-       "u.Gender, " +
-       "u.Role, " +
-       "u.PhoneNo, " +
-       "u.Name, " +
-       "u.LoginID, " +
-       "u.Password, " +
-       "u.Status " +
-"FROM Tbl_Users u " +
-"INNER JOIN Tbl_Students s ON u.UserID = s.UserID " +
-"WHERE s.Semster = (SELECT Semster FROM Tbl_Students WHERE UserId = (SELECT UserID FROM Tbl_Users WHERE LoginID = '"+Session["LoginID"]+ "')) AND u.UserID != (SELECT UserID FROM Tbl_Users WHERE LoginID = '" + Session["LoginID"] + "')";
+                string query = "SELECT * FROM Tbl_Users where Role='Student' And Status=1";
 
                 using (SqlCommand com = new SqlCommand(query, con))
                 {
@@ -330,7 +319,10 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
             {
                 // Open connection
                 connection.Open();
-                
+                if(cs.ComplaintImage == null)
+                {
+                    return 1;
+                }
                 if (cs.ComplaintImage != null && cs.ComplaintImage.ContentLength > 0)
                 {
                     try
@@ -348,9 +340,11 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
                     {
                         
                     }
-                }else
+                }
+                if(cs.Image==null)
                 {
-                    cs.Image = "No Image";
+                    string script = "<script>alert('User data was updated Unsuccessfully');window.location='/Admin/Users'</script>";
+                    return 0;
                 }
                 // Define query
                 string query = "INSERT INTO [dbo].[Tbl_Complain]([Description],[ComplaintType],[ClassID],[Image],[Status]) VALUES (@Description, @ComplaintType, @ClassID,@Image, @Status ); SELECT SCOPE_IDENTITY();";
@@ -397,7 +391,6 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
 
             return complaintTypes;
         }
-
     }
     
 }

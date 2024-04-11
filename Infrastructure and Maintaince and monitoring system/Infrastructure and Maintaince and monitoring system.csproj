@@ -2530,6 +2530,8 @@
     <Content Include="Views\Faculty\FileComplaint.cshtml" />
     <Content Include="Views\Faculty\AddRoom.cshtml" />
     <Content Include="Views\Asset\Asset.cshtml" />
+    <Content Include="Views\Asset\Update.cshtml" />
+    <Content Include="Views\Asset\Create.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

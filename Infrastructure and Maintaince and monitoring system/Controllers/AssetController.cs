@@ -137,7 +137,7 @@ public class AssetController : Controller
     // POST: Asset/Delete/5
     [HttpPost, ActionName("Delete")]
     [ValidateAntiForgeryToken]
-    public ActionResult DeleteConfirmed(int id)
+    public ActionResult Delete(int id)
     {
         using (SqlConnection connection = new SqlConnection(connectionString))
         {

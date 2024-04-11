@@ -1,7 +1,10 @@
-﻿@{
-    ViewBag.Title = "Users";
+﻿@model Infrastructure_and_Maintaince_and_monitoring_system.Models.Asset
+
+@{
+    ViewBag.Title = "Add Asset";
     Layout = "~/Views/Shared/_AdminTablePage.cshtml";
 }
+
 <div class="preloader flex-column justify-content-center align-items-center">
     <img class="animation__shake" src="~/Admins/dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
 </div>
@@ -198,8 +201,6 @@
             </div>
         </div><!-- /.container-fluid -->
     </section>
-
-    <!-- Main content -->
     <section class="content">
         <div class="container-fluid">
             <div class="row">
@@ -209,62 +210,24 @@
 
                         <!-- /.card-header -->
                         <div class="card-body">
-                            <table id="example1" class="table table-bordered table-striped">
-                                <thead>
-                                    <tr>
-                                        <th>UserID</th>
-                                        <th>Name</th>
-                                        <th>Email</th>
-                                        <th>PhoneNo</th>
-                                        <th>LoginID</th>
-                                        <th>Gender</th>
-                                        <th>Role</th>
-                                        <th>Password</th>
-                                        <th>Status</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @model List<Infrastructure_and_Maintaince_and_monitoring_system.Models.GetData>
-                                    @foreach (var item in Model)
-                                    {
-                                        <tr>
-                                            <td>@item.UserID</td>
-                                            <td>@item.Name</td>
-                                            <td>@item.Email</td>
-                                            <td>@item.PhoneNo</td>
-                                            <td>@item.LoginID</td>
-                                            <td>@item.Gender</td>
-                                            <td>@item.Role</td>
-                                            <td>@item.Password</td>
-                                            @if(item.Status==false)
-                                            {
-                                                <td>Inactive</td>    
-                                            }
-                                            else
-                                            {
-                                                <td>Active</td>
-                                            }
 
-                                            <td> <button onclick="window.location.href='@Url.Action("EditUser", "Admin", new { userId = item.UserID })'">Edit</button><button onclick="window.location.href='@Url.Action("Delete", "Admin", new { userId = item.UserID })'">Deactive</button> </td>
-                                        </tr>
-                                    }
-                                </tbody>
-                                <tfoot>
-                                    <tr>
-                                        <th>UserID</th>
-                                        <th>Name</th>
-                                        <th>Email</th>
-                                        <th>PhoneNo</th>
-                                        <th>LoginID</th>
-                                        <th>Gender</th>
-                                        <th>Role</th>
-                                        <th>Password</th>
-                                        <th>Status</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </tfoot>
-                            </table>
+                            <h2>Add Asset</h2>
+
+                            @using (Html.BeginForm())
+                            {
+                                @Html.AntiForgeryToken()
+
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.AssetName, htmlAttributes: new { @class = "control-label" })
+                                    @Html.EditorFor(model => model.AssetName, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.AssetName, "", new { @class = "text-danger" })
+                                </div>
+
+                                <div class="form-group">
+                                    <input type="submit" value="Add" class="btn btn-primary" />
+                                </div>
+                            }
+
                         </div>
                         <!-- /.card-body -->
                     </div>
@@ -278,10 +241,8 @@
     </section>
     <!-- /.content -->
 </div>
-<!-- /.content-wrapper -->
-<!-- /.control-sidebar -->
-<!-- ./wrapper -->
-<!-- jQuery -->
+
+
 <script src="~/Admins/plugins/jquery/jquery.min.js"></script>
 <!-- Bootstrap 4 -->
 <script src="~/Admins/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>

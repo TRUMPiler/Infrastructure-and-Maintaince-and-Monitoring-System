@@ -239,52 +239,43 @@
                                     @model List<Infrastructure_and_Maintaince_and_monitoring_system.Models.Complaint>
                                     @foreach (var complaint in Model)
                                     {
-                                    <tr>
-                                        <td>@complaint.ComplaintID</td>
-                                        <td>@complaint.Description</td>
-                                        <td>@complaint.ComplaintType</td>
+                                        <tr>
+                                            <td>@complaint.ComplaintID</td>
+                                            <td>@complaint.Description</td>
+                                            <td>@complaint.ComplaintType</td>
 
-                                        @if (!complaint.Image.ToString().Contains("No Image"))
-                                        {
                                             <td><a href="~/Admins/dist/img/@complaint.Image" target="_blank">Click to View</a></td>
+                                            <td>@complaint.Status</td>
+                                            <td>
+                                                @foreach (var user in complaint.Users)
+                                                {
+                                                    <span>@user.LoginID @Html.Raw("-") @user.Name</span><br>
+                                                }
 
-                                        }
-                                        else
-                                        {
-                                            <td>No Image to display</td>
 
-                                        }
-                                        <td>@complaint.Status</td>
-                                        <td>
-                                            @foreach (var user in complaint.Users)
+                                            </td>
+                                            @if (Session["Role"] != null)
                                             {
-                                                <span>@user.LoginID @Html.Raw("-") @user.Name</span><br>
+                                                if (Session["Role"].ToString().Contains("Head") || Session["Role"].ToString().Contains("Lab"))
+                                                {
+                                                    if (complaint.Status.Contains("Pending"))
+                                                    {
+                                                        <td> <button onclick="window.location.href='@Url.Action("AcceptComplaint", "Faculty", new { complaintID = complaint.ComplaintID })'">Accept</button> <button onclick="window.location.href='@Url.Action("RejectComplaint", "Faculty", new { complaintID = complaint.ComplaintID })'"> Reject</button> </td>
+
+                                                    }
+                                                    else if (complaint.Status.Contains("In-progress"))
+                                                    {
+                                                        <td> <button onclick="window.location.href='@Url.Action("CompleteComplaint", "Faculty", new { complaintID = complaint.ComplaintID })'">Complete</button></td>
+                                                    }
+                                                    else
+                                                    {
+                                                        <td></td>
+                                                    }
+                                                }
+
                                             }
 
-
-                                        </td>
-                                        @if (Session["Role"] != null)
-                                        {
-                                            if (Session["Role"].ToString().Contains("Head") || Session["Role"].ToString().Contains("Lab"))
-                                            {
-                                                if (complaint.Status.Contains("Pending"))
-                                                {
-                                                    <td> <button onclick="window.location.href='@Url.Action("AcceptComplaint", "Faculty", new { complaintID = complaint.ComplaintID })'">Accept</button> <button onclick="window.location.href='@Url.Action("RejectComplaint", "Faculty", new { complaintID = complaint.ComplaintID })'"> Reject</button> </td>
-
-                                                }
-                                                else if (complaint.Status.Contains("In-progress"))
-                                                {
-                                                    <td> <button onclick="window.location.href='@Url.Action("CompleteComplaint", "Faculty", new { complaintID = complaint.ComplaintID })'">Complete</button></td>
-                                                }
-                                                else
-                                                {
-                                                    <td></td>
-                                                }
-                                            }
-
-                                        }
-
-                                    </tr>
+                                        </tr>
                                     }
                                 </tbody>
                                 <tfoot>

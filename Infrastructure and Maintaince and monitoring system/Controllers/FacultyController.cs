@@ -419,12 +419,21 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
 
             // Register the complaint and get its ID
             int complaintId = RegisterComplaint(cs, connectionString);
-            
+            if (complaintId == 0)
+            {
+                string script = "<script>alert('Image is Empty');window.location='/Faculty/'</script>";
+                return Content(script, "text/html");
+            }
+            else if (complaintId == 1)
+            {
+                string script = "<script>alert('Complaint is Empty');window.location='/Faculty/'</script>";
+                return Content(script, "text/html");
+            }
             // Register the associated users
             RegisterComplaintUsers(cs.SelectedUser, complaintId, connectionString);
 
             // Redirect to the StudentProfile page
-            return RedirectToAction("Index");
+            return RedirectToAction("Jndex");
         }
         private int RegisterComplaint(Complaint cs, string connectionString)
         {
@@ -433,7 +442,10 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
             {
                 // Open connection
                 connection.Open();
-                
+                if (cs.ComplaintImage == null)
+                {
+                    return 1;
+                }
                 if (cs.ComplaintImage != null && cs.ComplaintImage.ContentLength > 0)
                 {
                     try
@@ -452,11 +464,11 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
 
                     }
                 }
-                else
+                if (cs.Image == null)
                 {
-                    cs.Image = "No Image";
+                    string script = "<script>alert('User data was updated Unsuccessfully');window.location='/Admin/Users'</script>";
+                    return 0;
                 }
-                
                 // Define query
                 string query = "INSERT INTO [dbo].[Tbl_Complain]([Description],[ComplaintType],[ClassID],[Image],[Status]) VALUES (@Description, @ComplaintType, @ClassID,@Image, @Status ); SELECT SCOPE_IDENTITY();";
 

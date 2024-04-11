@@ -74,10 +74,6 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
             
             return RedirectToAction("Index", "Home");
         }
-        public ActionResult Assets()
-        {
-            return View();
-        }
         public List<string> GetComplaints()
         {
             List<string> complaints = new List<string>();
@@ -99,12 +95,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
 
             return complaints;
         }
-        void ConnectionString()
-        {
-            
-            con.ConnectionString = "Data Source=ASUSTUFGAMING\\SQLEXPRESS;Initial Catalog=IMMS;Integrated Security=True";
-            
-        }
+       
 
         
         public ActionResult Users()
@@ -117,7 +108,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
                 }
             }
             String Query = "select * from Tbl_Users";
-            ConnectionString();
+            
             con.Open();
             com.Connection = con;
             com.CommandText = Query;

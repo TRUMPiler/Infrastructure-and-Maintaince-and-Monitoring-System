@@ -20,6 +20,7 @@
             <a href="@Url.Action("ChangePass","Home")" class="nav-link">Change Password</a>
         </li>
     </ul>
+
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
         <!-- Navbar Search -->
@@ -61,6 +62,7 @@
                 <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
             </div>
         </li>
+
         <li class="nav-item">
             <a class="nav-link" data-widget="fullscreen" href="#" role="button">
                 <i class="fas fa-expand-arrows-alt"></i>
@@ -116,6 +118,12 @@
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                 <!-- Add icons to the links using the .nav-icon class
                      with font-awesome or any other icon font library -->
+
+
+
+
+
+
                 <li class="nav-item">
                     <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-table"></i>
@@ -289,8 +297,8 @@
                     maxlength: 3
                 },
                 ComplaintImage: {
-                    
-                    accept: ["jpeg", "jpg", "png"]
+                    required: true,
+                    accept: "image/jpeg,image/png"
                 }
             },
             messages: {
@@ -312,7 +320,7 @@
                     maxlength: "Room ID cannot exceed 3 characters"
                 },
                 ComplaintImage: {
-                    accept: "Please upload a valid image file (JPEG/JPG/PNG)."
+                    required: "Please upload a file"
                 }
             },
             errorElement: 'span',
