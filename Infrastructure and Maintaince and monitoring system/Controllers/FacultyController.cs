@@ -442,10 +442,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
             {
                 // Open connection
                 connection.Open();
-                if (cs.ComplaintImage == null)
-                {
-                    return 1;
-                }
+                
                 if (cs.ComplaintImage != null && cs.ComplaintImage.ContentLength > 0)
                 {
                     try
@@ -464,11 +461,11 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
 
                     }
                 }
-                if (cs.Image == null)
+                else
                 {
-                    string script = "<script>alert('User data was updated Unsuccessfully');window.location='/Admin/Users'</script>";
-                    return 0;
+                    cs.Image = null;
                 }
+                
                 // Define query
                 string query = "INSERT INTO [dbo].[Tbl_Complain]([Description],[ComplaintType],[ClassID],[Image],[Status]) VALUES (@Description, @ComplaintType, @ClassID,@Image, @Status ); SELECT SCOPE_IDENTITY();";
 
