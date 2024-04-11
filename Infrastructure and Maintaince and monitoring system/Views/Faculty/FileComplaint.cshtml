@@ -305,7 +305,7 @@
                 },
                 ComplaintImage: {
                     required: true,
-                    accept: "image/jpeg,image/png"
+                    accept: ["jpeg", "jpg", "png"]
                 }
             },
             messages: {
@@ -327,7 +327,7 @@
                     maxlength: "Room ID cannot exceed 3 characters"
                 },
                 ComplaintImage: {
-                    required: "Please upload a file"
+                    accept: "Please upload a valid image file (JPEG/JPG/PNG)."
                 }
             },
             errorElement: 'span',

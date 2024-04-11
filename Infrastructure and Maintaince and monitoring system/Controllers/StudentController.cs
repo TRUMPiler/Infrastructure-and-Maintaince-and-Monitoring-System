@@ -260,7 +260,18 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
             List<GetData> ls=new List<GetData>();
             using (SqlConnection con = new SqlConnection(connectionString))
             {
-                string query = "SELECT * FROM Tbl_Users where Role='Student' And Status=1";
+                string query = "SELECT u.UserID, " +
+"u.Email, " +
+"u.Gender, " +
+"u.Role, " +
+"u.PhoneNo, " +
+"u.Name, " +
+"u.LoginID, " +
+"u.Password, " +
+"u.Status " +
+"FROM Tbl_Users u " +
+"INNER JOIN Tbl_Students s ON u.UserID = s.UserID " +
+"WHERE s.Semster = (SELECT Semster FROM Tbl_Students WHERE UserId = (SELECT UserID FROM Tbl_Users WHERE LoginID = '" + Session["LoginID"] + "')) AND u.UserID != (SELECT UserID FROM Tbl_Users WHERE LoginID = '" + Session["LoginID"] + "')";
 
                 using (SqlCommand com = new SqlCommand(query, con))
                 {

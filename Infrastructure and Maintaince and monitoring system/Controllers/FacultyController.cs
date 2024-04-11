@@ -182,8 +182,6 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
                     }
                 }
             }
-
-
             return RedirectToAction("Complaints");
         }
 
@@ -233,7 +231,6 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
                     }
                 }
             }
-
             return View(rooms);
         }
         //To be Edited
