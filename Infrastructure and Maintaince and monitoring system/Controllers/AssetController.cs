@@ -19,7 +19,7 @@ public class AssetController : Controller
 
         using (SqlConnection connection = new SqlConnection(connectionString))
         {
-            string query = "SELECT * FROM Tbl_Asset WHERE Status = 1";
+            string query = "SELECT * FROM Tbl_Asset";
             SqlCommand command = new SqlCommand(query, connection);
 
             connection.Open();
@@ -137,13 +137,16 @@ public class AssetController : Controller
     // POST: Asset/Delete/5
     [HttpPost, ActionName("Delete")]
     [ValidateAntiForgeryToken]
-    public ActionResult Delete(int id)
+    public ActionResult Delete(int id, bool currentStatus)
     {
+        int newStatus = currentStatus ? 0 : 1;
+
         using (SqlConnection connection = new SqlConnection(connectionString))
         {
-            string query = "UPDATE Tbl_Asset SET Status = 0 WHERE AssetID = @AssetID";
+            string query = "UPDATE Tbl_Asset SET Status = @Status WHERE AssetID = @AssetID";
             SqlCommand command = new SqlCommand(query, connection);
             command.Parameters.AddWithValue("@AssetID", id);
+            command.Parameters.AddWithValue("@Status", newStatus);
 
             connection.Open();
             command.ExecuteNonQuery();
