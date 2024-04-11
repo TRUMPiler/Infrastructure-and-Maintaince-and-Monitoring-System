@@ -18,13 +18,13 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
         SqlConnection con = new SqlConnection();
         SqlCommand com = new SqlCommand();
         SqlDataReader dr;
-        string connectionString = "Data Source=DESKTOP-T7RS5U7\\SQLEXPRESS;Initial Catalog=IMMS;Integrated Security=True";
+        string connectionString = "Data Source=ASUSTUFGAMING\\SQLEXPRESS;Initial Catalog=IMMS;Integrated Security=True";
 
         [HandleError]
 
         void ConnectionString()
         {
-            con.ConnectionString = "Data Source=DESKTOP-T7RS5U7\\SQLEXPRESS;Initial Catalog=IMMS;Integrated Security=True";
+            con.ConnectionString = "Data Source=ASUSTUFGAMING\\SQLEXPRESS;Initial Catalog=IMMS;Integrated Security=True";
         }
 
         // GET: Faculty
@@ -136,6 +136,10 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
 
             return RedirectToAction("Complaints");
         }
+        public ActionResult AddRoom()
+        {
+            return View();
+        }
         public ActionResult RejectComplaint(int? complaintid)
         {
             if (complaintid == null)
@@ -200,10 +204,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
         }
         public ActionResult ManageRoom()
         {
-            if (Session["UserID"] != null)
-            {
-                return RedirectToAction("Users");
-            }
+            
 
             string query = "SELECT R.RoomID, RT.RoomtType AS RoomType, R.Wing, R.RoomNo FROM Tbl_Room R INNER JOIN Tbl_RoomType RT ON R.RoomType = RT.RoomTypeID;";
             ConnectionString();
