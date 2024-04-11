@@ -324,7 +324,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
                 { completed = GetDoneCount(),
                     count = GetCount(),
                     todo = GetComplaints(),
-                    avg=(GetDoneCount()+GetCount())/2,
+                    avg=((float)GetDoneCount()+GetCount())/2,
                     TotalStudents=CountAllUsers()
                 };
                 return View(ap);
