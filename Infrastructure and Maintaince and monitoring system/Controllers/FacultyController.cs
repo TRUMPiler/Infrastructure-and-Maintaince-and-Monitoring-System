@@ -7,6 +7,8 @@ using System.Data;
 using System.Data.SqlClient;
 using Infrastructure_and_Maintaince_and_monitoring_system.Models;
 using System.IO;
+using System.Net.Mail;
+using System.Net;
 
 namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
 {
@@ -44,6 +46,52 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
             };
             return View(p);
         }
+        public ActionResult AcceptComplaint(int? complaintid)
+        {
+            if (complaintid == null)
+            {
+                string script = "<script>alert('ComplaintID is missing');window.location='/Faculty/'</script>";
+                return Content(script, "text/html");
+            }
+
+            
+            string query = "UPDATE Tbl_Complain SET Status = 'In-progress' WHERE ComplainID = @ComplainID";
+
+            
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                
+                con.Open();
+
+                
+                using (SqlCommand cmd = new SqlCommand(query, con))
+                {
+                    
+                    cmd.Parameters.AddWithValue("@ComplainID", complaintid);
+
+                    
+                    int result = cmd.ExecuteNonQuery();
+
+                    
+                    if (result > 0)
+                    {
+                        SendEmailToComplaintUsers((int)complaintid,"In-progress");
+                        string script = "<script>alert('Complaint status updated to In-progress.');window.location='/Faculty/'</script>";
+                        return Content(script, "text/html");
+                       
+                    }
+                    else
+                    {
+                        string script = "<script>alert('Error updating complaint status. Please try again.');window.location='/Faculty/'</script>";
+                        return Content(script, "text/html");
+                    }
+                }
+            }
+
+            
+            return RedirectToAction("Complaints");
+        }
+
         public int GetTotalComplaints()
         {
             int count = 0;
@@ -350,6 +398,40 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
             }
 
             return View(complaints);
+        }
+        private void SendEmailToComplaintUsers(int complaintId,String Status)
+        {
+            // Fetch user emails for the given complaint ID
+            var users = GETCOMPLAINTUSERS(complaintId);
+            var userEmails = users.Select(u => u.Email).ToList();
+
+            foreach (var email in userEmails)
+            {
+                using (var client = new SmtpClient("smtp.gmail.com", 587)) // Replace with your SMTP server details
+                {
+                    client.EnableSsl = true;
+                    client.Credentials = new NetworkCredential("dashtaxigg@gmail.com", "cgqgsvvqvjwswyyq");
+
+                    var mailMessage = new MailMessage
+                    {
+                        From = new MailAddress("dashtaxigg@gmail.com"),
+                        Subject = "Complaint Update Notification",
+                        Body = $"Dear User, \n\nThis is to notify you that the complaint with ID: {complaintId} has been marked as '{Status}'.\n\nRegards,\nInfra Care",
+                        IsBodyHtml = false,
+                    };
+                    mailMessage.To.Add(email);
+
+                    try
+                    {
+                        client.Send(mailMessage);
+                    }
+                    catch (Exception ex)
+                    {
+                        // Handle the exception or log it
+                        Console.WriteLine("Exception caught in SendEmailToComplaintUsers(): {0}", ex.ToString());
+                    }
+                }
+            }
         }
 
         public List<GetData> GETCOMPLAINTUSERS(int COMPLAINTID)

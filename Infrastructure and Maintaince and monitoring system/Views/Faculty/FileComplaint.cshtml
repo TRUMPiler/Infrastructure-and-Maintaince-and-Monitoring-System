@@ -14,17 +14,19 @@
             <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
-            <a href="/Student/StudentProfile" class="nav-link">Home</a>
+            <a href="/Faculty/" class="nav-link">Home</a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
-            <a href="@Url.Action("ChangePass","Home")" class="nav-link">Change Password</a>
+            <a href="#" class="nav-link">Contact</a>
         </li>
     </ul>
 
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
         <!-- Navbar Search -->
-        <!-- Navbar Search -->
+
+
+
         <li class="nav-item">
             <a class="nav-link" data-widget="navbar-search" href="#" role="button">
                 <i class="fas fa-search"></i>
@@ -46,7 +48,6 @@
             </div>
         </li>
 
-
         <!-- Notifications Dropdown Menu -->
         <li class="nav-item dropdown">
             <a class="nav-link" data-toggle="dropdown" href="#">
@@ -63,6 +64,10 @@
             </div>
         </li>
 
+
+
+
+
         <li class="nav-item">
             <a class="nav-link" data-widget="fullscreen" href="#" role="button">
                 <i class="fas fa-expand-arrows-alt"></i>
@@ -74,9 +79,7 @@
             </a>
         </li>
         <li class="nav-item">
-            <button type="button" class="btn btn-primary float-right" onclick="window.location.href='@Url.Action("Logout", "Home")'">
-                Logout
-            </button>
+            <button type="button" class="btn btn-primary float-right" onclick="window.location.href='@Url.Action("Logout", "Home")'">Logout</button>
         </li>
     </ul>
 </nav>
@@ -100,10 +103,7 @@
                     {
                         <a href="#" class="d-block">@Session["Name"]</a>
                     }
-                    else
-                    {
-                        @Html.Action("Logout", "Home");
-                    }
+
                 }
 
             </div>
@@ -125,7 +125,7 @@
 
 
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a href="FileComplaint" class="nav-link">
                         <i class="nav-icon fas fa-table"></i>
                         <p>
                             More Info
@@ -139,18 +139,36 @@
                                 <p>Complaint history</p>
                             </a>
                         </li>
+
                         @if (Session["Role"] != null)
                         {
-                            if (Session["Role"].ToString().Contains("CR") || Session["Role"].ToString().Contains("LR"))
+                            if (Session["Role"].ToString().Contains("Faculty"))
                             {
+
+                                <li class="nav-item">
+                                    <a href="/Faculty/Complaints" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>View Complains</p>
+                                    </a>
+                                </li>
                                 <li class="nav-item">
                                     <a href="FileComplaint" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>File a Complain</p>
                                     </a>
                                 </li>
+                                if (Session["Role"].ToString().Contains("Head"))
+                                {
 
+                                    <li class="nav-item">
+                                        <a href="ManageRoom" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Manage Room</p>
+                                        </a>
+                                    </li>
+                                }
                             }
+
                         }
 
                     </ul>
@@ -229,7 +247,7 @@
                                     </select>
 
                                 </div>
-                              
+
 
 
                             </div>
