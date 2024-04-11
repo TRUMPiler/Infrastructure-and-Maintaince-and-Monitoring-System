@@ -205,7 +205,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
                 return RedirectToAction("Users");
             }
 
-            string query = "SELECT * FROM Tbl_Room";
+            string query = "SELECT R.RoomID, RT.RoomtType AS RoomType, R.Wing, R.RoomNo FROM Tbl_Room R INNER JOIN Tbl_RoomType RT ON R.RoomType = RT.RoomTypeID;";
             ConnectionString();
 
             List<Room> rooms = new List<Room>();
@@ -222,7 +222,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
                         Room getrooms = new Room
                         {
                             RoomID = (int)reader["RoomID"],
-                            RoomType = (int)reader["RoomType"],
+                            RoomType = reader["RoomType"].ToString(),
                             Wing = reader["Wing"].ToString()[0], // Assuming Wing is a char in the database
                             RoomNo = reader["RoomNo"].ToString()
                         };
