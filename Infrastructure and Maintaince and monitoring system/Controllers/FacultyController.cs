@@ -200,31 +200,38 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
         }
         public ActionResult ManageRoom()
         {
-
             if (Session["UserID"] != null)
             {
                 return RedirectToAction("Users");
             }
-            string query = "Select * from Tbl_Room";
+
+            string query = "SELECT * FROM Tbl_Room";
             ConnectionString();
-            con.Open();
-            com.Connection = con;
-            com.CommandText = query;
+
             List<Room> rooms = new List<Room>();
-            SqlDataReader reader = com.ExecuteReader();
 
-            while (reader.Read())
+            using (SqlConnection con = new SqlConnection(connectionString))
             {
-                Room getrooms = new Room
+                using (SqlCommand com = new SqlCommand(query, con))
                 {
-                    RoomID = (int)reader["RoomID"],
-                    RoomType = (int)reader["RoomType"],
-                    Wing = (char)reader["Wing"],
-                    RoomNo = reader["RoomNo"].ToString()
-                };
+                    con.Open();
+                    SqlDataReader reader = com.ExecuteReader();
 
-                rooms.Add(getrooms);
+                    while (reader.Read())
+                    {
+                        Room getrooms = new Room
+                        {
+                            RoomID = (int)reader["RoomID"],
+                            RoomType = (int)reader["RoomType"],
+                            Wing = reader["Wing"].ToString()[0], // Assuming Wing is a char in the database
+                            RoomNo = reader["RoomNo"].ToString()
+                        };
+
+                        rooms.Add(getrooms);
+                    }
+                }
             }
+
             return View(rooms);
         }
         public List<string> GetComplaints()

@@ -213,13 +213,13 @@
                                 </thead>
                                 <tbody>
                                     @model List<Infrastructure_and_Maintaince_and_monitoring_system.Models.Room>
-                                    @foreach (var item in Model)
+                                    @foreach (var room in Model)
                                     {
                                         <tr>
-                                            <td>@item.RoomID</td>
-                                            <td>@item.RoomType</td>
-                                            <td>@item.Wing</td>
-                                            <td>@item.RoomNo</td>
+                                            <td>@room.RoomID</td>
+                                            <td>@room.RoomType</td>
+                                            <td>@room.Wing</td>
+                                            <td>@room.RoomNo</td>
                                             
 
                                             @*<td> <button onclick="window.location.href='@Url.Action("EditUser", "Admin", new { userId = item.UserID })'">Edit</button><button onclick="window.location.href='@Url.Action("Delete", "Admin", new { userId = item.UserID })'">Deactive</button> </td>*@
