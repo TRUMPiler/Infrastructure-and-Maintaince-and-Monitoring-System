@@ -339,7 +339,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
                     }
                 }else
                 {
-                    cs.Image = null;
+                    cs.Image = "No Image";
                 }
                 // Define query
                 string query = "INSERT INTO [dbo].[Tbl_Complain]([Description],[ComplaintType],[ClassID],[Image],[Status]) VALUES (@Description, @ComplaintType, @ClassID,@Image, @Status ); SELECT SCOPE_IDENTITY();";

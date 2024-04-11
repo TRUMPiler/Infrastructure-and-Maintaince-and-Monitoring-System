@@ -419,21 +419,12 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
 
             // Register the complaint and get its ID
             int complaintId = RegisterComplaint(cs, connectionString);
-            if (complaintId == 0)
-            {
-                string script = "<script>alert('Image is Empty');window.location='/Faculty/'</script>";
-                return Content(script, "text/html");
-            }
-            else if (complaintId == 1)
-            {
-                string script = "<script>alert('Complaint is Empty');window.location='/Faculty/'</script>";
-                return Content(script, "text/html");
-            }
+            
             // Register the associated users
             RegisterComplaintUsers(cs.SelectedUser, complaintId, connectionString);
 
             // Redirect to the StudentProfile page
-            return RedirectToAction("Jndex");
+            return RedirectToAction("Index");
         }
         private int RegisterComplaint(Complaint cs, string connectionString)
         {
@@ -463,7 +454,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
                 }
                 else
                 {
-                    cs.Image = null;
+                    cs.Image = "No Image";
                 }
                 
                 // Define query

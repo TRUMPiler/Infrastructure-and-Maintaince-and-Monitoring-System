@@ -244,7 +244,7 @@
                                         <td>@complaint.Description</td>
                                         <td>@complaint.ComplaintType</td>
 
-                                        @if (complaint.Image != null)
+                                        @if (!complaint.Image.ToString().Contains("No Image"))
                                         {
                                             <td><a href="~/Admins/dist/img/@complaint.Image" target="_blank">Click to View</a></td>
 
