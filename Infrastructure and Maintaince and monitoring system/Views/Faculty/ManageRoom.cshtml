@@ -1,8 +1,7 @@
 ﻿@{
-    ViewBag.Title = "ManageRooms";
-    Layout = "~/Views/Shared/_AdminTablePage.cshtml";
+    ViewBag.Title = "ManageRoom";
+    Layout = "~/Views/Shared/_FacultyLayout.cshtml";
 }
-
 
 <!-- Preloader -->
 <div class="preloader flex-column justify-content-center align-items-center">
@@ -96,17 +95,9 @@
 
             </div>
             <div class="info">
-                @if (Session["LoginID"] != null)
-                {
-                    if (Session["Name"] != null)
-                    {
-                        <a href="#" class="d-block">@Session["Name"]</a>
-                    }
-                    else
-                    {
-                        @Html.Action("Logout", "Home");
-                    }
-                }
+
+                <a href="#" class="d-block">Name</a>
+
 
             </div>
         </div>
@@ -142,34 +133,31 @@
                             </a>
                         </li>
 
-                        @if (Session["Role"] != null)
+
+
+                        <li class="nav-item">
+                            <a href="/Faculty/Complaints" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>View Complains</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>File a Complain</p>
+                            </a>
+                        </li>
+                        if (Session["Role"].ToString().Contains("Head"))
                         {
-                            if (Session["Role"].ToString().Contains("Faculty"))
-                            {
 
-                                <li class="nav-item">
-                                    <a href="/Faculty/Complaints" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>View Complains</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>File a Complain</p>
-                                    </a>
-                                </li>
-                                if (Session["Role"].ToString().Contains("Head"))
-                                {
-
-                                    <li class="nav-item">
-                                        <a href="ManageRoom" class="nav-link">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p>Manage Room</p>
-                                        </a>
-                                    </li>
-                                }
-                            }
+                        <li class="nav-item">
+                            <a href="ManageRoom" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Manage Room</p>
+                            </a>
+                        </li>
+                        }
+                        }
 
                         }
 
@@ -223,43 +211,14 @@
                                         <th>Image</th>
                                         <th>Status</th>
                                         <th>Users</th>
-                                        @if (Session["Role"] != null)
-                                        {
-                                            if (Session["Role"].ToString().Contains("Head"))
-                                            {
 
-                                                <th>Action</th>
-                                            }
 
-                                        }
+                                        <th>Action</th>
+
 
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    @model List<Infrastructure_and_Maintaince_and_monitoring_system.Models.Complaint>
-                                    @foreach (var complaint in Model)
-                                    {
-                                        <tr>
-                                            <td>@complaint.ComplaintID</td>
-                                            <td>@complaint.Description</td>
-                                            <td>@complaint.ComplaintType</td>
 
-                                            <td><a href="~/Admins/dist/img/@complaint.Image" target="_blank">Click to View</a></td>
-                                            <td>@complaint.Status</td>
-                                            <td>@complaint.User</td>
-                                            @if (Session["Role"] != null)
-                                            {
-                                                if (Session["Role"].ToString().Contains("Head"))
-                                                {
-                                                    <td> <button onclick="window.location.href='@Url.Action("EditComplaint", "Admin", new { cid = complaint.ComplaintID })'">Edit</button><button>Reject</button> </td>
-
-                                                }
-
-                                            }
-
-                                        </tr>
-                                    }
-                                </tbody>
                                 <tfoot>
                                     <tr>
                                         <th>Complaint ID</th>
@@ -269,15 +228,10 @@
                                         <th>Status</th>
                                         <th>Users</th>
 
-                                        @if (Session["Role"] != null)
-                                        {
-                                            if (Session["Role"].ToString().Contains("Head"))
-                                            {
 
-                                                <th>Action</th>
-                                            }
 
-                                        }
+                                        <th>Action</th>
+
                                 </tfoot>
                             </table>
                         </div>
