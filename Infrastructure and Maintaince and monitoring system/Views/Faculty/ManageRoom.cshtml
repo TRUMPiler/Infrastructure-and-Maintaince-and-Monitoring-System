@@ -147,7 +147,7 @@
                                 <p>File a Complain</p>
                             </a>
                         </li>
-                        @*if (Session["Role"].ToString().Contains("Head"))
+                        @if (Session["Role"].ToString().Contains("Head"))
                         {
 
                         <li class="nav-item">
@@ -157,9 +157,19 @@
                             </a>
                         </li>
                         }
-                        }
+                        @*if (Session["Role"].ToString().Contains("Head"))
+        {
 
-                        }*@
+        <li class="nav-item">
+            <a href="ManageRoom" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Manage Room</p>
+            </a>
+        </li>
+        }
+        }
+
+        }*@
 
                     </ul>
                 </li>
