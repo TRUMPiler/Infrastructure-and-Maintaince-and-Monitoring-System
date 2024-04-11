@@ -95,9 +95,14 @@
 
             </div>
             <div class="info">
+                @if (Session["LoginID"] != null)
+                {
+                    if (Session["Name"] != null)
+                    {
+                        <a href="#" class="d-block">@Session["Name"]</a>
+                    }
 
-                <a href="#" class="d-block">Name</a>
-
+                }
 
             </div>
         </div>
@@ -209,6 +214,7 @@
                                         <th>Room Type</th>
                                         <th>Wing</th>
                                         <th>Room No</th>
+                                        <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -222,7 +228,7 @@
                                             <td>@room.RoomNo</td>
                                             
 
-                                            @*<td> <button onclick="window.location.href='@Url.Action("EditUser", "Admin", new { userId = item.UserID })'">Edit</button><button onclick="window.location.href='@Url.Action("Delete", "Admin", new { userId = item.UserID })'">Deactive</button> </td>*@
+                                            <td> <button onclick="window.location.href='@Url.Action("EditUser", "Admin", new { userId = item.UserID })'">Edit</button> </td>
                                         </tr>
                                     }
                                 </tbody>

@@ -234,6 +234,44 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
 
             return View(rooms);
         }
+        //To be Edited
+        //[HttpPost]
+        //public ActionResult EditUser1(Room room)
+        //{
+
+        //    if (Session["UserID"] == null)
+        //    {
+        //        return RedirectToAction("Users");
+        //    }
+        //    int userId = Convert.ToInt32(Session["UserID"]);
+        //    //String Query = "update Tbl_Users set Name='" + gd.Name + "', Email='" + gd.Email + "', PhoneNo='" + gd.PhoneNo + "', Gender='" + gd.Gender + "', LoginID='" + gd.LoginID + "', Role='" + gd.Role + "', Status='" + gd.Status + "' where UserID=" + userId;
+        //    String Query="";
+        //    ConnectionString();
+        //    con.Open();
+        //    com.Connection = con;
+        //    com.CommandText = Query;
+        //    try
+        //    {
+        //        int i = com.ExecuteNonQuery();
+        //        if (i >= 1)
+        //        {
+        //            string script = "<script>alert('User data was updated Successfully');window.location='/Admin/Users'</script>";
+        //            return Content(script, "text/html");
+        //        }
+        //        else
+        //        {
+        //            string script = "<script>alert('User data was updated Unsuccessfully');window.location='/Admin/Users'</script>";
+        //            return Content(script, "text/html");
+        //        }
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        return RedirectToAction("Error?error=" + e + "", "Error");
+        //    }
+
+
+
+        //}
         public List<string> GetComplaints()
         {
             List<string> complaints = new List<string>();
