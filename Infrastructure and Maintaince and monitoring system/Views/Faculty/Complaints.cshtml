@@ -260,12 +260,12 @@
                                                 {
                                                     if (complaint.Status.Contains("Pending"))
                                                     {
-                                                        <td> <button onclick="window.location.href='@Url.Action("AcceptComplaint", "Faculty", new { complaintID = complaint.ComplaintID })'">Accept</button><button>Reject</button> </td>
+                                                        <td> <button onclick="window.location.href='@Url.Action("AcceptComplaint", "Faculty", new { complaintID = complaint.ComplaintID })'">Accept</button> <button onclick="window.location.href='@Url.Action("RejectComplaint", "Faculty", new { complaintID = complaint.ComplaintID })'"> Reject</button> </td>
 
                                                     }
                                                     else if (complaint.Status.Contains("In-progress"))
                                                     {
-                                                        <td> <button onclick="window.location.href='@Url.Action("AcceptComplaint", "Faculty", new { complaintID = complaint.ComplaintID })'">Complete</button></td>
+                                                        <td> <button onclick="window.location.href='@Url.Action("CompleteComplaint", "Faculty", new { complaintID = complaint.ComplaintID })'">Complete</button></td>
                                                     }
                                                     else
                                                     {

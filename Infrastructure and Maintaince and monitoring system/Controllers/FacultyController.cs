@@ -54,8 +54,98 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
                 return Content(script, "text/html");
             }
 
-            
+
             string query = "UPDATE Tbl_Complain SET Status = 'In-progress' WHERE ComplainID = @ComplainID";
+
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+
+                con.Open();
+
+
+                using (SqlCommand cmd = new SqlCommand(query, con))
+                {
+
+                    cmd.Parameters.AddWithValue("@ComplainID", complaintid);
+
+
+                    int result = cmd.ExecuteNonQuery();
+
+
+                    if (result > 0)
+                    {
+                        SendEmailToComplaintUsers((int)complaintid, "In-progress");
+                        string script = "<script>alert('Complaint status updated to In-progress.');window.location='/Faculty/'</script>";
+                        return Content(script, "text/html");
+
+                    }
+                    else
+                    {
+                        string script = "<script>alert('Error updating complaint status. Please try again.');window.location='/Faculty/'</script>";
+                        return Content(script, "text/html");
+                    }
+                }
+            }
+
+
+            return RedirectToAction("Complaints");
+        }
+        public ActionResult CompleteComplaint(int? complaintid)
+        {
+            if (complaintid == null)
+            {
+                string script = "<script>alert('ComplaintID is missing');window.location='/Faculty/'</script>";
+                return Content(script, "text/html");
+            }
+
+
+            string query = "UPDATE Tbl_Complain SET Status = 'Completed' WHERE ComplainID = @ComplainID";
+
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+
+                con.Open();
+
+
+                using (SqlCommand cmd = new SqlCommand(query, con))
+                {
+
+                    cmd.Parameters.AddWithValue("@ComplainID", complaintid);
+
+
+                    int result = cmd.ExecuteNonQuery();
+
+
+                    if (result > 0)
+                    {
+                        SendEmailToComplaintUsers((int)complaintid, "Completed");
+                        string script = "<script>alert('Complaint status updated to Completed.');window.location='/Faculty/'</script>";
+                        return Content(script, "text/html");
+
+                    }
+                    else
+                    {
+                        string script = "<script>alert('Error updating complaint status. Please try again.');window.location='/Faculty/'</script>";
+                        return Content(script, "text/html");
+                    }
+                }
+            }
+
+
+            return RedirectToAction("Complaints");
+        }
+        public ActionResult RejectComplaint(int? complaintid)
+        {
+            if (complaintid == null)
+            {
+                string script = "<script>alert('ComplaintID is missing');window.location='/Faculty/'</script>";
+                return Content(script, "text/html");
+            }
+
+            
+            string query = "UPDATE Tbl_Complain SET Status = 'Rejected' WHERE ComplainID = @ComplainID";
 
             
             using (SqlConnection con = new SqlConnection(connectionString))
@@ -75,8 +165,8 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
                     
                     if (result > 0)
                     {
-                        SendEmailToComplaintUsers((int)complaintid,"In-progress");
-                        string script = "<script>alert('Complaint status updated to In-progress.');window.location='/Faculty/'</script>";
+                        SendEmailToComplaintUsers((int)complaintid,"Rejected");
+                        string script = "<script>alert('Complaint status updated to Rejected.');window.location='/Faculty/'</script>";
                         return Content(script, "text/html");
                        
                     }
