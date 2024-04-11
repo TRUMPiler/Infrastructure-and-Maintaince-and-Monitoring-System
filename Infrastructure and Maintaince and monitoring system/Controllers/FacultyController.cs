@@ -136,6 +136,10 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
 
             return RedirectToAction("Complaints");
         }
+        public ActionResult AddRoom()
+        {
+            return View();
+        }
         public ActionResult RejectComplaint(int? complaintid)
         {
             if (complaintid == null)

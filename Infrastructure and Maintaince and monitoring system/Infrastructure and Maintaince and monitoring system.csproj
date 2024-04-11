@@ -2525,6 +2525,7 @@
     <Content Include="Views\Student\Complaints.cshtml" />
     <Content Include="Views\Student\ComplaintHistory.cshtml" />
     <Content Include="Views\Faculty\FileComplaint.cshtml" />
+    <Content Include="Views\Faculty\AddRoom.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
