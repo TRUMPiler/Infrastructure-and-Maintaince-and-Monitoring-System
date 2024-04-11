@@ -24,7 +24,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
 
         void ConnectionString()
         {
-            con.ConnectionString = "Data Source=ASUSTUFGAMING\\SQLEXPRESS;Initial Catalog=IMMS;Integrated Security=True";
+            con.ConnectionString = "Data Source=DESKTOP-T7RS5U7\\SQLEXPRESS;Initial Catalog=IMMS;Integrated Security=True";
         }
 
         // GET: Faculty
@@ -198,7 +198,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
 
             return count;
         }
-        public ActionResult ManageRoom(Room room)
+        public ActionResult ManageRoom()
         {
 
             if (Session["UserID"] != null)
@@ -210,7 +210,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
             con.Open();
             com.Connection = con;
             com.CommandText = query;
-            List<Room> rooms = new List<Room>;
+            List<Room> rooms = new List<Room>();
             SqlDataReader reader = com.ExecuteReader();
 
             while (reader.Read())
