@@ -138,7 +138,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
         }
         public ActionResult AddRoom()
         {
-            return View();
+            return View();//GG
         }
         public ActionResult RejectComplaint(int? complaintid)
         {
