@@ -1,0 +1,251 @@
+﻿@{
+    ViewBag.Title = "ManageRoom";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<!-- Preloader -->
+<div class="preloader flex-column justify-content-center align-items-center">
+    <img class="animation__shake" src="~/Admins/dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
+</div>
+
+<!-- Navbar -->
+
+<!--<aside class="main-sidebar sidebar-dark-primary elevation-4">
+    <!-- Brand Logo -->
+    <!--<a href="#" class="brand-link">
+        <img src="~/Admins/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+        <span class="brand-text font-weight-light">Infrastructure</span>
+    </a>
+    <div class="sidebar">-->
+        <!-- Sidebar user panel (optional) -->
+        <!--<div class="user-panel mt-3 pb-3 mb-3 d-flex">
+            <div class="image">
+
+            </div>
+            <div class="info">
+                @if (Session["LoginID"] != null)
+                {
+                    if (Session["Name"] != null)
+                    {
+                <a href="#" class="d-block">@Session["Name"]</a>
+                    }
+
+                }
+
+            </div>
+        </div>-->
+
+
+
+
+        <!-- Sidebar -->
+        <!-- Sidebar Menu -->
+        <!--<nav class="mt-2">
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">-->
+                <!-- Add icons to the links using the .nav-icon class
+                     with font-awesome or any other icon font library -->
+
+
+
+
+
+
+                <!--<li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-table"></i>
+                        <p>
+                            More Info
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Complaint history</p>
+                            </a>
+                        </li>
+
+
+
+                        <li class="nav-item">
+                            <a href="/Faculty/Complaints" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>View Complains</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>File a Complain</p>
+                            </a>
+                        </li>
+                        @if (Session["Role"].ToString().Contains("Head"))
+                        {
+
+                        <li class="nav-item">
+                            <a href="ManageRoom" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Manage Room</p>
+                            </a>
+                        </li>
+                        }-->
+                        @*if (Session["Role"].ToString().Contains("Head"))
+                            {
+
+                            <li class="nav-item">
+                                <a href="ManageRoom" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Manage Room</p>
+                                </a>
+                            </li>
+                            }
+                            }
+
+                            }*@
+
+                    </ul>
+                </li>
+
+
+            </ul>
+        </nav>-->
+        <!-- /.sidebar-menu -->
+    <!--</div>-->
+    <!-- /.sidebar -->
+<!--</aside>-->
+
+<!-- Content Wrapper. Contains page content --><!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Room Details</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active">Tables</li>
+                        <li class="breadcrumb-item active">Room Details</li>
+                    </ol>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+
+                    <div class="card">
+
+
+                        <div class="card-body">
+                            <table id="example1" class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Room ID</th>
+                                        <th>Room Type</th>
+                                        <th>Wing</th>
+                                        <th>Room No</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @model List<Infrastructure_and_Maintaince_and_monitoring_system.Models.Room>
+                                        @foreach (var room in Model)
+                                    {
+                                    <tr>
+                                        <td>@room.RoomID</td>
+                                        <td>@room.RoomType</td>
+                                        <td>@room.Wing</td>
+                                        <td>@room.RoomNo</td>
+                                        <td>@room.Status</td>
+
+
+                                        <td>
+                                            <button class="btn btn-primary" onclick="window.location.href='@Url.Action("EditRoom", "Admin", new { RoomID = room.RoomID })'">Edit</button>
+                                            @if (room.Status)
+                                            {
+                                                <button class="btn btn-primary ml-2" onclick="window.location.href='@Url.Action("DeactivateRoom", "Admin", new { RoomID = room.RoomID })'">Deactive</button>
+                                            }
+                                            else
+                                            {
+                                                <button class="btn btn-primary ml-2" onclick="window.location.href='@Url.Action("ActivateRoom", "Admin", new { RoomID = room.RoomID })'">Activate</button>
+
+                                            }
+                                        </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th>Room ID</th>
+                                        <th>Room Type</th>
+                                        <th>Wing</th>
+                                        <th>Room No</th>
+                                        <th>Action</th>
+                                </tfoot>
+                            </table>
+                            <button type="button" class="btn btn-primary float-left mt-3" onclick="window.location.href='@Url.Action("AddRoom","Admin",new { })'">Add</button>
+
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                    <!-- /.card -->
+                </div>
+                <!-- /.col -->
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+<!-- /.control-sidebar -->
+<!-- ./wrapper -->
+<!-- jQuery -->
+<script src="~/Admins/plugins/jquery/jquery.min.js"></script>
+<!-- Bootstrap 4 -->
+<script src="~/Admins/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- DataTables  & ~/Admins/plugins -->
+<script src="~/Admins/plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="~/Admins/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+<script src="~/Admins/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+<script src="~/Admins/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+<script src="~/Admins/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+<script src="~/Admins/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+<script src="~/Admins/plugins/jszip/jszip.min.js"></script>
+<script src="~/Admins/plugins/pdfmake/pdfmake.min.js"></script>
+<script src="~/Admins/plugins/pdfmake/vfs_fonts.js"></script>
+<script src="~/Admins/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+<script src="~/Admins/plugins/datatables-buttons/js/buttons.print.min.js"></script>
+<script src="~/Admins/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+<!-- AdminLTE App -->
+<script src="~/Admins/dist/js/adminlte.min.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="~/Admins/dist/js/demo.js"></script>
+<!-- Page specific script -->
+<script>
+    $(function () {
+        $("#example1").DataTable({
+            "responsive": true, "lengthChange": false, "autoWidth": false,
+            "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+        }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+        $('#example2').DataTable({
+            "paging": true,
+            "lengthChange": false,
+            "searching": false,
+            "ordering": true,
+            "info": true,
+            "autoWidth": false,
+            "responsive": true,
+        });
+    });
+</script>

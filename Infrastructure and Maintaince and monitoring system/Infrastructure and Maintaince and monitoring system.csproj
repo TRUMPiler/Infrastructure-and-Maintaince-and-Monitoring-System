@@ -2149,6 +2149,7 @@
     <Content Include="Content\vendor\purecounter\purecounter_vanilla.js" />
     <Content Include="Content\vendor\swiper\swiper-bundle.min.css" />
     <Content Include="Content\vendor\swiper\swiper-bundle.min.js" />
+    <Content Include="Controllers\.txt" />
     <Content Include="Global.asax" />
     <Content Include="Models\UserModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -2167,20 +2168,27 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\AssetController.cs" />
+    <Compile Include="Controllers\AssetTransferController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\FacultyController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\RoomAssetController.cs" />
     <Compile Include="Controllers\StudentController.cs" />
+    <Compile Include="Controllers\SurveyController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AdminPanel.cs" />
     <Compile Include="Models\Asset.cs" />
+    <Compile Include="Models\AssetModel.cs" />
+    <Compile Include="Models\AssetTransferModel.cs" />
     <Compile Include="Models\Complaint.cs" />
     <Compile Include="Models\ComplaintTypes.cs" />
     <Compile Include="Models\EmailSending.cs" />
+    <Compile Include="Models\Feedback.cs" />
     <Compile Include="Models\GetData.cs" />
     <Compile Include="Models\Room.cs" />
+    <Compile Include="Models\RoomAssetsModel.cs" />
     <Compile Include="Models\RoomType.cs" />
     <Compile Include="Models\StudentPanel.cs" />
     <Compile Include="Models\Tbl_Asset.cs">
@@ -2523,16 +2531,28 @@
     <Content Include="Views\Shared\_FacultyLayout.cshtml" />
     <Content Include="Views\Faculty\Complaints.cshtml" />
     <Content Include="Views\Home\ChangePass.cshtml" />
-    <Content Include="Views\Faculty\ManageRoom.cshtml" />
+    <Content Include="Views\Admin\ManageRoom.cshtml" />
     <Content Include="Views\Student\FileComplaint.cshtml" />
     <Content Include="Views\Student\Complaints.cshtml" />
     <Content Include="Views\Student\ComplaintHistory.cshtml" />
     <Content Include="Views\Faculty\FileComplaint.cshtml" />
-    <Content Include="Views\Faculty\AddRoom.cshtml" />
+    <Content Include="Views\Admin\AddRoom.cshtml" />
     <Content Include="Views\Asset\Asset.cshtml" />
     <Content Include="Views\Asset\Update.cshtml" />
     <Content Include="Views\Asset\Create.cshtml" />
     <Content Include="Views\Student\GiveFeedback.cshtml" />
+    <Content Include="Views\Survey\Index.cshtml" />
+    <Content Include="Views\Faculty\ComplaintHistory.cshtml" />
+    <Content Include="Views\AssetTransfer\Index.cshtml" />
+    <Content Include="Views\AssetTransfer\Update.cshtml" />
+    <Content Include="Views\Faculty\ViewFeedback.cshtml" />
+    <Content Include="Views\AssetTransfer\Add.cshtml" />
+    <Content Include="Views\Faculty\GiveFeedback.cshtml" />
+    <Content Include="Views\Admin\ViewFeedback.cshtml" />
+    <Content Include="Views\Admin\ComplaintType.cshtml" />
+    <Content Include="Views\Admin\EditRoom.cshtml" />
+    <Content Include="Views\RoomAsset\Update.cshtml" />
+    <Content Include="Views\RoomAsset\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

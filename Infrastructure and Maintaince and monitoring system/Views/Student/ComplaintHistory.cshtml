@@ -201,6 +201,10 @@
                                         <th>Image</th>
                                         <th>Status</th>
                                         <th>Users</th>
+                                        @if (Session["Role"].ToString().Contains("CR") || Session["Role"].ToString().Contains("LR"))
+                                        {
+                                        <th>Action</th>
+                                        }
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -231,6 +235,21 @@
 
 
                                         </td>
+                                        
+                                            @if (complaint.Status.Contains("Pending")&&(Session["Role"].ToString().Contains("CR") || Session["Role"].ToString().Contains("LR")))
+                                            {
+                                               <td> <button onclick="window.location.href='@Url.Action("Delete", "Student", new { complaintID = complaint.ComplaintID })'">Delete</button></td>
+
+
+                                            }
+                                            else if ((complaint.Status.Contains("Completed") && !complaint.HasFeedback)&& Session["Role"].ToString().Contains("CR") || Session["Role"].ToString().Contains("LR"))
+                                            {
+                                                <td> <button onclick="window.location.href='@Url.Action("GiveFeedback", "Student", new { complaintid = complaint.ComplaintID })'">Give Feedback</button></td>
+                                            }
+                                            else if ((complaint.Status.Contains("Completed") && complaint.HasFeedback) && Session["Role"].ToString().Contains("CR") || Session["Role"].ToString().Contains("LR"))
+                                            {
+                                                <td>Feedback recieved</td>
+                                            }
 
 
                                     </tr>
@@ -244,6 +263,10 @@
                                         <th>Image</th>
                                         <th>Status</th>
                                         <th>Users</th>
+                                        @if (Session["Role"].ToString().Contains("CR") || Session["Role"].ToString().Contains("LR"))
+                                        {
+                                            <th>Action</th>
+                                        }
                                     </tr>
                                 </tfoot>
                             </table>

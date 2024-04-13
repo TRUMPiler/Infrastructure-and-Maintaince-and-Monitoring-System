@@ -1,13 +1,11 @@
-﻿@{
-    ViewBag.Title = "ManageRoom";
-    Layout = "~/Views/Shared/_FacultyLayout.cshtml";
+﻿﻿@{
+    ViewBag.Title = "AddRoom";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
-
-<!-- Preloader -->
+@model Infrastructure_and_Maintaince_and_monitoring_system.Models.Room
 <div class="preloader flex-column justify-content-center align-items-center">
     <img class="animation__shake" src="~/Admins/dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
 </div>
-
 <!-- Navbar -->
 <nav class="main-header navbar navbar-expand navbar-white navbar-light">
     <!-- Left navbar links -->
@@ -67,6 +65,9 @@
         </li>
 
 
+
+
+
         <li class="nav-item">
             <a class="nav-link" data-widget="fullscreen" href="#" role="button">
                 <i class="fas fa-expand-arrows-alt"></i>
@@ -82,6 +83,7 @@
         </li>
     </ul>
 </nav>
+<!-- /.navbar -->
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
     <a href="#" class="brand-link">
@@ -99,7 +101,7 @@
                 {
                     if (Session["Name"] != null)
                     {
-                        <a href="#" class="d-block">@Session["Name"]</a>
+                <a href="#" class="d-block">@Session["Name"]</a>
                     }
 
                 }
@@ -123,7 +125,7 @@
 
 
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a href="FileComplaint" class="nav-link">
                         <i class="nav-icon fas fa-table"></i>
                         <p>
                             More Info
@@ -138,7 +140,10 @@
                             </a>
                         </li>
 
-
+                        @if (Session["Role"] != null)
+                        {
+                            if (Session["Role"].ToString().Contains("Faculty"))
+                            {
 
                         <li class="nav-item">
                             <a href="/Faculty/Complaints" class="nav-link">
@@ -147,13 +152,13 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="FileComplaint" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>File a Complain</p>
                             </a>
                         </li>
-                        @if (Session["Role"].ToString().Contains("Head"))
-                        {
+                                if (Session["Role"].ToString().Contains("Head"))
+                                {
 
                         <li class="nav-item">
                             <a href="ManageRoom" class="nav-link">
@@ -161,20 +166,10 @@
                                 <p>Manage Room</p>
                             </a>
                         </li>
+                                }
+                            }
+
                         }
-                        @*if (Session["Role"].ToString().Contains("Head"))
-        {
-
-        <li class="nav-item">
-            <a href="ManageRoom" class="nav-link">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Manage Room</p>
-            </a>
-        </li>
-        }
-        }
-
-        }*@
 
                     </ul>
                 </li>
@@ -186,21 +181,20 @@
     </div>
     <!-- /.sidebar -->
 </aside>
-
-<!-- Content Wrapper. Contains page content --><!-- Content Wrapper. Contains page content -->
+<!-- Content Wrapper. Contains page content -->
+<!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Room Details</h1>
+                    <h1>Complaint Filing</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active">Tables</li>
-                        <li class="breadcrumb-item active">Room Details</li>
+                        <li class="breadcrumb-item active">Validation</li>
                     </ol>
                 </div>
             </div>
@@ -211,100 +205,135 @@
     <section class="content">
         <div class="container-fluid">
             <div class="row">
-                <div class="col-12">
-
-                    <div class="card">
-
-
-                        <div class="card-body">
-                            <table id="example1" class="table table-bordered table-striped">
-                                <thead>
-                                    <tr>
-                                        <th>Room ID</th>
-                                        <th>Room Type</th>
-                                        <th>Wing</th>
-                                        <th>Room No</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @model List<Infrastructure_and_Maintaince_and_monitoring_system.Models.Room>
-                                    @foreach (var room in Model)
-                                    {
-                                        <tr>
-                                            <td>@room.RoomID</td>
-                                            <td>@room.RoomType</td>
-                                            <td>@room.Wing</td>
-                                            <td>@room.RoomNo</td>
-                                            
-
-                                            <td> @*<button onclick="window.location.href='@Url.Action("EditUser", "Admin", new { userId = item.UserID })'">Edit</button><button onclick="window.location.href='@Url.Action("Delete", "Admin", new { userId = item.UserID })'">Deactive</button>*@ </td>
-                                        </tr>
-                                    }
-                                </tbody>
-                                <tfoot>
-                                    <tr>
-                                        <th>Room ID</th>
-                                        <th>Room Type</th>
-                                        <th>Wing</th>
-                                        <th>Room No</th>
-                                        <th>Action</th>
-                                </tfoot>
-                            </table>
-                            <button type="button" class="btn btn-primary float-left mt-3" onclick="#">Add</button>
-
+                <!-- left column -->
+                <div class="col-md-12">
+                    <!-- jquery validation -->
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <h3 class="card-title"><small>Add Room Detail</small></h3>
                         </div>
-                        <!-- /.card-body -->
+                        <!-- /.card-header -->
+                        <!-- form start -->
+
+                        <form id="quickForm" method="post" action="AddRoom" enctype="multipart/form-data">
+                            <div class="card-body">
+
+                                <div class="form-group">
+                                    <label for="exampleInputName">Wing</label>
+                                    <input type="text" name="Wing" class="form-control" id="exampleInputName" placeholder="Enter name">
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputName">Room no</label>
+                                    <input type="text" name="RoomNo" class="form-control" id="exampleInputName" placeholder="Enter name">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="exampleInputName">Room Type</label>
+                                    <select name="Roomtype">
+                                        @foreach (var room in Model.roomTypes)
+                                        {
+
+                                        <option value=@room.RoomTypeID>@room.Roomtype</option>
+
+                                        }
+
+                                    </select>
+                                </div>
+
+
+
+
+                            </div>
+                            <!-- /.card-body -->
+                            <div class="card-footer">
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
+                        </form>
                     </div>
                     <!-- /.card -->
                 </div>
-                <!-- /.col -->
+                <!--/.col (left) -->
+                <!-- right column -->
+                <div class="col-md-6">
+
+                </div>
+                <!--/.col (right) -->
             </div>
             <!-- /.row -->
-        </div>
-        <!-- /.container-fluid -->
+        </div><!-- /.container-fluid -->
     </section>
     <!-- /.content -->
 </div>
-<!-- /.content-wrapper -->
-<!-- /.control-sidebar -->
-<!-- ./wrapper -->
+
 <!-- jQuery -->
 <script src="~/Admins/plugins/jquery/jquery.min.js"></script>
 <!-- Bootstrap 4 -->
 <script src="~/Admins/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<!-- DataTables  & ~/Admins/plugins -->
-<script src="~/Admins/plugins/datatables/jquery.dataTables.min.js"></script>
-<script src="~/Admins/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
-<script src="~/Admins/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
-<script src="~/Admins/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
-<script src="~/Admins/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
-<script src="~/Admins/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
-<script src="~/Admins/plugins/jszip/jszip.min.js"></script>
-<script src="~/Admins/plugins/pdfmake/pdfmake.min.js"></script>
-<script src="~/Admins/plugins/pdfmake/vfs_fonts.js"></script>
-<script src="~/Admins/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
-<script src="~/Admins/plugins/datatables-buttons/js/buttons.print.min.js"></script>
-<script src="~/Admins/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+<!-- jquery-validation -->
 <!-- AdminLTE App -->
 <script src="~/Admins/dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="~/Admins/dist/js/demo.js"></script>
-<!-- Page specific script -->
+<script src="~/Admins/plugins/jquery-validation/jquery.validate.min.js"></script>
+<script src="~/Admins/plugins/jquery-validation/additional-methods.min.js"></script>
 <script>
     $(function () {
-        $("#example1").DataTable({
-            "responsive": true, "lengthChange": false, "autoWidth": false,
-            "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
-        }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-        $('#example2').DataTable({
-            "paging": true,
-            "lengthChange": false,
-            "searching": false,
-            "ordering": true,
-            "info": true,
-            "autoWidth": false,
-            "responsive": true,
+
+        $('#quickForm').validate({
+            rules: {
+                Description: {
+                    required: true,
+                    minlength: 5,
+
+                    maxlength: 245
+                },
+
+                Complaint_TypeID: {
+                    required: true
+                },
+                ClassID: {
+                    required: true,
+                    minlength: 1,
+                    maxlength: 3
+                },
+                ComplaintImage: {
+                    required: true,
+                    accept: "image/jpeg,image/png"
+                }
+            },
+            messages: {
+                SelectedUsers: {
+                    required: "Please choose a student"
+                },
+                Description: {
+                    required: "Please enter a description",
+
+                    minlength: "Description must be at least 5 characters",
+                    maxlength: "Description cannot exceed 245 characters"
+                },
+                Complaint_TypeID: {
+                    required: "Please select a complaint type"
+                },
+                ClassID: {
+                    required: "Please enter a room ID",
+                    minlength: "Room ID must be at least 1 character",
+                    maxlength: "Room ID cannot exceed 3 characters"
+                },
+                ComplaintImage: {
+                    required: "Please upload a file"
+                }
+            },
+            errorElement: 'span',
+            errorPlacement: function (error, element) {
+                error.addClass('invalid-feedback');
+                element.closest('.form-group').append(error);
+            },
+            highlight: function (element, errorClass, validClass) {
+                $(element).addClass('is-invalid');
+            },
+            unhighlight: function (element, errorClass, validClass) {
+                $(element).removeClass('is-invalid');
+            }
         });
     });
 </script>

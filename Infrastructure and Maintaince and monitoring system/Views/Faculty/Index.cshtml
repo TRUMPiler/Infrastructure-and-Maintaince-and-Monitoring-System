@@ -22,7 +22,7 @@
             </li>
             <li class="nav-item d-none d-sm-inline-block">
                 <a href="#" class="nav-link">Contact</a>
-             </li>
+            </li>
         </ul>
 
         <!-- Right navbar links -->
@@ -102,13 +102,13 @@
                 </div>
                 <div class="info">
                     @if (Session["LoginID"] != null)
+                {
+                    if (Session["Name"] != null)
                     {
-                        if (Session["Name"] != null)
-                        {
-                            <a href="#" class="d-block">@Session["Name"]</a>
-                        }
-
+                    <a href="#" class="d-block">@Session["Name"]</a>
                     }
+
+                }
 
                 </div>
             </div>
@@ -129,7 +129,7 @@
 
 
                     <li class="nav-item">
-                        <a href="FileComplaint" class="nav-link">
+                        <a href="/Faculty/FileComplaint" class="nav-link">
                             <i class="nav-icon fas fa-table"></i>
                             <p>
                                 More Info
@@ -138,42 +138,33 @@
                         </a>
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
-                                <a href="#" class="nav-link">
+                                <a href="/Faculty/ComplaintHistory" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Complaint history</p>
                                 </a>
                             </li>
 
                             @if (Session["Role"] != null)
+                        {
+                            if (Session["Role"].ToString().Contains("Faculty"))
                             {
-                                if (Session["Role"].ToString().Contains("Faculty"))
-                                {
 
-                                    <li class="nav-item">
-                                        <a href="/Faculty/Complaints" class="nav-link">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p>View Complains</p>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="/Faculty/FileComplaint" class="nav-link">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p>File a Complain</p>
-                                        </a>
-                                    </li>
-                                    if (Session["Role"].ToString().Contains("Head"))
-                                    {
-
-                                        <li class="nav-item">
-                                            <a href="/Faculty/ManageRoom" class="nav-link">
-                                                <i class="far fa-circle nav-icon"></i>
-                                                <p>Manage Room</p>
-                                            </a>
-                                        </li>
-                                    }
-                                }
-
+                            <li class="nav-item">
+                                <a href="/Faculty/Complaints" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>View Complains</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/Faculty/FileComplaint" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>File a Complain</p>
+                                </a>
+                            </li>
+                               
                             }
+
+                        }
 
                         </ul>
                     </li>

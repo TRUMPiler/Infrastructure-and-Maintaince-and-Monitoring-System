@@ -1,14 +1,11 @@
-﻿@model Infrastructure_and_Maintaince_and_monitoring_system.Models.Asset
+﻿@model List<Infrastructure_and_Maintaince_and_monitoring_system.Models.AssetModel>
 
-@{
-    ViewBag.Title = "Update Asset";
-    Layout = "~/Views/Shared/_AdminTablePage.cshtml";
-}
+@{ ViewBag.Title = "Asset Form";
+    Layout = "~/Views/Shared/_AdminTablePage.cshtml"; }
 
 <div class="preloader flex-column justify-content-center align-items-center">
     <img class="animation__shake" src="~/Admins/dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
 </div>
-<!-- Navbar -->
 <nav class="main-header navbar navbar-expand navbar-white navbar-light">
     <!-- Left navbar links -->
     <ul class="navbar-nav">
@@ -188,14 +185,15 @@
         <!-- /.sidebar-menu -->
     </div>
     <!-- /.sidebar -->
-</aside><!-- Content Wrapper. Contains page content -->
+</aside>
+<!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Users</h1>
+                    <h1></h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
@@ -207,6 +205,7 @@
             </div>
         </div><!-- /.container-fluid -->
     </section>
+
     <section class="content">
         <div class="container-fluid">
             <div class="row">
@@ -217,25 +216,27 @@
                         <!-- /.card-header -->
                         <div class="card-body">
 
-                            <h2>Update Asset</h2>
-
                             @using (Html.BeginForm())
                             {
-                                @Html.AntiForgeryToken()
-
-                                @Html.HiddenFor(model => model.AssetID)
-
-                                <div class="form-group">
-                                    @Html.LabelFor(model => model.AssetName, htmlAttributes: new { @class = "control-label" })
-                                    @Html.EditorFor(model => model.AssetName, new { htmlAttributes = new { @class = "form-control" , required = "required"} })
-                                    @Html.ValidationMessageFor(model => model.AssetName, "", new { @class = "text-danger" })
+                                <div>
+                                    @Html.DropDownList("selectedRoom", (SelectList)ViewBag.Rooms, "Select Room", new { @class = "form-control", required = "required" })
                                 </div>
+                                <table>
+                                    @for (int i = 0; i < Model.Count; i++)
+                                    {
+                                        <tr>
+                                            <td>@Model[i].AssetName</td>
+                                            <td>
+                                                @Html.TextBoxFor(m => m[i].Working, new { type = "number" , htmlAttributes = new { @class = "form-control" , required = "required"} }) Working
+                                            </td>
+                                            <td>
+                                                @Html.TextBoxFor(m => m[i].NonWorking, new { type = "number", htmlAttributes = new { @class = "form-control", required = "required" } }) Non-Working
+                                            </td>
+                                        </tr>
+                                        @Html.HiddenFor(m => m[i].AssetID)}
+                                </table>
 
-                                <div class="form-group">
-                                    <input type="submit" value="Update" class="btn btn-primary" />
-                                </div>
-                            }
-
+                                <input type="submit" value="Submit" class="btn btn-info" />}
                         </div>
                         <!-- /.card-body -->
                     </div>
@@ -249,7 +250,6 @@
     </section>
     <!-- /.content -->
 </div>
-
 
 <script src="~/Admins/plugins/jquery/jquery.min.js"></script>
 <!-- Bootstrap 4 -->
@@ -289,3 +289,4 @@
         });
     });
 </script>
+

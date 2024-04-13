@@ -139,6 +139,12 @@
                                 <p>Assets</p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="/Survey/" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Survey</p>
+                            </a>
+                        </li>
 
                     </ul>
                 </li>
@@ -219,7 +225,7 @@
 
                                 <div class="form-group">
                                     @Html.LabelFor(model => model.AssetName, htmlAttributes: new { @class = "control-label" })
-                                    @Html.EditorFor(model => model.AssetName, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.EditorFor(model => model.AssetName, new { htmlAttributes = new { @class = "form-control", required = "required" } })
                                     @Html.ValidationMessageFor(model => model.AssetName, "", new { @class = "text-danger" })
                                 </div>
 

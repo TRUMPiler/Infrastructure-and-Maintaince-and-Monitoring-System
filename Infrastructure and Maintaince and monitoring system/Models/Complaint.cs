@@ -20,5 +20,6 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Models
         public List<GetData> Users { get; set; }
         public int SelectedRoomID { get; set; }
         public int[] SelectedUser { get; set; }
+        public bool HasFeedback { get; set; }
     }
 }

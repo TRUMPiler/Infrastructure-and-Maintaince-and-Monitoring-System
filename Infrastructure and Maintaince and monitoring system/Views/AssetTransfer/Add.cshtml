@@ -1,8 +1,9 @@
-﻿﻿@{
-    ViewBag.Title = "Edit";
+﻿@model Infrastructure_and_Maintaince_and_monitoring_system.Models.AssetTransferModel
+@{
+    ViewBag.Title = "Asset Transfers";
     Layout = "~/Views/Shared/_AdminTablePage.cshtml";
 }
-@model Infrastructure_and_Maintaince_and_monitoring_system.Models.Complaint
+
 <div class="preloader flex-column justify-content-center align-items-center">
     <img class="animation__shake" src="~/Admins/dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
 </div>
@@ -87,7 +88,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="/RoomAsset/" class="nav-link">
+                            <a href="/Survey/" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Survey</p>
                             </a>
@@ -114,9 +115,6 @@
     </div>
     <!-- /.sidebar -->
 </aside>
-
-<!-- Content Wrapper. Contains page content -->
-<!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
@@ -144,80 +142,38 @@
                     <!-- jquery validation -->
                     <div class="card card-primary">
                         <div class="card-header">
-                            <h3 class="card-title">Edit Details<small></small></h3>
+                            <h3 class="card-title">Add Transfer<small></small></h3>
                         </div>
-                        <!-- /.card-header -->
-                        <!-- form start -->
 
-                        <form id="quickForm" method="post" action="EditUser1">
-                            <div class="card-body">
-                                <div class="form-group">
-                                    <label for="exampleInputName">ComplainID</label>
-                                    <input type="text" name="ComplainID" class="form-control" id="exampleInputID" value="@Model.ComplaintID" placeholder="Enter name" disabled>
-                                </div>
-                                <div class="form-group">
-                                    <label for="exampleInputName">Description</label>
-                                    <input type="text" name="Description" class="form-control" id="exampleInputName" value="@Model.Description" placeholder="Enter name">
-                                </div>
-                                <div class="form-group">
-                                    <label for="exampleInputEmail1">ComplaintType</label>
-                                    <select name="Complaint_TypeID">
-                                        @foreach (var ct in Model.ComplaintTypes)
-                                        {
-                                            if (ct.ComplaintType.Equals(Model.ComplaintType))
-                                            {
-                                                <option value="@ct.ComplaintType_ID" selected>@ct.ComplaintType</option>
-                                            }
-                                            else
-                                            {
-                                                <option value="@ct.ComplaintType_ID">@ct.ComplaintType</option>
-                                            }
+                       
 
-                                        }
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="exampleInputPassword1">ROOMID</label>
-                                    <input type="text" name="RoomID" class="form-control" id="exampleInputPassword1" value="@Model.ClassID" placeholder="Password">
-                                </div>
-                                <div class="form-group">
-                                    <label for="exampleInputPassword1">Status</label>
-                                    <select name="Status">
-                                        @if (Model.Status.Equals("Pending"))
-                                        {
-                                            <option value="Pending" selected>@Model.Status</option>
-                                        }
-                                        else
-                                        {
-                                            <option value="Pending">Pending</option>
-                                        }
-                                        @if (Model.Status.Equals("In-Progress"))
-                                        {
-                                            <option value="@Model.Status" selected>@Model.Status</option>
-                                        }
-                                        else
-                                        {
-                                            <option value="In-Progress">In-Progress</option>
-                                        }
-                                        @if (Model.Status.Equals("Completed"))
-                                        {
-                                            <option value="@Model.Status" selected>@Model.Status</option>
-                                        }
-                                        else
-                                        {
-                                            <option value="Completed">Completed</option>
-                                        }
-                                    </select>
-                                </div>
+                        @using (Html.BeginForm())
+                        {
+                            @Html.AntiForgeryToken()
 
 
-
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.From_RoomID)
+                                @Html.DropDownListFor(model => model.From_RoomID, (IEnumerable<SelectListItem>)ViewBag.RoomList, "Select From Room", new { @class = "form-control" , required = "required"})
                             </div>
-                            <!-- /.card-body -->
-                            <div class="card-footer">
-                                <button type="submit" class="btn btn-primary">Submit</button>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.To_RoomID)
+                                @Html.DropDownListFor(model => model.To_RoomID, (IEnumerable<SelectListItem>)ViewBag.RoomList, "Select To Room", new { @class = "form-control" , required = "required"})
                             </div>
-                        </form>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.AssetID)
+                                @Html.DropDownListFor(model => model.AssetID, (IEnumerable<SelectListItem>)ViewBag.AssetList, "Select Asset", new { @class = "form-control", required = "required" })
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Quantity)
+                                @Html.EditorFor(model => model.Quantity, new { @class = "form-control" , required = "required" })
+                            </div>
+
+                            <button type="submit" class="btn btn-primary">Save</button>
+                        }
                     </div>
                     <!-- /.card -->
                 </div>
