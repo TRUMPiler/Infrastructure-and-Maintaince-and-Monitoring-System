@@ -1,0 +1,89 @@
+﻿@model List<Infrastructure_and_Maintaince_and_monitoring_system.Models.RoomAssetsModel>
+
+@{
+    ViewBag.Title = "Room Assets";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+    }
+
+<!-- Main content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Room Details</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active">Tables</li>
+                        <li class="breadcrumb-item active">Survey</li>
+                    </ol>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+
+                    <div class="card">
+
+
+                        <div class="card-body">
+                            <p>
+                                @Html.ActionLink("Add Survey", "Index", "Survey", new { area = "" }, htmlAttributes: new { @class = "btn btn-primary"  })
+                            </p>
+
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>RoomID</th>
+                                        <th>AssetID</th>
+                                        <th>Working</th>
+                                        <th>NonWorking</th>
+                                        <th>Edit</th>
+                                        <th>Delete</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var roomAsset in Model)
+                                    {
+                                        <tr>
+                                            <td>@roomAsset.RoomID</td>
+                                            <td>@roomAsset.AssetID</td>
+                                            <td>@roomAsset.Working</td>
+                                            <td>@roomAsset.NonWorking</td>
+                                            <td>
+                                                @Html.ActionLink("Edit", "Update", new { id = roomAsset.RAid })
+                                            </td>
+                                            <td>
+                                                <form action="@Url.Action("Delete", "RoomAsset", new { id = roomAsset.RAid })" method="post">
+                                                    @Html.HttpMethodOverride(HttpVerbs.Delete)
+                                                    <input type="submit" value="Delete" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this record?');" />
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                    <!-- /.card -->
+                </div>
+                <!-- /.col -->
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+</div>
+
+<!-- /.content -->

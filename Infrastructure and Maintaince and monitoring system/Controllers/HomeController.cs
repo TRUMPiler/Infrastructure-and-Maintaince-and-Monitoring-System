@@ -179,7 +179,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
                 ConnectionString();
                 con.Open();
                 com.Connection = con;
-                com.CommandText = Query;
+                com.CommandText = Query;  
                 Session["TempLoginID"] = null;
                 com.ExecuteNonQuery();
                 string script = "<script>alert('Password Change Successfully Completed');window.location='/Home/'</script>";

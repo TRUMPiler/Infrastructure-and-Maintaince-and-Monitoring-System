@@ -136,6 +136,12 @@
                                 <p>Assets</p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="/RoomAsset/" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Survey</p>
+                            </a>
+                        </li>
 
                     </ul>
                 </li>
@@ -219,30 +225,48 @@
                                         <th>Image</th>
                                         <th>Status</th>
                                         <th>Users</th>
+                                        <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @model List<Infrastructure_and_Maintaince_and_monitoring_system.Models.Complaint>
+
                                     @foreach (var complaint in Model)
                                     {
-                                        <tr>
-                                            <td>@complaint.ComplaintID</td>
-                                            <td>@complaint.Description</td>
-                                            <td>@complaint.ComplaintType</td>
+                                    <tr>
+                                        <td>@complaint.ComplaintID</td>
+                                        <td>@complaint.Description</td>
+                                        <td>@complaint.ComplaintType</td>
 
+                                        @if (!complaint.Image.ToString().Contains("No Image"))
+                                        {
                                             <td><a href="~/Admins/dist/img/@complaint.Image" target="_blank">Click to View</a></td>
-                                            <td>@complaint.Status</td>
-                                            <td>
-                                                @foreach (var user in complaint.Users)
-                                                {
-                                                    <span>@user.LoginID @Html.Raw("-") @user.Name</span><br>
-                                                }
-
-
-                                            </td>
-                                            
-
-                                        </tr>
+                                        }
+                                        else
+                                        {
+                                            <td>No Image to display</td>
+                                        }
+                                        <td>@complaint.Status</td>
+                                        <td>
+                                            @foreach (var user in complaint.Users)
+                                            {
+                                                <span>@user.LoginID @Html.Raw("-") @user.Name</span><br>
+                                            }
+                                        </td>
+                                      @if (complaint.Status.Contains("In-progress"))
+                                        {
+                                        <td> <button onclick="window.location.href='@Url.Action("CompleteComplaint", "Admin", new { complaintID = complaint.ComplaintID })'">Complete</button></td>
+                                        }
+                                        else if (complaint.Status.Contains("Completed") && complaint.HasFeedback)
+                                        {
+                                        <td> <button onclick="window.location.href='@Url.Action("ViewFeedback", "Admin", new { complaintID = complaint.ComplaintID })'">View Feedbacks</button></td>
+                                        }
+                                        else
+                                        {
+                                        <td></td>
+                                        }
+                                        
+                                    </tr>
                                     }
                                 </tbody>
                                 <tfoot>
@@ -253,6 +277,7 @@
                                         <th>Image</th>
                                         <th>Status</th>
                                         <th>Users</th>
+                                        <th>Action</th>
                                     </tr>
                                 </tfoot>
                             </table>

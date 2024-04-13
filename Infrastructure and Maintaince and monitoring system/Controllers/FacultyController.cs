@@ -135,7 +135,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
             }
 
 
-            return RedirectToAction("Complaints");
+            
         }
         public ActionResult AddRoom()
         {
@@ -184,7 +184,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
             }
             return RedirectToAction("Complaints");
         }
-
+        //
         public int GetTotalComplaints()
         {
             int count = 0;
@@ -325,7 +325,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
 
             using (SqlConnection con = new SqlConnection(connectionString))
             {
-                string query = "SELECT * FROM Tbl_ComplaintType";
+                string query = "SELECT * FROM Tbl_ComplaintType where Status=1";
 
                 using (SqlCommand com = new SqlCommand(query, con))
                 {
@@ -397,17 +397,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
 
             }
         }
-        public ActionResult Profile()
-        {
-            if (Session["Role"] != null)
-            {
-                if (!Session["Role"].ToString().Contains("Faculty"))
-                {
-                    return RedirectToAction("Index", "Home");
-                }
-            }
-            return RedirectToAction("Index");
-        }
+       
         [HttpPost]
         public ActionResult FileComplaint(Complaint cs)
         {
@@ -430,7 +420,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
             RegisterComplaintUsers(cs.SelectedUser, complaintId, connectionString);
 
             // Redirect to the StudentProfile page
-            return RedirectToAction("Jndex");
+            return RedirectToAction("Index");
         }
         private int RegisterComplaint(Complaint cs, string connectionString)
         {
@@ -479,6 +469,102 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
                 }
             }
         }
+        public ActionResult Profile()
+        {
+            if (Session["Role"] != null)
+            {
+                if (!Session["Role"].ToString().Contains("Faculty"))
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+            }
+            return RedirectToAction("Index");
+        }
+        public ActionResult ComplaintHistory()
+        {
+            String Query = "SELECT " +
+    "C.ComplainID, " +
+    "C.Description, " +
+    "CT.ComplaintType, " +
+    "C.Status,C.Image " +
+    "FROM " +
+    "Tbl_Complain C " +
+"INNER JOIN " +
+    "Tbl_Complaint_User CU ON C.ComplainID = CU.ComplainID " +
+"INNER JOIN " +
+    "Tbl_ComplaintType CT ON C.ComplaintType = CT.Complaint_TypeID " +
+"WHERE " +
+
+    "CU.UserID =(SELECT UserID FROM Tbl_Users WHERE LoginID ='" + Session["LoginID"] + "');";
+            List<Complaint> complaints = new List<Complaint>();
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                con.Open();
+                using (SqlCommand com = new SqlCommand(Query, con))
+                {
+                    SqlDataReader reader = com.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        Complaint complaint = new Complaint
+                        {
+                            ComplaintID = (int)reader["ComplainID"],
+                            Description = reader["Description"].ToString(),
+                            ComplaintType = reader["ComplaintType"].ToString(),
+                            Image = reader["Image"].ToString(),
+                            Status = reader["Status"].ToString(),
+                            Users = GETCOMPLAINTUSERS((int)reader["ComplainID"]),
+                            HasFeedback = CheckIfFeedbackExists((int)reader["ComplainID"], con)  // Check feedback status
+                        };
+
+                        complaints.Add(complaint);
+                    }
+                }
+            }
+
+            return View(complaints);
+        }
+        public ActionResult ViewFeedback(int? complaintID)
+        {
+            if(complaintID.HasValue)
+            {
+                List<Feedback> feedbackList = new List<Feedback>();
+
+                // Assuming you have a Feedback model class
+                using (SqlConnection con = new SqlConnection(connectionString))
+                {
+                    string query = "SELECT FeedbackID, Description, Rating FROM Tbl_Feedback WHERE ComplainID = @ComplaintID";
+
+                    con.Open();
+                    using (SqlCommand cmd = new SqlCommand(query, con))
+                    {
+                        cmd.Parameters.AddWithValue("@ComplaintID", complaintID);
+                        SqlDataReader reader = cmd.ExecuteReader();
+
+                        while (reader.Read())
+                        {
+                            Feedback feedback = new Feedback
+                            {
+                                FeedbackID = (int)reader["FeedbackID"],
+                                Description = reader["Description"].ToString(),
+                                Rating = (int)reader["Rating"]
+                            };
+
+                            feedbackList.Add(feedback);
+                        }
+                    }
+                }
+
+                return View(feedbackList);
+            }
+            else
+            {
+                string script = "<script>alert('ComplaintID is Missing');window.location='/Faculty/'</script>";
+                return Content(script, "text/html");
+            }
+        }
+
         public ActionResult Complaints()
         {
             if (Session["Role"] != null)
@@ -543,7 +629,8 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
                             ComplaintType = reader["ComplaintType"].ToString(),
                             Image = reader["Image"].ToString(),
                             Status = reader["Status"].ToString(),
-                            Users = GETCOMPLAINTUSERS((int)reader["ComplainID"])
+                            Users = GETCOMPLAINTUSERS((int)reader["ComplainID"]),
+                            HasFeedback=CheckIfFeedbackExists((int)reader["ComplainID"],con)
                         };
 
                         complaints.Add(complaint);
@@ -552,6 +639,101 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
             }
 
             return View(complaints);
+        }
+        public ActionResult Delete(int? complaintID)
+        {
+            if (complaintID.HasValue)
+            {
+                // Add code to delete the complaint with the given ID from the database
+                using (SqlConnection con = new SqlConnection(connectionString))
+                {
+                    con.Open();
+
+                    // Begin a transaction
+                    SqlTransaction transaction = con.BeginTransaction();
+
+                    try
+                    {
+                        // First, delete from Tbl_Complaint_User
+                        string deleteUserQuery = "DELETE FROM Tbl_Complaint_User WHERE ComplainID = @ComplaintID";
+                        using (SqlCommand deleteUserCmd = new SqlCommand(deleteUserQuery, con, transaction))
+                        {
+                            deleteUserCmd.Parameters.AddWithValue("@ComplaintID", complaintID);
+                            deleteUserCmd.ExecuteNonQuery();
+                        }
+
+                        // Then, delete from Tbl_Complain
+                        string deleteComplaintQuery = "DELETE FROM Tbl_Complain WHERE ComplainID = @ComplaintID";
+                        using (SqlCommand deleteComplaintCmd = new SqlCommand(deleteComplaintQuery, con, transaction))
+                        {
+                            deleteComplaintCmd.Parameters.AddWithValue("@ComplaintID", complaintID);
+                            deleteComplaintCmd.ExecuteNonQuery();
+                        }
+
+                        // Commit the transaction if both deletions were successful
+                        transaction.Commit();
+                        string script = "<script>alert('Complaint was Reverted Successfully');window.location='/Faculty/'</script>";
+                        return Content(script, "text/html");
+                    }
+                    catch (Exception ex)
+                    {
+                        // Rollback the transaction if any error occurs
+                        transaction.Rollback();
+                        string script = "<script>alert('Complaint was not Reverted Successfully');window.location='/Faculty'</script>";
+                        return Content(script, "text/html");
+                    }
+                }
+
+
+
+            }
+            else
+            {
+                string script = "<script>alert('ComplaintID is missing');window.location='/Faculty/'</script>";
+                return Content(script, "text/html");
+            }
+        }
+
+        public ActionResult GiveFeedback(int? Complaintid)
+        {
+            if (Complaintid.HasValue)
+            {
+                Session["ComplaintID"] = Complaintid;
+                return View();
+            }
+            else
+            {
+                string script = "<script>alert('ComplaintID is Missing');window.location='/Faculty/'</script>";
+                return Content(script, "text/html");
+            }
+        }
+        private bool CheckIfFeedbackExists(int complaintId, SqlConnection con)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            using (SqlCommand cmd = new SqlCommand("SELECT COUNT(*) FROM Tbl_Feedback WHERE ComplainID = @ComplaintID", connection))
+            {
+                connection.Open();
+                cmd.Parameters.AddWithValue("@ComplaintID", complaintId);
+                int feedbackCount = (int)cmd.ExecuteScalar();
+                return feedbackCount > 0;
+            }
+        }
+        [HttpPost]
+        public ActionResult GiveFeedback(Feedback feed)
+        {
+            String Query = "Insert into Tbl_Feedback(ComplainID,Description,Rating,Status) Values(@ComplainID,@Description,@Rating,@Status)";
+            using (SqlConnection con = new SqlConnection(connectionString))
+            using (SqlCommand com = new SqlCommand(Query, con))
+            {
+                con.Open();
+                com.Parameters.AddWithValue("@ComplainID", SqlDbType.Int).Value = Session["ComplaintID"];
+                com.Parameters.AddWithValue("@Description", SqlDbType.VarChar).Value = feed.Description;
+                com.Parameters.AddWithValue("@Rating", SqlDbType.Int).Value = feed.Rating;
+                com.Parameters.AddWithValue("@Status", SqlDbType.Bit).Value = true;
+                com.ExecuteNonQuery();
+                string script = "<script>alert('Feedback Successfull');window.location='/Faculty/'</script>";
+                return Content(script, "text/html");
+            }
         }
         private void SendEmailToComplaintUsers(int complaintId, String Status)
         {

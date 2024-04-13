@@ -1,8 +1,8 @@
-﻿﻿@{
-    ViewBag.Title = "File A Complaint";
-    Layout = "~/Views/Shared/_AdminTablePage.cshtml";
+﻿    ﻿@{
+    ViewBag.Title = "AddRoom";
+    Layout = "~/Views/Shared/_FacultyLayout.cshtml";
 }
-@model Infrastructure_and_Maintaince_and_monitoring_system.Models.Complaint
+@model Infrastructure_and_Maintaince_and_monitoring_system.Models.Room
 <div class="preloader flex-column justify-content-center align-items-center">
     <img class="animation__shake" src="~/Admins/dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
 </div>
@@ -14,17 +14,19 @@
             <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
-            <a href="/Student/StudentProfile" class="nav-link">Home</a>
+            <a href="/Faculty/" class="nav-link">Home</a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
-            <a href="@Url.Action("ChangePass","Home")" class="nav-link">Change Password</a>
+            <a href="#" class="nav-link">Contact</a>
         </li>
     </ul>
 
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
         <!-- Navbar Search -->
-        <!-- Navbar Search -->
+
+
+
         <li class="nav-item">
             <a class="nav-link" data-widget="navbar-search" href="#" role="button">
                 <i class="fas fa-search"></i>
@@ -46,7 +48,6 @@
             </div>
         </li>
 
-
         <!-- Notifications Dropdown Menu -->
         <li class="nav-item dropdown">
             <a class="nav-link" data-toggle="dropdown" href="#">
@@ -63,6 +64,10 @@
             </div>
         </li>
 
+
+
+
+
         <li class="nav-item">
             <a class="nav-link" data-widget="fullscreen" href="#" role="button">
                 <i class="fas fa-expand-arrows-alt"></i>
@@ -74,9 +79,7 @@
             </a>
         </li>
         <li class="nav-item">
-            <button type="button" class="btn btn-primary float-right" onclick="window.location.href='@Url.Action("Logout", "Home")'">
-                Logout
-            </button>
+            <button type="button" class="btn btn-primary float-right" onclick="window.location.href='@Url.Action("Logout", "Home")'">Logout</button>
         </li>
     </ul>
 </nav>
@@ -98,12 +101,9 @@
                 {
                     if (Session["Name"] != null)
                     {
-                        <a href="#" class="d-block">@Session["Name"]</a>
+                <a href="#" class="d-block">@Session["Name"]</a>
                     }
-                    else
-                    {
-                        @Html.Action("Logout", "Home");
-                    }
+
                 }
 
             </div>
@@ -125,7 +125,7 @@
 
 
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a href="FileComplaint" class="nav-link">
                         <i class="nav-icon fas fa-table"></i>
                         <p>
                             More Info
@@ -134,23 +134,41 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="ComplaintHistory" class="nav-link">
+                            <a href="#" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Complaint history</p>
                             </a>
                         </li>
+
                         @if (Session["Role"] != null)
                         {
-                            if (Session["Role"].ToString().Contains("CR") || Session["Role"].ToString().Contains("LR"))
+                            if (Session["Role"].ToString().Contains("Faculty"))
                             {
-                                <li class="nav-item">
-                                    <a href="FileComplaint" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>File a Complain</p>
-                                    </a>
-                                </li>
 
+                        <li class="nav-item">
+                            <a href="/Faculty/Complaints" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>View Complains</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="FileComplaint" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>File a Complain</p>
+                            </a>
+                        </li>
+                                if (Session["Role"].ToString().Contains("Head"))
+                                {
+
+                        <li class="nav-item">
+                            <a href="ManageRoom" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Manage Room</p>
+                            </a>
+                        </li>
+                                }
                             }
+
                         }
 
                     </ul>
@@ -192,55 +210,40 @@
                     <!-- jquery validation -->
                     <div class="card card-primary">
                         <div class="card-header">
-                            <h3 class="card-title"><small>File a complaint</small></h3>
+                            <h3 class="card-title"><small>Add Room Detail</small></h3>
                         </div>
                         <!-- /.card-header -->
                         <!-- form start -->
 
-                        <form id="quickForm" method="post" action="FileComplaint" enctype="multipart/form-data">
+                        <form id="quickForm" method="post" action="EditRoom" enctype="multipart/form-data">
                             <div class="card-body">
+                                <div class="form-group">
+                                    <label for="exampleInputName">Room ID</label>
+                                    <input type="text" name="RoomID" class="form-control" id="exampleInputName" value=@Model.RoomID placeholder="Enter name">
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputName">Wing</label>
+                                    <input type="text" name="Wing" class="form-control" id="exampleInputName" value=@Model.Wing placeholder="Enter name">
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputName">Room no</label>
+                                    <input type="text" name="RoomNo" class="form-control" id="exampleInputName" value=@Model.RoomNo placeholder="Enter name">
+                                </div>
 
                                 <div class="form-group">
-                                    <label for="exampleInputName">Description</label>
-                                    <input type="text" name="Description" class="form-control" id="exampleInputName" placeholder="Enter name">
-                                </div>
-                                <div class="form-group">
-                                    <label for="exampleInputName">Upload a image</label>
-                                    <input type="file" name="ComplaintImage" class="form-control" />
-                                </div>
-                                <div class="form-group">
-                                    <label for="exampleInputEmail1">ComplaintType</label>
-                                    <select name="ComplaintType">
-                                        @foreach (var ct in Model.ComplaintTypes)
+                                    <label for="exampleInputName">Room Type</label>
+                                    <select name="Roomtype">
+                                        @foreach (var room in Model.roomTypes)
                                         {
-                                            <option value="@ct.ComplaintType_ID">@ct.ComplaintType</option>
+
+                                        <option value=@room.RoomTypeID>@room.Roomtype</option>
 
                                         }
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="exampleInputPassword1">ROOMID</label>
-                                    <select name="ClassID" id="RoomID">
-                                        <option value="">Select a Room</option>
-                                        @foreach (var room in Model.Rooms)
-                                        {
-                                            <option value="@room.RoomID">@room.RoomNo</option>
-                                        }
-                                    </select>
 
+                                    </select>
                                 </div>
-                                <div class="form-group">
-                                    <label>Users</label><br>
-                                    @foreach (var user in Model.Users)
-                                    {
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" name="SelectedUser[]" id="user-@user.UserID" value="@user.UserID">
-                                            <label class="form-check-label" for="user-@user.UserID">
-                                                @user.LoginID - @user.Name
-                                            </label>
-                                        </div>
-                                    }
-                                </div>
+
+
 
 
                             </div>
@@ -278,16 +281,16 @@
 <script src="~/Admins/plugins/jquery-validation/additional-methods.min.js"></script>
 <script>
     $(function () {
-        
+
         $('#quickForm').validate({
             rules: {
                 Description: {
                     required: true,
                     minlength: 5,
-                    
+
                     maxlength: 245
                 },
-                
+
                 Complaint_TypeID: {
                     required: true
                 },
@@ -297,7 +300,8 @@
                     maxlength: 3
                 },
                 ComplaintImage: {
-                    accept: ["jpeg", "jpg", "png"]
+                    required: true,
+                    accept: "image/jpeg,image/png"
                 }
             },
             messages: {
@@ -306,7 +310,7 @@
                 },
                 Description: {
                     required: "Please enter a description",
-                    
+
                     minlength: "Description must be at least 5 characters",
                     maxlength: "Description cannot exceed 245 characters"
                 },
@@ -319,7 +323,7 @@
                     maxlength: "Room ID cannot exceed 3 characters"
                 },
                 ComplaintImage: {
-                    accept: "Please upload a valid image file (JPEG/JPG/PNG)."
+                    required: "Please upload a file"
                 }
             },
             errorElement: 'span',

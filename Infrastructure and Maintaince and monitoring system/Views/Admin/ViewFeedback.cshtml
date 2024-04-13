@@ -1,8 +1,8 @@
 ﻿﻿@{
-    ViewBag.Title = "File A Complaint";
+    ViewBag.Title = "Give FeedbacK";
     Layout = "~/Views/Shared/_AdminTablePage.cshtml";
 }
-@model Infrastructure_and_Maintaince_and_monitoring_system.Models.Complaint
+@model List<Infrastructure_and_Maintaince_and_monitoring_system.Models.Feedback>
 <div class="preloader flex-column justify-content-center align-items-center">
     <img class="animation__shake" src="~/Admins/dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
 </div>
@@ -14,16 +14,16 @@
             <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
-            <a href="/Student/StudentProfile" class="nav-link">Home</a>
+            <a href="/Admin/Index" class="nav-link">Home</a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
-            <a href="@Url.Action("ChangePass","Home")" class="nav-link">Change Password</a>
+            <a href="#" class="nav-link">About Us</a>
         </li>
     </ul>
 
+
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
-        <!-- Navbar Search -->
         <!-- Navbar Search -->
         <li class="nav-item">
             <a class="nav-link" data-widget="navbar-search" href="#" role="button">
@@ -63,6 +63,9 @@
             </div>
         </li>
 
+
+
+
         <li class="nav-item">
             <a class="nav-link" data-widget="fullscreen" href="#" role="button">
                 <i class="fas fa-expand-arrows-alt"></i>
@@ -73,89 +76,115 @@
                 <i class="fas fa-th-large"></i>
             </a>
         </li>
+
+        <!-- Navbar Search -->
         <li class="nav-item">
-            <button type="button" class="btn btn-primary float-right" onclick="window.location.href='@Url.Action("Logout", "Home")'">
-                Logout
-            </button>
+            <button type="button" class="btn btn-primary float-right" onclick="window.location.href='@Url.Action("Logout", "Admin")'">Logout</button>
+
+            </a>
         </li>
+
     </ul>
 </nav>
+
+<!-- /.navbar -->
 <!-- /.navbar -->
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
     <a href="#" class="brand-link">
         <img src="~/Admins/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-        <span class="brand-text font-weight-light">Infrastructure</span>
+        <span class="brand-text font-weight-light">InfraCare</span>
     </a>
     <div class="sidebar">
         <!-- Sidebar user panel (optional) -->
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
             <div class="image">
-
+                <img src="~/Content/assets/img/MIcon.png" class="img-circle elevation-2" alt="User Image">
             </div>
             <div class="info">
-                @if (Session["LoginID"] != null)
-                {
-                    if (Session["Name"] != null)
-                    {
-                        <a href="#" class="d-block">@Session["Name"]</a>
-                    }
-                    else
-                    {
-                        @Html.Action("Logout", "Home");
-                    }
-                }
-
+                <a href="#" class="d-block">Admin</a>
             </div>
         </div>
 
-
-
-
-        <!-- Sidebar -->
-        <!-- Sidebar Menu -->
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                <!-- Add icons to the links using the .nav-icon class
-                     with font-awesome or any other icon font library -->
-
-
-
-
-
 
                 <li class="nav-item">
                     <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-table"></i>
                         <p>
-                            More Info
+                            Tables
                             <i class="fas fa-angle-left right"></i>
                         </p>
                     </a>
+
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="ComplaintHistory" class="nav-link">
+                            <a href="/Admin/Users" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>Complaint history</p>
+                                <p>Users</p>
                             </a>
                         </li>
-                        @if (Session["Role"] != null)
-                        {
-                            if (Session["Role"].ToString().Contains("CR") || Session["Role"].ToString().Contains("LR"))
-                            {
-                                <li class="nav-item">
-                                    <a href="FileComplaint" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>File a Complain</p>
-                                    </a>
-                                </li>
-
-                            }
-                        }
-
+                        <li class="nav-item">
+                            <a href="/Admin/Complaints" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Complains</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/Asset/Asset" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Assets</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/Survey/" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Survey</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="ComplaintType" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>ComplaintType</p>
+                            </a>
+                        </li>
                     </ul>
                 </li>
 
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-chart-pie"></i>
+                        <p>
+                            Report
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                </li>
+
+
+
+
+
+
+                <li class="nav-header">MISCELLANEOUS</li>
+                <li class="nav-item">
+                    <a href="/Admin/Register" class="nav-link">
+                        <i class="nav-icon fas fa-file"></i>
+                        <p>Registeration</p>
+                    </a>
+                </li>
+
+
+                @*<li class="nav-item">
+                        <a href="pages/calendar.html" class="nav-link">
+                            <i class="nav-icon fas fa-calendar-alt"></i>
+                            <p>
+                                Calendar
+                                <span class="badge badge-info right">2</span>
+                            </p>
+                        </a>
+                    </li>*@
 
             </ul>
         </nav>
@@ -197,56 +226,69 @@
                         <!-- /.card-header -->
                         <!-- form start -->
 
-                        <form id="quickForm" method="post" action="FileComplaint" enctype="multipart/form-data">
+                        <form id="quickForm" method="post" action="GiveFeedback" enctype="multipart/form-data">
                             <div class="card-body">
+                                @foreach (var feedback in Model)
+                                {
+                                    <div class="form-group">
+                                        <label for="exampleInputName">Feedback</label>
+                                        <input type="text" name="Description" value="@feedback.Description" class="form-control" id="exampleInputName" placeholder="Enter your feedback" disabled>
+                                    </div>
 
-                                <div class="form-group">
-                                    <label for="exampleInputName">Description</label>
-                                    <input type="text" name="Description" class="form-control" id="exampleInputName" placeholder="Enter name">
-                                </div>
-                                <div class="form-group">
-                                    <label for="exampleInputName">Upload a image</label>
-                                    <input type="file" name="ComplaintImage" class="form-control" />
-                                </div>
-                                <div class="form-group">
-                                    <label for="exampleInputEmail1">ComplaintType</label>
-                                    <select name="ComplaintType">
-                                        @foreach (var ct in Model.ComplaintTypes)
-                                        {
-                                            <option value="@ct.ComplaintType_ID">@ct.ComplaintType</option>
+                                    <div class="form-group">
+                                        <label for="exampleInputPassword1">Rating</label>
+                                        <select name="Rating" id="RoomID" disabled>
+                                            @if (feedback.Rating == 5)
+                                            {
+                                                <option value=5 selected>Excellent</option>
+                                            }
+                                            else
+                                            {
+                                                <option value=5>Excellent</option>
+                                            }
+                                            @if (feedback.Rating == 4)
+                                            {
+                                                <option value=4 selected>Good</option>
+                                            }
+                                            else
+                                            {
+                                                <option value=4>Good</option>
+                                            }
+                                            @if (feedback.Rating == 3)
+                                            {
+                                                <option value=3 selected>Not Bad</option>
+                                            }
+                                            else
+                                            {
+                                                <option value=3>Not Bad</option>
+                                            }
+                                            @if (feedback.Rating == 2)
+                                            {
+                                                <option value=2 selected>Mediocre</option>
+                                            }
+                                            else
+                                            {
+                                                <option value=2>Mediocre</option>
+                                            }
+                                            @if (feedback.Rating == 1)
+                                            {
+                                                <option value=1 selected>Bad</option>
+                                            }
+                                            else
+                                            {
+                                                <option value=1>Bad</option>
+                                            }
 
-                                        }
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="exampleInputPassword1">ROOMID</label>
-                                    <select name="ClassID" id="RoomID">
-                                        <option value="">Select a Room</option>
-                                        @foreach (var room in Model.Rooms)
-                                        {
-                                            <option value="@room.RoomID">@room.RoomNo</option>
-                                        }
-                                    </select>
+                                        </select>
 
-                                </div>
-                                <div class="form-group">
-                                    <label>Users</label><br>
-                                    @foreach (var user in Model.Users)
-                                    {
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" name="SelectedUser[]" id="user-@user.UserID" value="@user.UserID">
-                                            <label class="form-check-label" for="user-@user.UserID">
-                                                @user.LoginID - @user.Name
-                                            </label>
-                                        </div>
-                                    }
-                                </div>
+                                    </div>
 
+                                }
 
                             </div>
                             <!-- /.card-body -->
                             <div class="card-footer">
-                                <button type="submit" class="btn btn-primary">Submit</button>
+                                
                             </div>
                         </form>
                     </div>
@@ -278,49 +320,36 @@
 <script src="~/Admins/plugins/jquery-validation/additional-methods.min.js"></script>
 <script>
     $(function () {
-        
+
         $('#quickForm').validate({
             rules: {
                 Description: {
                     required: true,
-                    minlength: 5,
-                    
+                    minlength: 4,
+
                     maxlength: 245
                 },
-                
-                Complaint_TypeID: {
+                Rating:
+                {
                     required: true
                 },
-                ClassID: {
-                    required: true,
-                    minlength: 1,
-                    maxlength: 3
-                },
-                ComplaintImage: {
-                    accept: ["jpeg", "jpg", "png"]
-                }
+
+
+
             },
             messages: {
-                SelectedUsers: {
-                    required: "Please choose a student"
+                Rating: {
+                    required: "Please choose a Rating"
                 },
                 Description: {
                     required: "Please enter a description",
-                    
-                    minlength: "Description must be at least 5 characters",
-                    maxlength: "Description cannot exceed 245 characters"
+
+                    minlength: "Feedback must be at least 4 characters",
+                    maxlength: "Feedback cannot exceed 245 characters"
                 },
-                Complaint_TypeID: {
-                    required: "Please select a complaint type"
-                },
-                ClassID: {
-                    required: "Please enter a room ID",
-                    minlength: "Room ID must be at least 1 character",
-                    maxlength: "Room ID cannot exceed 3 characters"
-                },
-                ComplaintImage: {
-                    accept: "Please upload a valid image file (JPEG/JPG/PNG)."
-                }
+
+
+
             },
             errorElement: 'span',
             errorPlacement: function (error, element) {
