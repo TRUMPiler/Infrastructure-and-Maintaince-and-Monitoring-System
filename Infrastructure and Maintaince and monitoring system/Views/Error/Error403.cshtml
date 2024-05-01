@@ -1,0 +1,29 @@
+﻿
+@{
+
+    Layout = null;
+}
+
+<html>
+<head>
+    <script type="text/javascript" language="javascript">
+     function DisableBackButton() {
+       window.history.forward()
+      }
+     DisableBackButton();
+     window.onload = DisableBackButton;
+     window.onpageshow = function(evt) { if (evt.persisted) DisableBackButton() }
+     window.onunload = function() { void (0) }
+    </script>
+    <link href="~/Content/assets/css/Error.css" rel="stylesheet" />
+    <title>Error</title>
+</head>
+<body>
+    <div class="section">
+        <h1 class="error">403</h1>
+        <div class="page">Ooops!!! An Error Occurred</div>
+        <a class="back-home" href="@Url.Action("Index","Home")">Back to home</a>
+    </div>
+</body>
+</html>
+
