@@ -17,5 +17,6 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Models
         public String Password { get; set; }
 
         public bool Status { get; set; }
+        public String Semester { get; set; }
     }
 }

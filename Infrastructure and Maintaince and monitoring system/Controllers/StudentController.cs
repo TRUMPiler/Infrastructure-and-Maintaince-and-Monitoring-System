@@ -119,7 +119,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
         {
             String Query = "SELECT "+
     "C.ComplainID, " +
-    "C.Description, " +
+    "C.Description,C.Complain_Registration_Date,C.Complain_Completion_Date," +
     "CT.ComplaintType, " +
     "C.Status,C.Image " +
     "FROM " +
@@ -150,6 +150,8 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
                             Image = reader["Image"].ToString(),
                             Status = reader["Status"].ToString(),
                             Users = GETCOMPLAINTUSERS((int)reader["ComplainID"]),
+                            Complain_Registration_Date=reader["Complain_Registration_Date"].ToString(),
+                            Complain_Completion_Date = reader["Complain_Completion_Date"].ToString(),
                             HasFeedback = CheckIfFeedbackExists((int)reader["ComplainID"], con)  // Check feedback status
                         };
 
@@ -312,16 +314,20 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
                     command.Parameters.AddWithValue("@UserID", Session["UserID"]);
                     command.ExecuteNonQuery();
                     // Add each selected user
-                    foreach (int userId in selectedUsers)
+                    if(selectedUsers!=null)
                     {
-                        // Clear previous parameters
-                        command.Parameters.Clear();
-                        // Add parameters for the new command
-                        command.CommandText = "INSERT INTO Tbl_Complaint_User (ComplainID, UserID) VALUES (@ComplainID, @UserID)";
-                        command.Parameters.AddWithValue("@ComplainID", complaintId);
-                        command.Parameters.AddWithValue("@UserID", userId);
-                        command.ExecuteNonQuery();
-                    }
+
+                        foreach (int userId in selectedUsers)
+                        {
+                            // Clear previous parameters
+                            command.Parameters.Clear();
+                            // Add parameters for the new command
+                            command.CommandText = "INSERT INTO Tbl_Complaint_User (ComplainID, UserID) VALUES (@ComplainID, @UserID)";
+                            command.Parameters.AddWithValue("@ComplainID", complaintId);
+                            command.Parameters.AddWithValue("@UserID", userId);
+                            command.ExecuteNonQuery();
+                        }
+                    }    
                 }
 
             }
@@ -438,7 +444,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
                     cs.Image = "No Image";
                 }
                 // Define query
-                string query = "INSERT INTO [dbo].[Tbl_Complain]([Description],[ComplaintType],[ClassID],[Image],[Status]) VALUES (@Description, @ComplaintType, @ClassID,@Image, @Status ); SELECT SCOPE_IDENTITY();";
+                string query = "INSERT INTO [dbo].[Tbl_Complain]([Description],[ComplaintType],[ClassID],[Image],[Status],[Complain_Registration_Date]) VALUES (@Description, @ComplaintType, @ClassID,@Image, @Status,@ComplainRegisterDate); SELECT SCOPE_IDENTITY();";
 
                 // Create command
                 using (SqlCommand command = new SqlCommand(query, connection))
@@ -449,7 +455,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
                     command.Parameters.Add("@Image", SqlDbType.VarChar).Value = cs.Image;
                     command.Parameters.Add("@Status", SqlDbType.VarChar).Value = "Pending"; // Default status
                     command.Parameters.Add("@ClassID", SqlDbType.Int).Value = cs.ClassID;
-
+                    command.Parameters.Add("@ComplainRegisterDate", SqlDbType.Date).Value = DateTime.Today;
                     // Execute query and get the complaint ID
                     return Convert.ToInt32(command.ExecuteScalar());
                 }

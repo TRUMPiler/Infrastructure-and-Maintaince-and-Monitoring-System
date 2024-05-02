@@ -58,7 +58,7 @@
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                 <!-- Add icons to the links using the .nav-icon class
-         with font-awesome or any other icon font library -->
+                with font-awesome or any other icon font library -->
                 <li class="nav-item">
                     <a href="#" class="nav-link active">
                         <i class="nav-icon fas fa-table"></i>
@@ -100,7 +100,7 @@
                         </li>
                     </ul>
                 </li>
-                
+
                 <li class="nav-header">MISCELLANEOUS</li>
                 <li class="nav-item">
                     <a href="/Admin/Register" class="nav-link">
@@ -149,144 +149,67 @@
                         <!-- /.card-header -->
                         <!-- form start -->
 
-                        <form id="quickForm" method="post" action="EditUser1">
+                        <form id="quickForm" method="post" action="RegisterUser">
                             <div class="card-body">
-                                <div class="form-group">
-                                    <label for="exampleInputName">ID</label>
-                                    <input type="text" name="UserID" class="form-control" id="exampleInputID" value="@Model.UserID" placeholder="Enter name" disabled>
-                                </div>
+                                
                                 <div class="form-group">
                                     <label for="exampleInputName">Name</label>
-                                    <input type="text" name="Name" class="form-control" id="exampleInputName" value="@Model.Name" placeholder="Enter name">
+                                    <input type="text" name="Name" class="form-control" id="exampleInputName"  placeholder="Enter name">
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">Email address</label>
-                                    <input type="email" name="Email" class="form-control" id="exampleInputEmail1" value="@Model.Email" placeholder="Enter email">
+                                    <input type="email" name="Email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputPassword1">Password</label>
-                                    <input type="text" name="Password" class="form-control" id="exampleInputPassword1" value="@Model.Password" placeholder="Password">
+                                    <input type="text" name="Password" class="form-control" id="exampleInputPassword1"  placeholder="Password">
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputPassword1">PhoneNo</label>
-                                    <input type="number" name="PhoneNo" class="form-control" id="exampleInputPhoneNo1" value="@Model.PhoneNo" placeholder="Enter Your PhoneNo">
+                                    <input type="number" name="PhoneNo" class="form-control" id="exampleInputPhoneNo1"  placeholder="Enter Your PhoneNo">
                                 </div>
-
-                                <div class="form-group">
-                                    <label for="exampleInputPassword1">LoginID</label>
-                                    <input type="text" name="LoginID" class="form-control" id="exampleInputLoginID1" value="@Model.LoginID" placeholder="Enter Your PhoneNo">
+                                <div class="form-group" id="loginIdGroup">
+                                    <label for="exampleInputName">Enrollment No</label>
+                                    <input type="text" name="LoginID" class="form-control" id="exampleInputID" placeholder="Enter EnrollmentNo" >
                                 </div>
+                                
                                 <div class="form-group">
                                     <label for="exampleInputPassword1">Gender</label><br />
-                                    @if (Model.Gender.Equals("M"))
-                                    {
-                                        <input type="radio" name="Gender" value="M" checked />
+                                    
+                                        <input type="radio" name="Gender" value="M"  checked />
                                         <label for="exampleInputPassword1">Male</label><br />
-                                        <input type="radio" name="Gender" value="F" />
+                                        <input type="radio" name="Gender" value="F"  />
                                         <label for="exampleInputPassword1">Female</label>
-                                    }
-                                    else
-                                    {
-
-                                        <input type="radio" name="Gender" value="M" />
-                                        <label for="exampleInputPassword1">Male</label><br />
-                                        <input type="radio" name="Gender" value="F" checked />
-                                        <label for="exampleInputPassword1">Female</label>
-                                    }
-
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputPassword1">Role</label>
-                                    @if (Model.Role.Contains("Student"))
-                                    {
-                                        <select name="Role">
-                                            @if (Model.Role.Equals("Student LR") && Model.Gender.Equals("F"))
-                                            {
-                                                <option value="Student LR" selected>Student LR</option>
-                                            }
-                                            else if (!Model.Role.Equals("Student LR") && Model.Gender.Equals("F"))
-                                            {
-                                                <option value="Student LR">Student LR</option>
-                                            }
-                                            @if (Model.Role.Equals("Student CR") && Model.Gender.Equals("M"))
-                                            {
-                                                <option value="Student CR" selected>Student CR</option>
-                                            }
-                                            else if (!Model.Role.Equals("Student CR") && Model.Gender.Equals("M"))
-                                            {
-                                                <option value="Student CR">Student CR</option>
-                                            }
-                                            @if (Model.Role.Equals("Student"))
-                                            {
-                                                <option value="Student" selected>Student</option>
-                                            }
-                                            else
-                                            {
-                                                <option value="Student">Student</option>
-                                            }
-                                        </select>
-                                    }
-                                    else if (Model.Role.Contains("Faculty"))
-                                    {
-                                        <select name="Role">
-                                            @if (Model.Role.Equals("Faculty"))
-                                            {
-                                                <option value="Faculty" selected>Faculty</option>
-                                            }
-                                            else if (!Model.Role.Equals("Faculty"))
-                                            {
-                                                <option value="Faculty">Faculty</option>
-                                            }
-                                            @if (Model.Role.Equals("Faculty Infra Head"))
-                                            {
-                                                <option value="Faculty Infra Head" selected>Faculty Infrastructure Head</option>
-                                            }
-                                            else if (!Model.Role.Equals("Faculty Infra Head"))
-                                            {
-                                                <option value="Faculty Infra Head">Faculty Infrastructure Head</option>
-                                            }
-                                            @if (Model.Role.Equals("Faculty Lab Asst"))
-                                            {
-                                        <option value="Faculty Lab Asst" selected>Faculty Lab Assitant</option>
-                                            }
-                                            else
-                                            {
-                                        <option value="Faculty Lab Asst">Faculty Lab Assitant</option>
-                                            }
-                                        </select>
-                                    }
-
-                                    else if (Model.Role.Contains("Admin"))
-                                    {
-
-                                    <select name="Role">
-                                        <option value="Admin" selected>Admin</option>
-                                    </select>
-                                    }
-                                </div>
-                                <div class="form-group">
-                                    <label for="exampleInputPassword1">Status</label>
-                                   
-                                    <select name="Status">
-                                        @if (Model.Status==true)
-                                        {
-                                            <option value="true" selected>Active</option>
-                                        }
-                                        else
-                                        {
-                                            <option value="true">Active</option>
-                                        }
-                                        @if (Model.Status==false)
-                                        {
-                                            <option value="false" selected>Inactive</option>
-                                        }
-                                        else
-                                        {
-                                            <option value="false">Inactive</option>
-                                        }
+                                    
+                                    <select name="Role" id="Role" class="form-control">
+                                        <option>Choose a Role</option>
+                                        <option value="Student">Student</option>
+                                        <option value="Faculty">Faculty</option>
                                     </select>
                                     
-                         
+                                    
+                                </div>
+                                <div class="form-group" id="semesterGroup">
+                                    <label for="exampleInputPassword1">Semester</label>
+
+                                    <select name="Semester" class="form-control">
+                                        <option>Choose a Role</option>
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                        <option value="6">6</option>
+                                        <option value="7">7</option>
+                                        <option value="8">8</option>
+                                        <option value="9">9</option>
+                                        <option value="10">10</option>
+                                    </select>
+
+
                                 </div>
                             </div>
                             <!-- /.card-body -->
@@ -300,7 +223,7 @@
                 <!--/.col (left) -->
                 <!-- right column -->
                 <div class="col-md-6">
-
+                    
                 </div>
                 <!--/.col (right) -->
             </div>
@@ -324,31 +247,28 @@
 <script>
     $(function () {
         $.validator.setDefaults({
-           
+
         });
         $.validator.addMethod("letterswithspaces", function (value, element) {
             return this.optional(element) || /^[a-zA-Z\s]*$/.test(value);
         }, "Please enter only letters and spaces");
-        $('#quickForm').validate({
+
+        var validator = $('#quickForm').validate({
             rules: {
-                Name:
-                {
+                Name: {
                     required: true,
                     minlength: 2,
-                    letterswithspaces: true, // Using the custom rule here
+                    letterswithspaces: true,
                     maxlength: 50
                 },
-                PhoneNo:
-                {
+                PhoneNo: {
                     required: true,
                     maxlength: 10,
-                    minlength:10,
+                    minlength: 10,
                 },
-                LoginID:
-                {
+                LoginID: {
                     required: true,
                     minlength: 15
-                    // Using the custom rule here
                 },
                 Email: {
                     required: true,
@@ -361,25 +281,25 @@
                 terms: {
                     required: true
                 },
+                Semester: {
+                    required: true
+                }
             },
             messages: {
-                PhoneNo:
-                {
+                PhoneNo: {
                     required: "Enter User's PhoneNo",
                     maxlength: "User's Phone number can't be more than 10 digits",
                     minlength: "User's Phone Number can't be less than 10 digits"
                 },
-                    LoginID:
-                    {
-                        required: "Please enter User's LoginID",
-                        minlength:"User's LoginID can't be less than 15"
-                    },
-                Name:
-                {
+                LoginID: {
+                    required: "Please enter User's LoginID",
+                    minlength: "User's LoginID can't be less than 15"
+                },
+                Name: {
                     required: "Please enter User's Name",
                     letterswithspaces: "Please enter only letters and spaces",
-                    maxlength: "User's  name must not exceed 50 characters",
-                    minlength:"User's  name should be more than 2 letters"
+                    maxlength: "User's name must not exceed 50 characters",
+                    minlength: "User's name should be more than 2 letters"
                 },
                 Email: {
                     required: "Please enter User's email address",
@@ -403,5 +323,22 @@
                 $(element).removeClass('is-invalid');
             }
         });
+
+        $('#Role').change(function () {
+            if ($(this).val() === 'Student') {
+                $('#loginIdGroup').show();
+                $('#semesterGroup').show();
+                $('#exampleInputID').prop('disabled', false);
+                validator.settings.rules.LoginID.required = true;
+                validator.settings.rules.Semester.required = true;
+            } else {
+                $('#loginIdGroup').hide();
+                $('#semesterGroup').hide();
+                $('#exampleInputID').prop('disabled', true);
+                validator.settings.rules.LoginID.required = false;
+                validator.settings.rules.Semester.required = false;
+            }
+        }).change();
     });
+
 </script>

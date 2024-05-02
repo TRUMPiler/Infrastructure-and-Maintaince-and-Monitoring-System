@@ -211,12 +211,18 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-12">
-
+                    <button class="btn btn-primary" onclick="window.location.href='@Url.Action("FileComplaint", "Admin", new { })'">File A Complain</button>
                     <div class="card">
-                        
+
+
+
+
+
                         <!-- /.card-header -->
                         <div class="card-body">
+
                             <table id="example1" class="table table-bordered table-striped">
+
                                 <thead>
                                     <tr>
                                         <th>Complaint ID</th>
@@ -233,40 +239,40 @@
 
                                     @foreach (var complaint in Model)
                                     {
-                                    <tr>
-                                        <td>@complaint.ComplaintID</td>
-                                        <td>@complaint.Description</td>
-                                        <td>@complaint.ComplaintType</td>
+                                        <tr>
+                                            <td>@complaint.ComplaintID</td>
+                                            <td>@complaint.Description</td>
+                                            <td>@complaint.ComplaintType</td>
 
-                                        @if (!complaint.Image.ToString().Contains("No Image"))
-                                        {
-                                            <td><a href="~/Admins/dist/img/@complaint.Image" target="_blank">Click to View</a></td>
-                                        }
-                                        else
-                                        {
-                                            <td>No Image to display</td>
-                                        }
-                                        <td>@complaint.Status</td>
-                                        <td>
-                                            @foreach (var user in complaint.Users)
+                                            @if (!complaint.Image.ToString().Contains("No Image"))
                                             {
-                                                <span>@user.LoginID @Html.Raw("-") @user.Name</span><br>
+                                                <td><a href="~/Admins/dist/img/@complaint.Image" target="_blank">Click to View</a></td>
                                             }
-                                        </td>
-                                      @if (complaint.Status.Contains("In-progress"))
-                                        {
-                                        <td> <button onclick="window.location.href='@Url.Action("CompleteComplaint", "Admin", new { complaintID = complaint.ComplaintID })'">Complete</button></td>
-                                        }
-                                        else if (complaint.Status.Contains("Completed") && complaint.HasFeedback)
-                                        {
-                                        <td> <button onclick="window.location.href='@Url.Action("ViewFeedback", "Admin", new { complaintID = complaint.ComplaintID })'">View Feedbacks</button></td>
-                                        }
-                                        else
-                                        {
-                                        <td></td>
-                                        }
-                                        
-                                    </tr>
+                                            else
+                                            {
+                                                <td>No Image to display</td>
+                                            }
+                                            <td>@complaint.Status</td>
+                                            <td>
+                                                @foreach (var user in complaint.Users)
+                                                {
+                                                    <span>@user.LoginID @Html.Raw("-") @user.Name</span><br>
+                                                }
+                                            </td>
+                                            @if (complaint.Status.Contains("In-progress"))
+                                            {
+                                                <td> <button onclick="window.location.href='@Url.Action("CompleteComplaint", "Admin", new { complaintID = complaint.ComplaintID })'">Complete</button></td>
+                                            }
+                                            else if (complaint.Status.Contains("Completed") && complaint.HasFeedback)
+                                            {
+                                                <td> <button onclick="window.location.href='@Url.Action("ViewFeedback", "Admin", new { complaintID = complaint.ComplaintID })'">View Feedbacks</button></td>
+                                            }
+                                            else
+                                            {
+                                                <td></td>
+                                            }
+
+                                        </tr>
                                     }
                                 </tbody>
                                 <tfoot>

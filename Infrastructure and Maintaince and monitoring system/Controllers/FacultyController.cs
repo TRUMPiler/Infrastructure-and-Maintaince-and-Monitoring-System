@@ -452,7 +452,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
                     cs.Image = "No Image";
                 }
                 // Define query
-                string query = "INSERT INTO [dbo].[Tbl_Complain]([Description],[ComplaintType],[ClassID],[Image],[Status]) VALUES (@Description, @ComplaintType, @ClassID,@Image, @Status ); SELECT SCOPE_IDENTITY();";
+                string query = "INSERT INTO [dbo].[Tbl_Complain]([Description],[ComplaintType],[ClassID],[Image],[Status],[Complain_Registration_Date]) VALUES (@Description, @ComplaintType, @ClassID,@Image, @Status,@ComplainRegisterDate); SELECT SCOPE_IDENTITY();";
 
                 // Create command
                 using (SqlCommand command = new SqlCommand(query, connection))
@@ -463,7 +463,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
                     command.Parameters.Add("@Image", SqlDbType.VarChar).Value = cs.Image;
                     command.Parameters.Add("@Status", SqlDbType.VarChar).Value = "Pending"; // Default status
                     command.Parameters.Add("@ClassID", SqlDbType.Int).Value = cs.ClassID;
-
+                    command.Parameters.Add("@ComplainRegisterDate", SqlDbType.Date).Value = DateTime.Today;
                     // Execute query and get the complaint ID
                     return Convert.ToInt32(command.ExecuteScalar());
                 }
@@ -730,6 +730,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
                 com.Parameters.AddWithValue("@Description", SqlDbType.VarChar).Value = feed.Description;
                 com.Parameters.AddWithValue("@Rating", SqlDbType.Int).Value = feed.Rating;
                 com.Parameters.AddWithValue("@Status", SqlDbType.Bit).Value = true;
+
                 com.ExecuteNonQuery();
                 string script = "<script>alert('Feedback Successfull');window.location='/Faculty/'</script>";
                 return Content(script, "text/html");

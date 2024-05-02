@@ -95,13 +95,13 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
         {
             con.ConnectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
         }
-            
-    
-   
+
+
+
 
         public ActionResult Index()
         {
-            if(Session["Role"]==null&&Session["LoginID"]!=null)
+            if (Session["Role"] == null && Session["LoginID"] != null)
             {
                 Session["LoginID"] = null;
             }
@@ -109,42 +109,46 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
             cookieLogin = Request.Cookies["Login"];
             cookieName = Request.Cookies["Name"];
             cookieRole = Request.Cookies["Role"];
-            if (cookieLogin!=null && !cookieRole.Value.Equals("admin"))
+            if (cookieLogin != null && !cookieRole.Value.Equals("Admin"))
             {
                 Session["UserID"] = cookieID.Value;
                 Session["LoginID"] = cookieLogin.Value;
                 Session["Name"] = cookieName.Value;
                 Session["Role"] = cookieRole.Value;
             }
-            else if(cookieLogin != null && !cookieRole.Value.Equals("admin"))
+            else if (cookieLogin != null && !cookieRole.Value.Equals("Admin"))
             {
                 Session["LoginID"] = cookieLogin.Value;
                 Session["Name"] = cookieName.Value;
-                Session["Role"] = "admin";
+                Session["Role"] = "Admin";
             }
-            if (Session["Role"]!=null)
+            if (Session["Role"] != null)
             {
-                if (Session["Role"].ToString().Contains("admin"))
+                if (Session["Role"].ToString().Contains("Admin"))
                 {
-                    return RedirectToAction("Index", "Admin");
-                }
-                if (Session["Role"].ToString().Contains("Student"))
-                {
-                    return RedirectToAction("StudentProfile", "Student");
+                    return RedirectToAction("Users", "Admin");
                 }
                 else
                 {
-                    if (Session["Role"].ToString().Contains("Faculty"))
+                    if (Session["Role"].ToString().Contains("Student CR") || Session["Role"].ToString().Contains("Student LR"))
                     {
+                        return RedirectToAction("StudentProfile", "Student");
+                    }
+                    else
+                    {
+                        if (Session["Role"].ToString().Contains("Faculty"))
+                        {
 
 
-                        return RedirectToAction("Profile", "Faculty");
+                            return RedirectToAction("Profile", "Faculty");
+
+
+                        }
 
 
                     }
-
-
                 }
+                
             }
             return RedirectToAction("Login");
         }
@@ -174,8 +178,15 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
         {
             if(Password.Equals(Cpassword))
             {
-                
-                String Query = "update Tbl_Users set Password='"+Password+"' where LoginID='"+Session["LoginID"]+"'";
+                string currentPassword = GetPasswordFromDatabase(Session["TempLoginID"].ToString());
+
+                if (Password == currentPassword)
+                {
+                    
+                    string scripts = "<script>alert('New password cannot be the same as the current password.');window.location='/Home/ChangePass'</script>";
+                    return Content(scripts, "text/html");
+                }
+                String Query = "update Tbl_Users set Password='"+Password+"' where LoginID='"+Session["TempLoginID"] +"'";
                 ConnectionString();
                 con.Open();
                 com.Connection = con;
@@ -192,6 +203,25 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
             }
             
             
+        }
+        private string GetPasswordFromDatabase(string loginID)
+        {
+            string password = "";
+            string query = "SELECT Password FROM Tbl_Users WHERE LoginID = @LoginID";
+            ConnectionString();
+            con.Open();
+            com.Connection = con;
+            com.CommandText = query;
+            com.Parameters.AddWithValue("@LoginID", loginID);
+            SqlDataReader reader = com.ExecuteReader();
+
+            if (reader.Read())
+            {
+                password = reader["Password"].ToString();
+            }
+
+            con.Close();
+            return password;
         }
         public ActionResult ChangePass()
         {
@@ -212,27 +242,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
         {
             
             
-            if(gd.LoginID.Equals("admin"))
-            {
-                if(gd.Password.Equals("admin"))
-                {
-                    
-                    
-                    cookieRole = new HttpCookie("Role", "admin");
-                    cookieLogin = new HttpCookie("Login", gd.LoginID);
-                    cookieName = new HttpCookie("Name", "Varsha Patel");
-                    cookieRole.Expires = DateTime.Now.AddDays(2);
-                    cookieLogin.Expires = DateTime.Now.AddDays(2);
-                    cookieName.Expires = DateTime.Now.AddDays(2);
-                    Response.Cookies.Add(cookieLogin);
-                    Response.Cookies.Add(cookieName);
-                    Session["Role"] = "admin";
-                    Session["LoginID"] = gd.LoginID;
-                    Session["Name"] = "Varsha Parel";
-                    Response.Cookies.Add(cookieRole);
-                    return RedirectToAction("Index", "Admin");
-                }    
-            }
+            
             String Query = "select LoginID,Email,Role,Name,UserID from Tbl_Users where LoginID='"+gd.LoginID+"' AND Password ='"+gd.Password+"' AND Status=1";
             ConnectionString();
             con.Open();
@@ -269,14 +279,27 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
                 Session["UserVerified"] = "true";
                 if(gd.Role.Contains("Student"))
                 {
-                    
-                    return RedirectToAction("StudentProfile","Student");
+                    if(gd.Role.Contains("Student CR")|| gd.Role.Contains("Student LR"))
+                    {
+                        return RedirectToAction("StudentProfile", "Student");
+                    }
+                    else
+                    {
+                        string script = "<script>alert('Only Cr And Lr Can Login');window.location='/Home/Logout'</script>";
+                        return Content(script, "text/html");
+                    }
 
                 }
                 else if (gd.Role.Contains("Faculty"))
                 {
 
                     return RedirectToAction("Profile","Faculty");
+
+                }
+                else if (gd.Role.ToString().Contains("Admin"))
+                {
+
+                    return RedirectToAction("Users", "Admin");
 
                 }
 
@@ -348,15 +371,15 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
                 Session["Name"] = cookieName.Value;
                 Session["Role"] = cookieRole.Value;
             }
-            else if( cookieLogin != null && cookieRole.Value.Equals("admin"))
+            else if( cookieLogin != null && cookieRole.Value.Equals("Admin"))
             {
                 Session["LoginID"] = cookieLogin.Value;
                 Session["Name"] = cookieName.Value;
-                Session["Role"] = "admin";
+                Session["Role"] = "Admin";
             }
             if (Session["Role"] != null)
             {
-                if (Session["Role"].ToString().Equals("admin"))
+                if (Session["Role"].ToString().Equals("Admin"))
                 {
                     return RedirectToAction("Index", "Admin");
                 }

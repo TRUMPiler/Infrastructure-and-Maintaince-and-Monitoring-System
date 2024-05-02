@@ -49,6 +49,10 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
             };
             return View(complaint);
         }
+        public ActionResult RegisterUser()
+        {
+            return View();
+        }
         public List<ComplaintTypes> GetAllComplaints()
         {
             List<ComplaintTypes> complaintTypes = new List<ComplaintTypes>();
@@ -111,6 +115,44 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
                 }
             }
         }
+        private List<Room> GetAllRooms()
+        {
+            List<Room> rooms = new List<Room>();
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                string query = "SELECT RoomID, RoomNo FROM Tbl_Room"; // Adjust based on your actual column names
+
+                using (SqlCommand cmd = new SqlCommand(query, con))
+                {
+                    con.Open();
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        Room room = new Room()
+                        {
+                            RoomID = (int)reader["RoomID"], // Adjust the column name as necessary
+                            RoomNo = reader["RoomNo"].ToString()
+                        };
+                        rooms.Add(room);
+                    }
+                }
+            }
+
+            return rooms;
+        }
+        public ActionResult FileComplaint()
+        {
+            Complaint cs = new Complaint()
+            {
+
+                ComplaintTypes = GetAllComplaintTypes(),
+                Rooms = GetAllRooms(),
+                Users = GetAllUsers()
+            };
+            return View(cs);
+        }
         public ActionResult CompleteComplaint(int? complaintid)
         {
             if (complaintid == null)
@@ -120,7 +162,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
             }
 
 
-            string query = "UPDATE Tbl_Complain SET Status = 'Completed' WHERE ComplainID = @ComplainID";
+            string query = "UPDATE Tbl_Complain SET Status = 'Completed',Complain_Completion_Date=@ComplainCompletionDate WHERE ComplainID = @ComplainID";
 
 
             using (SqlConnection con = new SqlConnection(connectionString))
@@ -131,7 +173,8 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
 
                 using (SqlCommand cmd = new SqlCommand(query, con))
                 {
-
+                    
+                    cmd.Parameters.Add("@ComplainCompletionDate", SqlDbType.Date).Value = DateTime.Today;
                     cmd.Parameters.AddWithValue("@ComplainID", complaintid);
 
 
@@ -220,6 +263,54 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
 
             return count;
         }
+        [HttpPost]
+        public ActionResult RegisterUser(GetData gd)
+        {
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                String Query= "INSERT INTO Tbl_Users(Name, Email, PhoneNo, LoginID, Gender, Role, Password, Status) VALUES(@Name, @Email, @PhoneNo, @LoginID, @Gender, @Role, @Password, @Status); SELECT SCOPE_IDENTITY()";
+                using (SqlCommand com = new SqlCommand(Query, con))
+                {
+                    con.Open();
+                    com.Parameters.AddWithValue("@Name", gd.Name);
+                    com.Parameters.AddWithValue("@Email", gd.Email);
+                    com.Parameters.AddWithValue("@PhoneNo", gd.PhoneNo);
+                    if (gd.Role.Contains("Faculty"))
+                    {
+                        com.Parameters.AddWithValue("@LoginID", gd.Email);
+                    }
+                    else
+                    {
+                        com.Parameters.AddWithValue("@LoginID", gd.LoginID);
+                    }
+                    com.Parameters.AddWithValue("@Gender", gd.Gender);
+                    com.Parameters.AddWithValue("@Role", gd.Role);
+                    com.Parameters.AddWithValue("@Password", gd.Password);
+                    com.Parameters.AddWithValue("@Status", 1);
+
+                    int userID = Convert.ToInt32(com.ExecuteScalar());
+
+
+                    if (gd.Role.Contains("Student"))
+                    {
+
+                        com.CommandText = "INSERT INTO Tbl_Students (UserId, Semster) VALUES (@UserID, @Sem)";
+                        com.Parameters.Clear();
+                        com.Parameters.AddWithValue("@UserID", userID);
+                        com.Parameters.AddWithValue("@Sem", Convert.ToInt32(gd.Semester));
+                        com.ExecuteNonQuery();
+                    }
+
+
+                    // Execute query and get the complaint ID
+                }
+            }
+            return RedirectToAction("Index", "Admin");
+                
+            }
+
+        
         public ActionResult Logout()
         {
             Session.RemoveAll();
@@ -245,7 +336,186 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
             
             return RedirectToAction("Index", "Home");
         }
-        
+        public List<GetData> GetAllUsers()
+        {
+            List<GetData> ls = new List<GetData>();
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                string query = "SELECT u.UserID, " +
+"u.Email, " +
+"u.Gender, " +
+"u.Role, " +
+"u.PhoneNo, " +
+"u.Name, " +
+"u.LoginID, " +
+"u.Password, " +
+"u.Status " +
+"FROM Tbl_Users u " +
+" Where u.Role!='Admin' AND u.Status=1" +
+"";
+
+                using (SqlCommand com = new SqlCommand(query, con))
+                {
+                    con.Open();
+                    SqlDataReader reader = com.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        GetData gd = new GetData()
+                        {
+                            UserID = (int)reader["UserID"],
+                            Email = reader["Email"].ToString(),
+                            Gender = reader["Gender"].ToString(),
+                            Role = reader["Role"].ToString(),
+                            PhoneNo = reader["PhoneNo"].ToString(),
+                            Name = reader["Name"].ToString(),
+                            LoginID = reader["LoginID"].ToString(),
+                            Password = reader["Password"].ToString(),
+                            Status = reader.GetBoolean(reader.GetOrdinal("Status"))
+                        };
+                        ls.Add(gd);
+                    }
+                }
+            }
+            return ls;
+        }
+        private void RegisterComplaintUsers(int[] selectedUsers, int complaintId, string connectionString)
+        {
+            // Create connection
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                // Open connection
+                connection.Open();
+
+                // Define query
+                string query = "INSERT INTO Tbl_Complaint_User (UserID, ComplainID) VALUES (@UserID, @ComplainID);";
+
+                // Create command
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    // Add parameters
+                    command.Parameters.AddWithValue("@ComplainID", complaintId);
+                    command.Parameters.AddWithValue("@UserID", Session["UserID"]);
+                    command.ExecuteNonQuery();
+                    // Add each selected user
+                    if(selectedUsers!=null)
+                    { 
+                        foreach (int userId in selectedUsers)
+                        {
+                            // Clear previous parameters
+                            command.Parameters.Clear();
+                            // Add parameters for the new command
+                            command.CommandText = "INSERT INTO Tbl_Complaint_User (ComplainID, UserID) VALUES (@ComplainID, @UserID)";
+                            command.Parameters.AddWithValue("@ComplainID", complaintId);
+                            command.Parameters.AddWithValue("@UserID", userId);
+                            command.ExecuteNonQuery();
+                        }
+                    }
+                }
+
+            }
+        }
+        [HttpPost]
+        public ActionResult FileComplaint(Complaint cs)
+        {
+            // Your connection string
+
+
+            // Register the complaint and get its ID
+            int complaintId = RegisterComplaint(cs, connectionString);
+            if (complaintId == 0)
+            {
+                string script = "<script>alert('Image is Empty');window.location='/Admin/Users'</script>";
+                return Content(script, "text/html");
+            }
+            else if (complaintId == 1)
+            {
+                string script = "<script>alert('Complaint is Empty');window.location='/Admin/Users'</script>";
+                return Content(script, "text/html");
+            }
+            // Register the associated users
+            RegisterComplaintUsers(cs.SelectedUser, complaintId, connectionString);
+
+            // Redirect to the StudentProfile page
+            return RedirectToAction("Index");
+        }
+
+        private int RegisterComplaint(Complaint cs, string connectionString)
+        {
+            // Create connection
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                // Open connection
+                connection.Open();
+
+                if (cs.ComplaintImage != null && cs.ComplaintImage.ContentLength > 0)
+                {
+                    try
+                    {
+
+                        string fileName = Path.GetFileName(cs.ComplaintImage.FileName);
+                        String path = Path.Combine(Server.MapPath("~\\Admins\\dist\\img"), fileName);
+                        cs.ComplaintImage.SaveAs(path);
+                        cs.Image = fileName;
+
+
+
+                    }
+                    catch (Exception ex)
+                    {
+
+                    }
+                }
+                else
+                {
+                    cs.Image = "No Image";
+                }
+
+                // Define query
+                string query = "INSERT INTO [dbo].[Tbl_Complain]([Description],[ComplaintType],[ClassID],[Image],[Status],[Complain_Registration_Date]) VALUES (@Description, @ComplaintType, @ClassID,@Image, @Status,@ComplainRegisterDate); SELECT SCOPE_IDENTITY();";
+
+                // Create command
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    // Add parameters
+                    command.Parameters.Add("@Description", SqlDbType.VarChar).Value = cs.Description;
+                    command.Parameters.Add("@ComplaintType", SqlDbType.Int).Value = cs.ComplaintType;
+                    command.Parameters.Add("@Image", SqlDbType.VarChar).Value = cs.Image;
+                    command.Parameters.Add("@Status", SqlDbType.VarChar).Value = "Pending"; // Default status
+                    command.Parameters.Add("@ClassID", SqlDbType.Int).Value = cs.ClassID;
+                    command.Parameters.Add("@ComplainRegisterDate", SqlDbType.Date).Value = DateTime.Today;
+                    // Execute query and get the complaint ID
+                    return Convert.ToInt32(command.ExecuteScalar());
+                }
+            }
+        }
+        private List<ComplaintTypes> GetAllComplaintTypes()
+        {
+            List<ComplaintTypes> complaintTypes = new List<ComplaintTypes>();
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                string query = "SELECT * FROM Tbl_ComplaintType where Status=1 ";
+
+                using (SqlCommand com = new SqlCommand(query, con))
+                {
+                    con.Open();
+                    SqlDataReader reader = com.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        ComplaintTypes ct = new ComplaintTypes()
+                        {
+                            ComplaintType_ID = (int)reader["Complaint_TypeID"],
+                            ComplaintType = reader["ComplaintType"].ToString()
+                        };
+                        complaintTypes.Add(ct);
+                    }
+                }
+            }
+
+            return complaintTypes;
+        }
         public List<string> GetComplaints()
         {
             List<string> complaints = new List<string>();
@@ -274,7 +544,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
         {
             if(Session["Role"]!=null)
             {
-                if (!Session["Role"].Equals("admin"))
+                if (!Session["Role"].Equals("Admin"))
                 {
                     return RedirectToAction("Index", "Home");
                 }
@@ -310,7 +580,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
         {
             if (Session["Role"] != null)
             {
-                if (!Session["Role"].Equals("admin"))
+                if (!Session["Role"].Equals("Admin"))
                 {
                     return RedirectToAction("Index", "Home");
                 }
@@ -523,7 +793,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
 
             if (Session["Role"] != null)
             {
-                if (!Session["Role"].Equals("admin"))
+                if (!Session["Role"].ToString().Contains("Admin"))
                 {
                     return RedirectToAction("Logout");
                 }
@@ -582,7 +852,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
         {
             if (Session["Role"] != null)
             {
-                if (!Session["Role"].ToString().Contains("admin"))
+                if (!Session["Role"].ToString().Contains("Admin"))
                 {
                     return RedirectToAction("Index", "Home");
                 }
@@ -645,7 +915,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
             {
                 if(Session["Role"]!=null)
                 {
-                    if (!Session["Role"].Equals("admin"))
+                    if (!Session["Role"].Equals("Admin"))
                     {
                         return RedirectToAction("Index", "Home");
                     }
@@ -747,33 +1017,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
             }
         }
 
-        private List<ComplaintTypes> GetAllComplaintTypes()
-        {
-            List<ComplaintTypes> complaintTypes = new List<ComplaintTypes>();
-
-            using (SqlConnection con = new SqlConnection(connectionString))
-            {
-                string query = "SELECT * FROM Tbl_ComplaintType where Status=1";
-
-                using (SqlCommand com = new SqlCommand(query, con))
-                {
-                    con.Open();
-                    SqlDataReader reader = com.ExecuteReader();
-
-                    while (reader.Read())
-                    {
-                        ComplaintTypes ct = new ComplaintTypes()
-                        {
-                            ComplaintType_ID = (int)reader["Complaint_TypeID"],
-                            ComplaintType = reader["ComplaintType"].ToString()
-                        };
-                        complaintTypes.Add(ct);
-                    }
-                }
-            }
-
-            return complaintTypes;
-        }
+        
        
         [HttpPost]
         public ActionResult AddRoom(Room room)

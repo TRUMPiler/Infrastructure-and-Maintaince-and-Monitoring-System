@@ -201,10 +201,10 @@
                                         <th>Image</th>
                                         <th>Status</th>
                                         <th>Users</th>
-                                        @if (Session["Role"].ToString().Contains("CR") || Session["Role"].ToString().Contains("LR"))
-                                        {
                                         <th>Action</th>
-                                        }
+                                        <th>Complaint Registeration Date</th>
+                                        
+                                        
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -250,7 +250,7 @@
                                             {
                                                 <td>Feedback recieved</td>
                                             }
-
+                                        <td>@complaint.Complain_Registration_Date</td>
 
                                     </tr>
                                     }
@@ -263,10 +263,8 @@
                                         <th>Image</th>
                                         <th>Status</th>
                                         <th>Users</th>
-                                        @if (Session["Role"].ToString().Contains("CR") || Session["Role"].ToString().Contains("LR"))
-                                        {
-                                            <th>Action</th>
-                                        }
+                                        <th>Action</th>
+                                        <th>Complaint Registeration Date</th>
                                     </tr>
                                 </tfoot>
                             </table>

@@ -1,7 +1,8 @@
-﻿@{
-    ViewBag.Title = "Users";
+﻿﻿@{
+    ViewBag.Title = "File A Complaint";
     Layout = "~/Views/Shared/_AdminTablePage.cshtml";
 }
+@model Infrastructure_and_Maintaince_and_monitoring_system.Models.Complaint
 <div class="preloader flex-column justify-content-center align-items-center">
     <img class="animation__shake" src="~/Admins/dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
 </div>
@@ -13,16 +14,16 @@
             <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
-            <a href="/Admin/Index" class="nav-link">Home</a>
+            <a href="/Student/StudentProfile" class="nav-link">Home</a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
-            <a href="#" class="nav-link">About Us</a>
+            <a href="@Url.Action("ChangePass","Home")" class="nav-link">Change Password</a>
         </li>
     </ul>
 
-
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
+        <!-- Navbar Search -->
         <!-- Navbar Search -->
         <li class="nav-item">
             <a class="nav-link" data-widget="navbar-search" href="#" role="button">
@@ -62,9 +63,6 @@
             </div>
         </li>
 
-
-
-
         <li class="nav-item">
             <a class="nav-link" data-widget="fullscreen" href="#" role="button">
                 <i class="fas fa-expand-arrows-alt"></i>
@@ -75,18 +73,13 @@
                 <i class="fas fa-th-large"></i>
             </a>
         </li>
-
-        <!-- Navbar Search -->
         <li class="nav-item">
-            <button type="button" class="btn btn-primary float-right" onclick="window.location.href='@Url.Action("Logout", "Admin")'">Logout</button>
-
-            </a>
+            <button type="button" class="btn btn-primary float-right" onclick="window.location.href='@Url.Action("Logout", "Home")'">
+                Logout
+            </button>
         </li>
-
     </ul>
 </nav>
-
-<!-- /.navbar -->
 <!-- /.navbar -->
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
@@ -204,21 +197,20 @@
     </div>
     <!-- /.sidebar -->
 </aside>
-
-<!-- Content Wrapper. Contains page content --><!-- Content Wrapper. Contains page content -->
+<!-- Content Wrapper. Contains page content -->
+<!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Room Details</h1>
+                    <h1>Complaint Filing</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active">Tables</li>
-                        <li class="breadcrumb-item active">Room Details</li>
+                        <li class="breadcrumb-item active">Validation</li>
                     </ol>
                 </div>
             </div>
@@ -229,113 +221,153 @@
     <section class="content">
         <div class="container-fluid">
             <div class="row">
-                <div class="col-12">
-
-                    <div class="card">
-
-
-                        <div class="card-body">
-                            <table id="example1" class="table table-bordered table-striped">
-                                <thead>
-                                    <tr>
-                                        <th>Room ID</th>
-                                        <th>Room Type</th>
-                                        <th>Wing</th>
-                                        <th>Room No</th>
-                                        <th>Status</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @model List<Infrastructure_and_Maintaince_and_monitoring_system.Models.Room>
-                                    @foreach (var room in Model)
-                                    {
-                                        <tr>
-                                            <td>@room.RoomID</td>
-                                            <td>@room.RoomType</td>
-                                            <td>@room.Wing</td>
-                                            <td>@room.RoomNo</td>
-                                            <td>@room.Status</td>
-
-
-                                            <td>
-                                                <button class="btn btn-primary" onclick="window.location.href='@Url.Action("EditRoom", "Admin", new { RoomID = room.RoomID })'">Edit</button>
-                                                @if (room.Status)
-                                                {
-                                                    <button class="btn btn-primary ml-2" onclick="window.location.href='@Url.Action("DeactivateRoom", "Admin", new { RoomID = room.RoomID })'">Deactive</button>
-                                                }
-                                                else
-                                                {
-                                                    <button class="btn btn-primary ml-2" onclick="window.location.href='@Url.Action("ActivateRoom", "Admin", new { RoomID = room.RoomID })'">Activate</button>
-
-                                                }
-                                            </td>
-                                        </tr>
-                                    }
-                                </tbody>
-                                <tfoot>
-                                    <tr>
-                                        <th>Room ID</th>
-                                        <th>Room Type</th>
-                                        <th>Wing</th>
-                                        <th>Room No</th>
-                                        <th>Action</th>
-                                </tfoot>
-                            </table>
-                            <button type="button" class="btn btn-primary float-left mt-3" onclick="window.location.href='@Url.Action("AddRoom","Admin",new { })'">Add</button>
-
+                <!-- left column -->
+                <div class="col-md-12">
+                    <!-- jquery validation -->
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <h3 class="card-title"><small>File a complaint</small></h3>
                         </div>
-                        <!-- /.card-body -->
+                        <!-- /.card-header -->
+                        <!-- form start -->
+
+                        <form id="quickForm" method="post" action="FileComplaint" enctype="multipart/form-data">
+                            <div class="card-body">
+
+                                <div class="form-group">
+                                    <label for="exampleInputName">Description</label>
+                                    <input type="text" name="Description" class="form-control" id="exampleInputName" placeholder="Enter name">
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputName">Upload a image</label>
+                                    <input type="file" name="ComplaintImage" class="form-control" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">ComplaintType</label>
+                                    <select name="ComplaintType">
+                                        @foreach (var ct in Model.ComplaintTypes)
+                                        {
+                                            <option value="@ct.ComplaintType_ID">@ct.ComplaintType</option>
+
+                                        }
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputPassword1">ROOMID</label>
+                                    <select name="ClassID" id="RoomID">
+                                        <option value="">Select a Room</option>
+                                        @foreach (var room in Model.Rooms)
+                                        {
+                                            <option value="@room.RoomID">@room.RoomNo</option>
+                                        }
+                                    </select>
+
+                                </div>
+                                <div class="form-group">
+                                    <label>Users</label><br>
+                                    <select name="SelectedUser[]"  multiple>
+
+                                        @foreach (var user in Model.Users)
+                                        {
+                                            
+                                          <option value="@user.UserID">@user.Name</option>
+                                        }
+
+                                       }
+                                        </select>
+                                    </div>
+
+
+                            </div>
+                            <!-- /.card-body -->
+                            <div class="card-footer">
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
+                        </form>
                     </div>
                     <!-- /.card -->
                 </div>
-                <!-- /.col -->
+                <!--/.col (left) -->
+                <!-- right column -->
+                <div class="col-md-6">
+
+                </div>
+                <!--/.col (right) -->
             </div>
             <!-- /.row -->
-        </div>
-        <!-- /.container-fluid -->
+        </div><!-- /.container-fluid -->
     </section>
     <!-- /.content -->
 </div>
-<!-- /.content-wrapper -->
-<!-- /.control-sidebar -->
-<!-- ./wrapper -->
+
 <!-- jQuery -->
 <script src="~/Admins/plugins/jquery/jquery.min.js"></script>
 <!-- Bootstrap 4 -->
 <script src="~/Admins/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<!-- DataTables  & ~/Admins/plugins -->
-<script src="~/Admins/plugins/datatables/jquery.dataTables.min.js"></script>
-<script src="~/Admins/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
-<script src="~/Admins/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
-<script src="~/Admins/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
-<script src="~/Admins/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
-<script src="~/Admins/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
-<script src="~/Admins/plugins/jszip/jszip.min.js"></script>
-<script src="~/Admins/plugins/pdfmake/pdfmake.min.js"></script>
-<script src="~/Admins/plugins/pdfmake/vfs_fonts.js"></script>
-<script src="~/Admins/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
-<script src="~/Admins/plugins/datatables-buttons/js/buttons.print.min.js"></script>
-<script src="~/Admins/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+<!-- jquery-validation -->
 <!-- AdminLTE App -->
 <script src="~/Admins/dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="~/Admins/dist/js/demo.js"></script>
-<!-- Page specific script -->
+<script src="~/Admins/plugins/jquery-validation/jquery.validate.min.js"></script>
+<script src="~/Admins/plugins/jquery-validation/additional-methods.min.js"></script>
 <script>
     $(function () {
-        $("#example1").DataTable({
-            "responsive": true, "lengthChange": false, "autoWidth": false,
-            "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
-        }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-        $('#example2').DataTable({
-            "paging": true,
-            "lengthChange": false,
-            "searching": false,
-            "ordering": true,
-            "info": true,
-            "autoWidth": false,
-            "responsive": true,
+
+        $('#quickForm').validate({
+            rules: {
+                Description: {
+                    required: true,
+                    minlength: 5,
+
+                    maxlength: 245
+                },
+
+                Complaint_TypeID: {
+                    required: true
+                },
+                ClassID: {
+                    required: true,
+                    minlength: 1,
+                    maxlength: 3
+                },
+                ComplaintImage: {
+                    accept: ["jpeg", "jpg", "png"]
+                }
+            },
+            messages: {
+                SelectedUsers: {
+                    required: "Please choose a student"
+                },
+                Description: {
+                    required: "Please enter a description",
+
+                    minlength: "Description must be at least 5 characters",
+                    maxlength: "Description cannot exceed 245 characters"
+                },
+                Complaint_TypeID: {
+                    required: "Please select a complaint type"
+                },
+                ClassID: {
+                    required: "Please enter a room ID",
+                    minlength: "Room ID must be at least 1 character",
+                    maxlength: "Room ID cannot exceed 3 characters"
+                },
+                ComplaintImage: {
+                    accept: "Please upload a valid image file (JPEG/JPG/PNG)."
+                }
+            },
+            errorElement: 'span',
+            errorPlacement: function (error, element) {
+                error.addClass('invalid-feedback');
+                element.closest('.form-group').append(error);
+            },
+            highlight: function (element, errorClass, validClass) {
+                $(element).addClass('is-invalid');
+            },
+            unhighlight: function (element, errorClass, validClass) {
+                $(element).removeClass('is-invalid');
+            }
         });
     });
 </script>
