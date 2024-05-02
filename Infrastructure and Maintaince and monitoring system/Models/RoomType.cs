@@ -9,5 +9,6 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Models
     {
         public int RoomTypeID { get; set; }
         public string Roomtype { get; set; }
+        public bool Status { get; set; }
     }
 }

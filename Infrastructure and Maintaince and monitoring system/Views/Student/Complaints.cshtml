@@ -206,6 +206,8 @@
                                         <th>Image</th>
                                         <th>Status</th>
                                         <th>Users</th>
+                                        <th>Complain Registration Date</th>
+                                        <th>Complain Completion Date</th>
                                         @if (Session["Role"] != null)
                                         {
                                             if (Session["Role"].ToString().Contains("Head"))
@@ -222,25 +224,34 @@
                                     @model List<Infrastructure_and_Maintaince_and_monitoring_system.Models.Complaint>
                                     @foreach (var complaint in Model)
                                     {
-                                        <tr>
-                                            <td>@complaint.ComplaintID</td>
-                                            <td>@complaint.Description</td>
-                                            <td>@complaint.ComplaintType</td>
+                                    <tr>
+                                        <td>@complaint.ComplaintID</td>
+                                        <td>@complaint.Description</td>
+                                        <td>@complaint.ComplaintType</td>
 
-                                            <td><a href="~/Admins/dist/img/@complaint.Image" target="_blank">Click to View</a></td>
-                                            <td>@complaint.Status</td>
-                                            <td>@complaint.User</td>
-                                            @if (Session["Role"] != null)
+                                        <td><a href="~/Admins/dist/img/@complaint.Image" target="_blank">Click to View</a></td>
+                                        <td>@complaint.Status</td>
+                                        <td>@complaint.User</td>
+                                        <td>@complaint.Complain_Registration_Date</td>
+                                        @if (complaint.Complain_Completion_Date.Equals("") || complaint.Complain_Completion_Date == null)
+                                        {
+                                            <td>Yet to Completed</td>
+                                        }
+                                        else
+                                        {
+                                            <td>@complaint.Complain_Completion_Date</td>
+                                        }
+                                        @if (Session["Role"] != null)
+                                        {
+                                            if (Session["Role"].ToString().Contains("Head"))
                                             {
-                                                if (Session["Role"].ToString().Contains("Head"))
-                                                {
-                                                    <td> <button onclick="window.location.href='@Url.Action("EditComplaint", "Admin", new { cid = complaint.ComplaintID })'">Edit</button><button>Reject</button> </td>
-
-                                                }
+                                                <td> <button onclick="window.location.href='@Url.Action("EditComplaint", "Admin", new { cid = complaint.ComplaintID })'">Edit</button><button>Reject</button> </td>
 
                                             }
 
-                                        </tr>
+                                        }
+
+                                    </tr>
                                     }
                                 </tbody>
                                 <tfoot>
@@ -251,7 +262,8 @@
                                         <th>Image</th>
                                         <th>Status</th>
                                         <th>Users</th>
-
+                                        <th>Complain Registration Date</th>
+                                        <th>Complain Completion Date</th>
                                         @if (Session["Role"] != null)
                                         {
                                             if (Session["Role"].ToString().Contains("Head"))
@@ -261,7 +273,7 @@
                                             }
 
                                         }
-                                </tfoot>
+</tfoot>
                             </table>
                         </div>
                         <!-- /.card-body -->

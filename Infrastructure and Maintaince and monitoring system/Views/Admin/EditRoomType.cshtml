@@ -1,8 +1,9 @@
-﻿﻿@{
-    ViewBag.Title = "Give FeedbacK";
-    Layout = "~/Views/Shared/_AdminTablePage.cshtml";
+﻿
+@{
+    ViewBag.Title = "EditRoomType";
+    Layout = "~/Views/Shared/_FacultyLayout.cshtml";
 }
-@model List<Infrastructure_and_Maintaince_and_monitoring_system.Models.Feedback>
+@model Infrastructure_and_Maintaince_and_monitoring_system.Models.RoomType
 <div class="preloader flex-column justify-content-center align-items-center">
     <img class="animation__shake" src="~/Admins/dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
 </div>
@@ -14,17 +15,19 @@
             <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
-            <a href="/Admin/Index" class="nav-link">Home</a>
+            <a href="/Faculty/" class="nav-link">Home</a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
-            <a href="#" class="nav-link">About Us</a>
+            <a href="#" class="nav-link">Contact</a>
         </li>
     </ul>
-
 
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
         <!-- Navbar Search -->
+
+
+
         <li class="nav-item">
             <a class="nav-link" data-widget="navbar-search" href="#" role="button">
                 <i class="fas fa-search"></i>
@@ -46,7 +49,6 @@
             </div>
         </li>
 
-
         <!-- Notifications Dropdown Menu -->
         <li class="nav-item dropdown">
             <a class="nav-link" data-toggle="dropdown" href="#">
@@ -66,6 +68,7 @@
 
 
 
+
         <li class="nav-item">
             <a class="nav-link" data-widget="fullscreen" href="#" role="button">
                 <i class="fas fa-expand-arrows-alt"></i>
@@ -76,18 +79,11 @@
                 <i class="fas fa-th-large"></i>
             </a>
         </li>
-
-        <!-- Navbar Search -->
         <li class="nav-item">
-            <button type="button" class="btn btn-primary float-right" onclick="window.location.href='@Url.Action("Logout", "Admin")'">Logout</button>
-
-            </a>
+            <button type="button" class="btn btn-primary float-right" onclick="window.location.href='@Url.Action("Logout", "Home")'">Logout</button>
         </li>
-
     </ul>
 </nav>
-
-<!-- /.navbar -->
 <!-- /.navbar -->
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
@@ -213,7 +209,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Complaint Filing</h1>
+                    <h1>Edit RoomType</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
@@ -234,74 +230,53 @@
                     <!-- jquery validation -->
                     <div class="card card-primary">
                         <div class="card-header">
-                            <h3 class="card-title"><small>File a complaint</small></h3>
+                            <h3 class="card-title"><small>Edit RoomType Detail</small></h3>
                         </div>
                         <!-- /.card-header -->
                         <!-- form start -->
 
-                        <form id="quickForm" method="post" action="GiveFeedback" enctype="multipart/form-data">
+                        <form id="quickForm" method="post" action="EditRoomType" enctype="multipart/form-data">
                             <div class="card-body">
-                                @foreach (var feedback in Model)
-                                {
-                                    <div class="form-group">
-                                        <label for="exampleInputName">Feedback</label>
-                                        <input type="text" name="Description" value="@feedback.Description" class="form-control" id="exampleInputName" placeholder="Enter your feedback" disabled>
-                                    </div>
+                                <div class="form-group">
+                                    <label for="exampleInputName">RoomTypeID:</label>
+                                    <input type="number" name="RoomTypeID" class="form-control" hidden value=@Model.RoomTypeID placeholder="Enter name">
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputName">RoomType:</label>
+                                    <input type="text" name="Roomtype" class="form-control" id="Roomtype" value=@Model.Roomtype placeholder="Enter name">
+                                </div>
+                                @*<div class="form-group">
+                                        <label for="exampleInputPassword1">Status</label>
 
-                                    <div class="form-group">
-                                        <label for="exampleInputPassword1">Rating</label>
-                                        <select name="Rating" id="RoomID" disabled>
-                                            @if (feedback.Rating == 5)
+                                        <select name="Status">
+                                            @if (Model.Status == true)
                                             {
-                                                <option value=5 selected>Excellent</option>
+                                                <option value="true" selected>Active</option>
                                             }
                                             else
                                             {
-                                                <option value=5>Excellent</option>
+                                                <option value="true">Active</option>
                                             }
-                                            @if (feedback.Rating == 4)
+                                            @if (Model.Status == false)
                                             {
-                                                <option value=4 selected>Good</option>
+                                                <option value="false" selected>Inactive</option>
                                             }
                                             else
                                             {
-                                                <option value=4>Good</option>
+                                                <option value="false">Inactive</option>
                                             }
-                                            @if (feedback.Rating == 3)
-                                            {
-                                                <option value=3 selected>Not Bad</option>
-                                            }
-                                            else
-                                            {
-                                                <option value=3>Not Bad</option>
-                                            }
-                                            @if (feedback.Rating == 2)
-                                            {
-                                                <option value=2 selected>Mediocre</option>
-                                            }
-                                            else
-                                            {
-                                                <option value=2>Mediocre</option>
-                                            }
-                                            @if (feedback.Rating == 1)
-                                            {
-                                                <option value=1 selected>Bad</option>
-                                            }
-                                            else
-                                            {
-                                                <option value=1>Bad</option>
-                                            }
-
                                         </select>
 
-                                    </div>
 
-                                }
+                                    </div>*@
+
+
+
 
                             </div>
                             <!-- /.card-body -->
                             <div class="card-footer">
-
+                                <button type="submit" class="btn btn-primary">Submit</button>
                             </div>
                         </form>
                     </div>
@@ -338,31 +313,45 @@
             rules: {
                 Description: {
                     required: true,
-                    minlength: 4,
+                    minlength: 5,
 
                     maxlength: 245
                 },
-                Rating:
-                {
+
+                Complaint_TypeID: {
                     required: true
                 },
-
-
-
+                ClassID: {
+                    required: true,
+                    minlength: 1,
+                    maxlength: 3
+                },
+                ComplaintImage: {
+                    required: true,
+                    accept: "image/jpeg,image/png"
+                }
             },
             messages: {
-                Rating: {
-                    required: "Please choose a Rating"
+                SelectedUsers: {
+                    required: "Please choose a student"
                 },
                 Description: {
                     required: "Please enter a description",
 
-                    minlength: "Feedback must be at least 4 characters",
-                    maxlength: "Feedback cannot exceed 245 characters"
+                    minlength: "Description must be at least 5 characters",
+                    maxlength: "Description cannot exceed 245 characters"
                 },
-
-
-
+                Complaint_TypeID: {
+                    required: "Please select a complaint type"
+                },
+                ClassID: {
+                    required: "Please enter a room ID",
+                    minlength: "Room ID must be at least 1 character",
+                    maxlength: "Room ID cannot exceed 3 characters"
+                },
+                ComplaintImage: {
+                    required: "Please upload a file"
+                }
             },
             errorElement: 'span',
             errorPlacement: function (error, element) {
@@ -378,3 +367,4 @@
         });
     });
 </script>
+

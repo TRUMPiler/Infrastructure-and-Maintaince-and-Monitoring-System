@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
+
 namespace Infrastructure_and_Maintaince_and_monitoring_system.Models
 {
     public class Complaint
@@ -14,11 +15,15 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Models
         public String Status { get; set; }
         public String User { get; set; }
         public String ClassID { get; set; }
-        public String Complain_Registration_Date { get; set; }
-        public String Complain_Completion_Date { get; set; }
+
+         public String Complain_Registration_Date { get; set; }
+
+         public String Complain_Completion_Date { get; set; }
         public List<ComplaintTypes> ComplaintTypes{ get; set; }
         public HttpPostedFileBase ComplaintImage { get; set; }
         public List<Room> Rooms { get; set; }
+        public DateTime complainRegistrationDate { get; set; }
+        public DateTime complainCompletionDate { get; set; }
         public List<GetData> Users { get; set; }
         public int SelectedRoomID { get; set; }
         public int[] SelectedUser { get; set; }

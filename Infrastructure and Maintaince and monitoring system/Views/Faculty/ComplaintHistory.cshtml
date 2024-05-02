@@ -219,7 +219,8 @@
                                         <th>Image</th>
                                         <th>Status</th>
                                         <th>Users</th>
-
+                                        <th>Complain Registration Date</th>
+                                        <th>Complain Completion Date</th>
                                         <th>Action</th>
 
                                     </tr>
@@ -228,48 +229,58 @@
                                     @model List<Infrastructure_and_Maintaince_and_monitoring_system.Models.Complaint>
                                     @foreach (var complaint in Model)
                                     {
-                                        <tr>
-                                            <td>@complaint.ComplaintID</td>
-                                            <td>@complaint.Description</td>
-                                            <td>@complaint.ComplaintType</td>
+                                    <tr>
+                                        <td>@complaint.ComplaintID</td>
+                                        <td>@complaint.Description</td>
+                                        <td>@complaint.ComplaintType</td>
 
-                                            @if (!complaint.Image.ToString().Contains("No Image"))
+                                        @if (!complaint.Image.ToString().Contains("No Image"))
+                                        {
+                                            <td><a href="~/Admins/dist/img/@complaint.Image" target="_blank">Click to View</a></td>
+
+                                        }
+                                        else
+                                        {
+                                            <td>No Image to display</td>
+
+                                        }
+                                        <td>@complaint.Status</td>
+                                        <td>
+                                            @foreach (var user in complaint.Users)
                                             {
-                                                <td><a href="~/Admins/dist/img/@complaint.Image" target="_blank">Click to View</a></td>
-
-                                            }
-                                            else
-                                            {
-                                                <td>No Image to display</td>
-
-                                            }
-                                            <td>@complaint.Status</td>
-                                            <td>
-                                                @foreach (var user in complaint.Users)
-                                                {
-                                                    <span>@user.LoginID @Html.Raw("-") @user.Name</span><br>
-                                                }
-
-
-                                            </td>
-
-                                            @if (complaint.Status.Contains("Pending"))
-                                            {
-                                                <td> <button onclick="window.location.href='@Url.Action("Delete", "Faculty", new { complaintID = complaint.ComplaintID })'">Delete</button></td>
-
-
-                                            }
-                                            else if (complaint.Status.Contains("Completed") && !complaint.HasFeedback)
-                                            {
-                                                <td> <button onclick="window.location.href='@Url.Action("GiveFeedback", "Faculty", new { complaintid = complaint.ComplaintID })'">Give Feedback</button></td>
-                                            }
-                                            else if ((complaint.Status.Contains("Completed") && complaint.HasFeedback) && Session["Role"].ToString().Contains("CR") || Session["Role"].ToString().Contains("LR"))
-                                            {
-                                                <td>Feedback recieved</td>
+                                                <span>@user.LoginID @Html.Raw("-") @user.Name</span><br>
                                             }
 
 
-                                        </tr>
+                                        </td>
+                                        <td>@DateTime.Parse(complaint.Complain_Registration_Date).ToString("dd-MM-yyyy")</td>
+
+                                        @if (complaint.Complain_Completion_Date.Equals("") || complaint.Complain_Completion_Date == null)
+                                        {
+                                            <td>Yet to Completed</td>
+                                        }
+                                        else
+                                        {
+                                            <td>@DateTime.Parse(complaint.Complain_Completion_Date).ToString("dd-MM-yyyy")</td>
+                                        }
+
+                                        @if (complaint.Status.Contains("Pending"))
+                                        {
+                                            <td> <button onclick="window.location.href='@Url.Action("Delete", "Faculty", new { complaintID = complaint.ComplaintID })'">Delete</button></td>
+
+
+                                        }
+                                        else if (complaint.Status.Contains("Completed") && !complaint.HasFeedback)
+                                        {
+                                            <td> <button onclick="window.location.href='@Url.Action("GiveFeedback", "Faculty", new { complaintid = complaint.ComplaintID })'">Give Feedback</button></td>
+                                        }
+                                        else if ((complaint.Status.Contains("Completed") && complaint.HasFeedback) && Session["Role"].ToString().Contains("CR") || Session["Role"].ToString().Contains("LR"))
+                                        {
+                                            <td>Feedback recieved</td>
+                                        }
+
+
+                                    </tr>
                                     }
                                 </tbody>
                                 <tfoot>
@@ -280,7 +291,8 @@
                                         <th>Image</th>
                                         <th>Status</th>
                                         <th>Users</th>
-
+                                        <th>Complain Registration Date</th>
+                                        <th>Complain Completion Date</th>
                                         <th>Action</th>
 
                                     </tr>

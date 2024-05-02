@@ -41,45 +41,51 @@
     <!-- Brand Logo -->
     <a href="#" class="brand-link">
         <img src="~/Admins/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-        <span class="brand-text font-weight-light">Infrastructure</span>
+        <span class="brand-text font-weight-light">InfraCare</span>
     </a>
     <div class="sidebar">
         <!-- Sidebar user panel (optional) -->
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
             <div class="image">
-                <img src="~/Admins/dist/img/varshaMAM.png" class="img-circle elevation-2" alt="User Image">
+                <img src="~/Content/assets/img/MIcon.png" class="img-circle elevation-2" alt="User Image">
             </div>
             <div class="info">
-                <a href="#" class="d-block">Varsha Patel</a>
+                <a href="#" class="d-block">Admin</a>
             </div>
         </div>
-        <!-- Sidebar -->
-        <!-- Sidebar Menu -->
+
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                <!-- Add icons to the links using the .nav-icon class
-                with font-awesome or any other icon font library -->
+
                 <li class="nav-item">
-                    <a href="#" class="nav-link active">
+                    <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-table"></i>
                         <p>
                             Tables
                             <i class="fas fa-angle-left right"></i>
                         </p>
                     </a>
+
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="./Users" class="nav-link active">
+                            <a href="/Admin/Users" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Users</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="./Complaints" class="nav-link">
+                            <a href="/Admin/Complaints" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Complains</p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="/Admin/ManageRoom" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Manage Room</p>
+                            </a>
+                        </li>
+
                         <li class="nav-item">
                             <a href="/Asset/Asset" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
@@ -93,13 +99,34 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="ComplaintType" class="nav-link">
+                            <a href="/Admin/ComplaintType" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>ComplaintType</p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="/AssetTransfer/" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Asset Transfer</p>
+                            </a>
+                        </li>
                     </ul>
                 </li>
+
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-chart-pie"></i>
+                        <p>
+                            Report
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                </li>
+
+
+
+
+
 
                 <li class="nav-header">MISCELLANEOUS</li>
                 <li class="nav-item">
@@ -108,6 +135,18 @@
                         <p>Registeration</p>
                     </a>
                 </li>
+
+
+                @*<li class="nav-item">
+                        <a href="pages/calendar.html" class="nav-link">
+                            <i class="nav-icon fas fa-calendar-alt"></i>
+                            <p>
+                                Calendar
+                                <span class="badge badge-info right">2</span>
+                            </p>
+                        </a>
+                    </li>*@
+
             </ul>
         </nav>
         <!-- /.sidebar-menu -->
@@ -151,10 +190,10 @@
 
                         <form id="quickForm" method="post" action="RegisterUser">
                             <div class="card-body">
-                                
+
                                 <div class="form-group">
                                     <label for="exampleInputName">Name</label>
-                                    <input type="text" name="Name" class="form-control" id="exampleInputName"  placeholder="Enter name">
+                                    <input type="text" name="Name" class="form-control" id="exampleInputName" placeholder="Enter name">
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">Email address</label>
@@ -162,41 +201,41 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputPassword1">Password</label>
-                                    <input type="text" name="Password" class="form-control" id="exampleInputPassword1"  placeholder="Password">
+                                    <input type="text" name="Password" class="form-control" id="exampleInputPassword1" placeholder="Password">
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputPassword1">PhoneNo</label>
-                                    <input type="number" name="PhoneNo" class="form-control" id="exampleInputPhoneNo1"  placeholder="Enter Your PhoneNo">
+                                    <input type="number" name="PhoneNo" class="form-control" id="exampleInputPhoneNo1" placeholder="Enter Your PhoneNo">
                                 </div>
                                 <div class="form-group" id="loginIdGroup">
                                     <label for="exampleInputName">Enrollment No</label>
-                                    <input type="text" name="LoginID" class="form-control" id="exampleInputID" placeholder="Enter EnrollmentNo" >
+                                    <input type="text" name="LoginID" class="form-control" id="exampleInputID" placeholder="Enter EnrollmentNo">
                                 </div>
-                                
+
                                 <div class="form-group">
                                     <label for="exampleInputPassword1">Gender</label><br />
-                                    
-                                        <input type="radio" name="Gender" value="M"  checked />
-                                        <label for="exampleInputPassword1">Male</label><br />
-                                        <input type="radio" name="Gender" value="F"  />
-                                        <label for="exampleInputPassword1">Female</label>
+
+                                    <input type="radio" name="Gender" value="M" checked />
+                                    <label for="exampleInputPassword1">Male</label><br />
+                                    <input type="radio" name="Gender" value="F" />
+                                    <label for="exampleInputPassword1">Female</label>
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputPassword1">Role</label>
-                                    
+
                                     <select name="Role" id="Role" class="form-control">
                                         <option>Choose a Role</option>
                                         <option value="Student">Student</option>
                                         <option value="Faculty">Faculty</option>
                                     </select>
-                                    
-                                    
+
+
                                 </div>
                                 <div class="form-group" id="semesterGroup">
                                     <label for="exampleInputPassword1">Semester</label>
 
                                     <select name="Semester" class="form-control">
-                                        <option>Choose a Role</option>
+
                                         <option value="1">1</option>
                                         <option value="2">2</option>
                                         <option value="3">3</option>
@@ -223,7 +262,7 @@
                 <!--/.col (left) -->
                 <!-- right column -->
                 <div class="col-md-6">
-                    
+
                 </div>
                 <!--/.col (right) -->
             </div>

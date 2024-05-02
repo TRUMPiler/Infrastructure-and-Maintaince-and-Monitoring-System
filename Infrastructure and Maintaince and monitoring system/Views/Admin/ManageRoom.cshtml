@@ -1,10 +1,13 @@
 ﻿@{
-    ViewBag.Title = "Users";
-    Layout = "~/Views/Shared/_AdminTablePage.cshtml";
+    ViewBag.Title = "ManageRoom";
+    Layout = "~/Views/Shared/_FacultyLayout.cshtml";
 }
+
+<!-- Preloader -->
 <div class="preloader flex-column justify-content-center align-items-center">
     <img class="animation__shake" src="~/Admins/dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
 </div>
+
 <!-- Navbar -->
 <nav class="main-header navbar navbar-expand navbar-white navbar-light">
     <!-- Left navbar links -->
@@ -13,17 +16,19 @@
             <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
-            <a href="/Admin/Index" class="nav-link">Home</a>
+            <a href="/Faculty/" class="nav-link">Home</a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
-            <a href="#" class="nav-link">About Us</a>
+            <a href="#" class="nav-link">Contact</a>
         </li>
     </ul>
-
 
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
         <!-- Navbar Search -->
+
+
+
         <li class="nav-item">
             <a class="nav-link" data-widget="navbar-search" href="#" role="button">
                 <i class="fas fa-search"></i>
@@ -45,7 +50,6 @@
             </div>
         </li>
 
-
         <!-- Notifications Dropdown Menu -->
         <li class="nav-item dropdown">
             <a class="nav-link" data-toggle="dropdown" href="#">
@@ -63,8 +67,6 @@
         </li>
 
 
-
-
         <li class="nav-item">
             <a class="nav-link" data-widget="fullscreen" href="#" role="button">
                 <i class="fas fa-expand-arrows-alt"></i>
@@ -75,19 +77,11 @@
                 <i class="fas fa-th-large"></i>
             </a>
         </li>
-
-        <!-- Navbar Search -->
         <li class="nav-item">
-            <button type="button" class="btn btn-primary float-right" onclick="window.location.href='@Url.Action("Logout", "Admin")'">Logout</button>
-
-            </a>
+            <button type="button" class="btn btn-primary float-right" onclick="window.location.href='@Url.Action("Logout", "Home")'">Logout</button>
         </li>
-
     </ul>
 </nav>
-
-<!-- /.navbar -->
-<!-- /.navbar -->
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
     <a href="#" class="brand-link">
@@ -204,7 +198,6 @@
     </div>
     <!-- /.sidebar -->
 </aside>
-
 <!-- Content Wrapper. Contains page content --><!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -259,14 +252,15 @@
 
 
                                             <td>
-                                                <button class="btn btn-primary" onclick="window.location.href='@Url.Action("EditRoom", "Admin", new { RoomID = room.RoomID })'">Edit</button>
-                                                @if (room.Status)
+                                                <button type="button" class="btn btn-primary float-left mr-2" onclick="window.location.href='@Url.Action("EditRoom", "Faculty", new { RoomID = room.RoomID })'">Edit</button>
+
+                                                @if (room.Status.Equals(true))
                                                 {
-                                                    <button class="btn btn-primary ml-2" onclick="window.location.href='@Url.Action("DeactivateRoom", "Admin", new { RoomID = room.RoomID })'">Deactive</button>
+                                                    <button type="button" class="btn btn-primary float-left  mr-2" onclick="window.location.href='@Url.Action("DeactivateRoom", "Faculty", new { RoomID = room.RoomID })'">Deactive</button>
                                                 }
                                                 else
                                                 {
-                                                    <button class="btn btn-primary ml-2" onclick="window.location.href='@Url.Action("ActivateRoom", "Admin", new { RoomID = room.RoomID })'">Activate</button>
+                                                    <button type="button" class="btn btn-primary float-left  mr-2" onclick="window.location.href='@Url.Action("ActivateRoom", "Faculty", new { RoomID = room.RoomID })'">Active</button>
 
                                                 }
                                             </td>
@@ -279,10 +273,11 @@
                                         <th>Room Type</th>
                                         <th>Wing</th>
                                         <th>Room No</th>
+                                        <th>Status</th>
                                         <th>Action</th>
                                 </tfoot>
                             </table>
-                            <button type="button" class="btn btn-primary float-left mt-3" onclick="window.location.href='@Url.Action("AddRoom","Admin",new { })'">Add</button>
+                            <button type="button" class="btn btn-primary float-left mt-3" onclick="window.location.href='@Url.Action("AddRoom","Faculty",new { })'">Add</button>
 
                         </div>
                         <!-- /.card-body -->

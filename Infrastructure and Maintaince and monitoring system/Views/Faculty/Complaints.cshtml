@@ -222,6 +222,10 @@
                                         <th>Image</th>
                                         <th>Status</th>
                                         <th>Users</th>
+                                        <th>Complain Registration Date</th>
+                                        <th>Complain Completion Date</th>
+
+
                                         @if (Session["Role"] != null)
                                         {
                                             if (Session["Role"].ToString().Contains("Head") || Session["Role"].ToString().Contains("Lab"))
@@ -252,40 +256,51 @@
                                         {
                                             <td>No Image to display</td>
                                         }
-                                            <td>@complaint.Status</td>
-                                            <td>
-                                                @foreach (var user in complaint.Users)
-                                                {
-                                                    <span>@user.LoginID @Html.Raw("-") @user.Name</span><br>
-                                                }
-                                        
-                                            </td>
-                                            @if (Session["Role"] != null)
+                                        <td>@complaint.Status</td>
+                                        <td>
+                                            @foreach (var user in complaint.Users)
                                             {
-                                                if (Session["Role"].ToString().Contains("Head") || Session["Role"].ToString().Contains("Lab"))
-                                                {
-                                                    if (complaint.Status.Contains("Pending"))
-                                                    {
-                                                        <td> <button onclick="window.location.href='@Url.Action("AcceptComplaint", "Faculty", new { complaintID = complaint.ComplaintID })'">Accept</button> <button onclick="window.location.href='@Url.Action("RejectComplaint", "Faculty", new { complaintID = complaint.ComplaintID })'"> Reject</button> </td>
-
-                                                    }
-                                                    else if (complaint.Status.Contains("In-progress"))
-                                                    {
-                                                        <td> </td>
-                                                    }
-                                                    else if (complaint.Status.Contains("Completed") && complaint.HasFeedback)
-                                                    {
-                                                        <td> <button onclick="window.location.href='@Url.Action("ViewFeedback", "Faculty", new { complaintID = complaint.ComplaintID })'">View Feedbacks</button></td>
-                                                    }
-                                                    else
-                                                    {
-                                                        <td></td>
-                                                    }
-                                                }
-
+                                                <span>@user.LoginID @Html.Raw("-") @user.Name</span><br>
                                             }
 
-                                        </tr>
+                                        </td>
+                                        <td>@DateTime.Parse(complaint.Complain_Registration_Date).ToString("dd-MM-yyyy")</td>
+
+                                        @if (complaint.Complain_Completion_Date.Equals("") || complaint.Complain_Completion_Date == null)
+                                        {
+                                            <td>Yet to Completed</td>
+                                        }
+                                        else
+                                        {
+                                            <td>@DateTime.Parse(complaint.Complain_Completion_Date).ToString("dd-MM-yyyy")</td>
+                                        }
+
+                                        @if (Session["Role"] != null)
+                                        {
+                                            if (Session["Role"].ToString().Contains("Head") || Session["Role"].ToString().Contains("Lab"))
+                                            {
+                                                if (complaint.Status.Contains("Pending"))
+                                                {
+                                                    <td> <button onclick="window.location.href='@Url.Action("AcceptComplaint", "Faculty", new { complaintID = complaint.ComplaintID })'">Accept</button> <button onclick="window.location.href='@Url.Action("RejectComplaint", "Faculty", new { complaintID = complaint.ComplaintID })'"> Reject</button> </td>
+
+                                                }
+                                                else if (complaint.Status.Contains("In-progress"))
+                                                {
+                                                    <td> </td>
+                                                }
+                                                else if (complaint.Status.Contains("Completed") && complaint.HasFeedback)
+                                                {
+                                                    <td> <button onclick="window.location.href='@Url.Action("ViewFeedback", "Faculty", new { complaintID = complaint.ComplaintID })'">View Feedbacks</button></td>
+                                                }
+                                                else
+                                                {
+                                                    <td></td>
+                                                }
+                                            }
+
+                                        }
+
+                                    </tr>
                                     }
                                 </tbody>
                                 <tfoot>
@@ -296,6 +311,8 @@
                                         <th>Image</th>
                                         <th>Status</th>
                                         <th>Users</th>
+                                        <th>Complain Registration Date</th>
+                                        <th>Complain Completion Date</th>
 
                                         @if (Session["Role"] != null)
                                         {
@@ -306,7 +323,7 @@
                                             }
 
                                         }
-                                </tfoot>
+</tfoot>
                             </table>
                         </div>
                         <!-- /.card-body -->

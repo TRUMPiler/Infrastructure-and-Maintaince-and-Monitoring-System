@@ -2564,6 +2564,9 @@
     <None Include="Properties\PublishProfiles\registry.hub.docker.com_NaishalD.pubxml" />
     <Content Include="Views\Admin\FileComplaint.cshtml" />
     <Content Include="Views\Admin\RegisterUser.cshtml" />
+    <Content Include="Views\Admin\AddRoomType.cshtml" />
+    <Content Include="Views\Admin\EditRoomType.cshtml" />
+    <Content Include="Views\Admin\ManageRoomType.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

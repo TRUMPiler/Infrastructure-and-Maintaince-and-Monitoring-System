@@ -131,6 +131,13 @@
                             </a>
                         </li>
                         <li class="nav-item">
+                            <a href="/Admin/ManageRoom" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Manage Room</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
                             <a href="/Asset/Asset" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Assets</p>
@@ -142,7 +149,18 @@
                                 <p>Survey</p>
                             </a>
                         </li>
-
+                        <li class="nav-item">
+                            <a href="/Admin/ComplaintType" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>ComplaintType</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/AssetTransfer/" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Asset Transfer</p>
+                            </a>
+                        </li>
                     </ul>
                 </li>
 
@@ -231,6 +249,8 @@
                                         <th>Image</th>
                                         <th>Status</th>
                                         <th>Users</th>
+                                        <th>Complain Registration Date</th>
+                                        <th>Complain Completion Date</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -253,12 +273,23 @@
                                                 <td>No Image to display</td>
                                             }
                                             <td>@complaint.Status</td>
+
                                             <td>
                                                 @foreach (var user in complaint.Users)
                                                 {
                                                     <span>@user.LoginID @Html.Raw("-") @user.Name</span><br>
                                                 }
                                             </td>
+                                            <td>@DateTime.Parse(complaint.Complain_Registration_Date).ToString("dd-MM-yyyy")</td>
+
+                                            @if (complaint.Complain_Completion_Date.Equals("") || complaint.Complain_Completion_Date == null)
+                                            {
+                                                <td>Yet to Completed</td>
+                                            }
+                                            else
+                                            {
+                                                <td>@DateTime.Parse(complaint.Complain_Completion_Date).ToString("dd-MM-yyyy")</td>
+                                            }
                                             @if (complaint.Status.Contains("In-progress"))
                                             {
                                                 <td> <button onclick="window.location.href='@Url.Action("CompleteComplaint", "Admin", new { complaintID = complaint.ComplaintID })'">Complete</button></td>
@@ -283,6 +314,8 @@
                                         <th>Image</th>
                                         <th>Status</th>
                                         <th>Users</th>
+                                        <th>Complain Registration Date</th>
+                                        <th>Complain Completion Date</th>
                                         <th>Action</th>
                                     </tr>
                                 </tfoot>

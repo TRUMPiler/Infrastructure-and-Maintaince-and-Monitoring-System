@@ -486,7 +486,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
     "C.ComplainID, " +
     "C.Description, " +
     "CT.ComplaintType, " +
-    "C.Status,C.Image " +
+    "C.Status,C.Image,c.Complain_Registration_Date,c.Complain_Completion_Date " +
     "FROM " +
     "Tbl_Complain C " +
 "INNER JOIN " +
@@ -514,6 +514,10 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
                             ComplaintType = reader["ComplaintType"].ToString(),
                             Image = reader["Image"].ToString(),
                             Status = reader["Status"].ToString(),
+                            Complain_Registration_Date = reader["Complain_Registration_Date"].ToString(),
+                            complainRegistrationDate = DateTime.Parse(reader["Complain_Registration_Date"].ToString()),
+                            complainCompletionDate = DateTime.Parse(reader["Complain_Completion_Date"].ToString()),
+                            Complain_Completion_Date = reader["Complain_Completion_Date"].ToString(),
                             Users = GETCOMPLAINTUSERS((int)reader["ComplainID"]),
                             HasFeedback = CheckIfFeedbackExists((int)reader["ComplainID"], con)  // Check feedback status
                         };
@@ -581,7 +585,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
           "ct.ComplaintType, " +
           "c.Description, " +
           "c.Image, " +
-          "c.Status, " +
+          "c.Status,c.Complain_Registration_Date,c.Complain_Completion_Date, " +
 
           "c.ClassID " +
        "FROM Tbl_Complain  c " +
@@ -593,7 +597,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
            "ct.ComplaintType, " +
            "c.Description, " +
            "c.Image, " +
-           "c.Status, " +
+           "c.Status,c.Complain_Registration_Date,c.Complain_Completion_Date, " +
 
            "c.ClassID " +
         "FROM Tbl_Complain  c " +
@@ -605,7 +609,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
            "ct.ComplaintType, " +
            "c.Description, " +
            "c.Image, " +
-           "c.Status, " +
+           "c.Status,c.Complain_Registration_Date,c.Complain_Completion_Date, " +
 
            "c.ClassID " +
         "FROM Tbl_Complain  c " +
@@ -630,7 +634,11 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
                             Image = reader["Image"].ToString(),
                             Status = reader["Status"].ToString(),
                             Users = GETCOMPLAINTUSERS((int)reader["ComplainID"]),
-                            HasFeedback=CheckIfFeedbackExists((int)reader["ComplainID"],con)
+                            complainRegistrationDate = DateTime.Parse(reader["Complain_Registration_Date"].ToString()),
+                            complainCompletionDate = DateTime.Parse(reader["Complain_Completion_Date"].ToString()),
+                            Complain_Completion_Date = reader["Complain_Completion_Date"].ToString(),
+                            Complain_Registration_Date = reader["Complain_Registration_Date"].ToString(),
+                            HasFeedback =CheckIfFeedbackExists((int)reader["ComplainID"],con)
                         };
 
                         complaints.Add(complaint);

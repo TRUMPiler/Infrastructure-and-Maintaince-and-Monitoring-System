@@ -1,11 +1,13 @@
-﻿﻿@{
-    ViewBag.Title = "Give FeedbacK";
-    Layout = "~/Views/Shared/_AdminTablePage.cshtml";
+﻿
+@{
+    ViewBag.Title = "ManageRoomType";
+    Layout = "~/Views/Shared/_FacultyLayout.cshtml";
 }
-@model List<Infrastructure_and_Maintaince_and_monitoring_system.Models.Feedback>
+<!-- Preloader -->
 <div class="preloader flex-column justify-content-center align-items-center">
     <img class="animation__shake" src="~/Admins/dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
 </div>
+
 <!-- Navbar -->
 <nav class="main-header navbar navbar-expand navbar-white navbar-light">
     <!-- Left navbar links -->
@@ -14,17 +16,19 @@
             <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
-            <a href="/Admin/Index" class="nav-link">Home</a>
+            <a href="/Faculty/" class="nav-link">Home</a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
-            <a href="#" class="nav-link">About Us</a>
+            <a href="#" class="nav-link">Contact</a>
         </li>
     </ul>
-
 
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
         <!-- Navbar Search -->
+
+
+
         <li class="nav-item">
             <a class="nav-link" data-widget="navbar-search" href="#" role="button">
                 <i class="fas fa-search"></i>
@@ -46,7 +50,6 @@
             </div>
         </li>
 
-
         <!-- Notifications Dropdown Menu -->
         <li class="nav-item dropdown">
             <a class="nav-link" data-toggle="dropdown" href="#">
@@ -64,8 +67,6 @@
         </li>
 
 
-
-
         <li class="nav-item">
             <a class="nav-link" data-widget="fullscreen" href="#" role="button">
                 <i class="fas fa-expand-arrows-alt"></i>
@@ -76,19 +77,11 @@
                 <i class="fas fa-th-large"></i>
             </a>
         </li>
-
-        <!-- Navbar Search -->
         <li class="nav-item">
-            <button type="button" class="btn btn-primary float-right" onclick="window.location.href='@Url.Action("Logout", "Admin")'">Logout</button>
-
-            </a>
+            <button type="button" class="btn btn-primary float-right" onclick="window.location.href='@Url.Action("Logout", "Home")'">Logout</button>
         </li>
-
     </ul>
 </nav>
-
-<!-- /.navbar -->
-<!-- /.navbar -->
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
     <a href="#" class="brand-link">
@@ -205,20 +198,21 @@
     </div>
     <!-- /.sidebar -->
 </aside>
-<!-- Content Wrapper. Contains page content -->
-<!-- Content Wrapper. Contains page content -->
+
+<!-- Content Wrapper. Contains page content --><!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Complaint Filing</h1>
+                    <h1>RoomType Details</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active">Validation</li>
+                        <li class="breadcrumb-item active">Tables</li>
+                        <li class="breadcrumb-item active">RoomType Details</li>
                     </ol>
                 </div>
             </div>
@@ -229,152 +223,108 @@
     <section class="content">
         <div class="container-fluid">
             <div class="row">
-                <!-- left column -->
-                <div class="col-md-12">
-                    <!-- jquery validation -->
-                    <div class="card card-primary">
-                        <div class="card-header">
-                            <h3 class="card-title"><small>File a complaint</small></h3>
+                <div class="col-12">
+
+                    <div class="card">
+
+
+                        <div class="card-body">
+                            <table id="example1" class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>RoomType</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @model List<Infrastructure_and_Maintaince_and_monitoring_system.Models.RoomType>
+                                    @foreach (var roomtype in Model)
+                                    {
+                                        <tr>
+                                            <td>@roomtype.RoomTypeID</td>
+                                            <td>@roomtype.Roomtype</td>
+                                            <td>@roomtype.Status</td>
+
+
+
+                                            <td>
+                                                <button type="button" class="btn btn-primary float-left mr-2" onclick="window.location.href='@Url.Action("EditRoomType", "Faculty", new { RoomtypeID = roomtype.RoomTypeID })'">Edit</button>
+                                                @if (roomtype.Status.Equals(true))
+                                                {
+                                                    <button type="button" class="btn btn-primary float-left mr-2" onclick="window.location.href='@Url.Action("DeactivateRoomType", "Faculty", new { RoomID = roomtype.RoomTypeID })'">Deactive</button>
+                                                }
+                                                else
+                                                {
+                                                    <button type="button" class="btn btn-primary float-left mr-2" onclick="window.location.href='@Url.Action("ActivateRoomType", "Faculty", new { RoomID = roomtype.RoomTypeID })'">Active</button>
+                                                }
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>RoomType</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                </tfoot>
+                            </table>
+                            <button type="button" class="btn btn-primary float-left mt-3" onclick="window.location.href='@Url.Action("AddRoomType","Faculty",new { })'">Add</button>
+
                         </div>
-                        <!-- /.card-header -->
-                        <!-- form start -->
-
-                        <form id="quickForm" method="post" action="GiveFeedback" enctype="multipart/form-data">
-                            <div class="card-body">
-                                @foreach (var feedback in Model)
-                                {
-                                    <div class="form-group">
-                                        <label for="exampleInputName">Feedback</label>
-                                        <input type="text" name="Description" value="@feedback.Description" class="form-control" id="exampleInputName" placeholder="Enter your feedback" disabled>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="exampleInputPassword1">Rating</label>
-                                        <select name="Rating" id="RoomID" disabled>
-                                            @if (feedback.Rating == 5)
-                                            {
-                                                <option value=5 selected>Excellent</option>
-                                            }
-                                            else
-                                            {
-                                                <option value=5>Excellent</option>
-                                            }
-                                            @if (feedback.Rating == 4)
-                                            {
-                                                <option value=4 selected>Good</option>
-                                            }
-                                            else
-                                            {
-                                                <option value=4>Good</option>
-                                            }
-                                            @if (feedback.Rating == 3)
-                                            {
-                                                <option value=3 selected>Not Bad</option>
-                                            }
-                                            else
-                                            {
-                                                <option value=3>Not Bad</option>
-                                            }
-                                            @if (feedback.Rating == 2)
-                                            {
-                                                <option value=2 selected>Mediocre</option>
-                                            }
-                                            else
-                                            {
-                                                <option value=2>Mediocre</option>
-                                            }
-                                            @if (feedback.Rating == 1)
-                                            {
-                                                <option value=1 selected>Bad</option>
-                                            }
-                                            else
-                                            {
-                                                <option value=1>Bad</option>
-                                            }
-
-                                        </select>
-
-                                    </div>
-
-                                }
-
-                            </div>
-                            <!-- /.card-body -->
-                            <div class="card-footer">
-
-                            </div>
-                        </form>
+                        <!-- /.card-body -->
                     </div>
                     <!-- /.card -->
                 </div>
-                <!--/.col (left) -->
-                <!-- right column -->
-                <div class="col-md-6">
-
-                </div>
-                <!--/.col (right) -->
+                <!-- /.col -->
             </div>
             <!-- /.row -->
-        </div><!-- /.container-fluid -->
+        </div>
+        <!-- /.container-fluid -->
     </section>
     <!-- /.content -->
 </div>
-
+<!-- /.content-wrapper -->
+<!-- /.control-sidebar -->
+<!-- ./wrapper -->
 <!-- jQuery -->
 <script src="~/Admins/plugins/jquery/jquery.min.js"></script>
 <!-- Bootstrap 4 -->
 <script src="~/Admins/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<!-- jquery-validation -->
+<!-- DataTables  & ~/Admins/plugins -->
+<script src="~/Admins/plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="~/Admins/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+<script src="~/Admins/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+<script src="~/Admins/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+<script src="~/Admins/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+<script src="~/Admins/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+<script src="~/Admins/plugins/jszip/jszip.min.js"></script>
+<script src="~/Admins/plugins/pdfmake/pdfmake.min.js"></script>
+<script src="~/Admins/plugins/pdfmake/vfs_fonts.js"></script>
+<script src="~/Admins/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+<script src="~/Admins/plugins/datatables-buttons/js/buttons.print.min.js"></script>
+<script src="~/Admins/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
 <!-- AdminLTE App -->
 <script src="~/Admins/dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="~/Admins/dist/js/demo.js"></script>
-<script src="~/Admins/plugins/jquery-validation/jquery.validate.min.js"></script>
-<script src="~/Admins/plugins/jquery-validation/additional-methods.min.js"></script>
+<!-- Page specific script -->
 <script>
     $(function () {
-
-        $('#quickForm').validate({
-            rules: {
-                Description: {
-                    required: true,
-                    minlength: 4,
-
-                    maxlength: 245
-                },
-                Rating:
-                {
-                    required: true
-                },
-
-
-
-            },
-            messages: {
-                Rating: {
-                    required: "Please choose a Rating"
-                },
-                Description: {
-                    required: "Please enter a description",
-
-                    minlength: "Feedback must be at least 4 characters",
-                    maxlength: "Feedback cannot exceed 245 characters"
-                },
-
-
-
-            },
-            errorElement: 'span',
-            errorPlacement: function (error, element) {
-                error.addClass('invalid-feedback');
-                element.closest('.form-group').append(error);
-            },
-            highlight: function (element, errorClass, validClass) {
-                $(element).addClass('is-invalid');
-            },
-            unhighlight: function (element, errorClass, validClass) {
-                $(element).removeClass('is-invalid');
-            }
+        $("#example1").DataTable({
+            "responsive": true, "lengthChange": false, "autoWidth": false,
+            "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+        }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+        $('#example2').DataTable({
+            "paging": true,
+            "lengthChange": false,
+            "searching": false,
+            "ordering": true,
+            "info": true,
+            "autoWidth": false,
+            "responsive": true,
         });
     });
 </script>

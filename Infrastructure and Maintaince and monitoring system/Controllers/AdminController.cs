@@ -273,6 +273,22 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
                 using (SqlCommand com = new SqlCommand(Query, con))
                 {
                     con.Open();
+                    if (gd.Role.Contains("Faculty"))
+                    {
+                        if (IsEmailExists(gd.Email, con))
+                        {
+                            string scripts = "<script>alert('The Details of this Faculty is already Registered into the System');window.location='/Admin/Users'</script>";
+                            return Content(scripts, "text/html");
+                        }
+                    }
+                    else if(gd.Role.Contains("Student"))
+                    {
+                        if (IsEmailExists(gd.LoginID, con))
+                        {
+                            string scripts = "<script>alert('The Details of this Student is already Registered into the System');window.location='/Admin/Users'</script>";
+                            return Content(scripts, "text/html");
+                        }
+                    }
                     com.Parameters.AddWithValue("@Name", gd.Name);
                     com.Parameters.AddWithValue("@Email", gd.Email);
                     com.Parameters.AddWithValue("@PhoneNo", gd.PhoneNo);
@@ -299,18 +315,39 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
                         com.Parameters.Clear();
                         com.Parameters.AddWithValue("@UserID", userID);
                         com.Parameters.AddWithValue("@Sem", Convert.ToInt32(gd.Semester));
-                        com.ExecuteNonQuery();
+                        com.ExecuteNonQuery(); 
                     }
 
 
                     // Execute query and get the complaint ID
                 }
             }
-            return RedirectToAction("Index", "Admin");
-                
-            }
+            string script = "<script>alert('Registration is Completed');window.location='/Admin/Users'</script>";
+            return Content(script, "text/html");
 
-        
+        }
+
+        private bool IsEmailExists(string email, SqlConnection con)
+        {
+            string emailCheckQuery = "SELECT COUNT(*) FROM Tbl_Users WHERE LoginID = @Email";
+            using (SqlCommand emailCheckCommand = new SqlCommand(emailCheckQuery, con))
+            {
+                emailCheckCommand.Parameters.AddWithValue("@Email", email);
+                int emailCount = (int)emailCheckCommand.ExecuteScalar();
+                return emailCount > 0;
+            }
+        }
+        private bool IsLoginIDExists(string loginID, SqlConnection con)
+        {
+            string loginIDCheckQuery = "SELECT COUNT(*) FROM Tbl_Users WHERE LoginID = @LoginID";
+            using (SqlCommand loginIDCheckCommand = new SqlCommand(loginIDCheckQuery, con))
+            {
+                loginIDCheckCommand.Parameters.AddWithValue("@LoginID", loginID);
+                int loginIDCount = (int)loginIDCheckCommand.ExecuteScalar();
+                return loginIDCount > 0;
+            }
+        }
+
         public ActionResult Logout()
         {
             Session.RemoveAll();
@@ -590,7 +627,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
            "c.Description, " +
            "c.Image, " +
            "c.Status, " +
-           "c.ClassID " +
+           "c.ClassID,c.Complain_Registration_Date,c.Complain_Completion_Date " +
         "FROM Tbl_Complain  c " +
         "INNER JOIN Tbl_ComplaintType ct ON c.ComplaintType = ct.Complaint_TypeID WHERE c.Status NOT IN ('Pending', 'Rejected')";
 
@@ -613,6 +650,10 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
                             ComplaintType = reader["ComplaintType"].ToString(),
                             Image = reader["Image"].ToString(),
                             Status = reader["Status"].ToString(),
+                            complainRegistrationDate = DateTime.Parse(reader["Complain_Registration_Date"].ToString()),
+                            complainCompletionDate = DateTime.Parse(reader["Complain_Completion_Date"].ToString()),
+                            Complain_Completion_Date = reader["Complain_Completion_Date"].ToString(),
+                            Complain_Registration_Date= reader["Complain_Registration_Date"].ToString(),
                             Users = GETCOMPLAINTUSERS((int)reader["ComplainID"]),
                             HasFeedback = CheckIfFeedbackExists((int)reader["ComplainID"],con)
                         };
@@ -1017,8 +1058,87 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
             }
         }
 
-        
-       
+        public ActionResult ManageRoom()
+        {
+
+
+            string query = "SELECT R.RoomID, RT.RoomtType AS RoomType, R.Wing, R.RoomNo, R.Status FROM Tbl_Room R INNER JOIN Tbl_RoomType RT ON R.RoomType = RT.RoomTypeID;";
+            ConnectionString();
+
+            List<Room> rooms = new List<Room>();
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                using (SqlCommand com = new SqlCommand(query, con))
+                {
+                    con.Open();
+                    SqlDataReader reader = com.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        Room getrooms = new Room
+                        {
+                            RoomID = (int)reader["RoomID"],
+                            RoomType = reader["RoomType"].ToString(),
+                            Wing = reader["Wing"].ToString()[0],
+                            RoomNo = reader["RoomNo"].ToString(),
+                            Status = reader.GetBoolean(reader.GetOrdinal("Status"))
+                        };
+
+                        rooms.Add(getrooms);
+                    }
+                }
+            }
+
+            return View(rooms);
+        }
+        public ActionResult ManageRoomType()
+        {
+
+
+            string query = "select * from Tbl_RoomType;;";
+            ConnectionString();
+
+            List<RoomType> roomtype = new List<RoomType>();
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                using (SqlCommand com = new SqlCommand(query, con))
+                {
+                    con.Open();
+                    SqlDataReader reader = com.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        RoomType getroomtype = new RoomType
+                        {
+                            RoomTypeID = (int)reader["RoomTypeId"],
+                            Roomtype = reader["RoomtType"].ToString(),
+                            Status = reader.GetBoolean(reader.GetOrdinal("Status"))
+                        };
+
+                        roomtype.Add(getroomtype);
+                    }
+                }
+            }
+
+            return View(roomtype);
+        }
+
+        public ActionResult AddRoom()
+        {
+            Room room = new Room()
+            {
+                roomTypes = GetRoomtype()
+            };
+            return View(room);
+        }
+        public ActionResult AddRoomType()
+        {
+            return View();
+        }
+
+
         [HttpPost]
         public ActionResult AddRoom(Room room)
         {
@@ -1045,80 +1165,154 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
             catch (Exception e)
             {
                 return RedirectToAction("Error?error=" + e + "", "Error");
-                
+                //string script = "<script>alert('Error? error =  "+ e +" ');window.location='/Admin/Users'</script>";
+                //return Content(script, "text/html");
             }
         }
-        public List<RoomType> GetRoomtype()
+        [HttpPost]
+        public ActionResult AddRoomType(String Roomtype, bool Status)
         {
-            List<RoomType> lsRoomtype = new List<RoomType>();
-            string query = "Select * from Tbl_RoomType;";
+            string query = "Insert into Tbl_RoomType (RoomtType,Status) values(" + Roomtype + "," + Status + ");";
             ConnectionString();
-
-            using (SqlConnection con = new SqlConnection(connectionString))
+            con.Open();
+            com.Connection = con;
+            com.CommandText = query;
+            try
             {
-                using (SqlCommand com = new SqlCommand(query, con))
+                int i = com.ExecuteNonQuery();
+                if (i >= 1)
                 {
-                    con.Open();
-                    SqlDataReader reader = com.ExecuteReader();
-
-                    while (reader.Read())
-                    {
-                        RoomType getrooms = new RoomType
-                        {
-                            RoomTypeID = (int)reader["RoomTypeID"],
-                            Roomtype = reader["RoomtType"].ToString()
-                        };
-
-                        lsRoomtype.Add(getrooms);
-                    }
+                    string script = "<script>alert('RoomType data was inserted Successfully');window.location='/Admin/ManageRoomType'</script>";
+                    return Content(script, "text/html");
+                }
+                else
+                {
+                    string script = "<script>alert('Insertion Failed');window.location='/Admin/ManageRoomType'</script>";
+                    return Content(script, "text/html");
                 }
             }
-
-
-            return lsRoomtype;
-        }
-        public ActionResult AddRoom()
-        {
-            Room room = new Room()
+            catch (Exception e)
             {
-                roomTypes = GetRoomtype()
-            };
-            return View(room);
+                return RedirectToAction("Error?error=" + e + "", "Error");
+            }
         }
-
-        public ActionResult ManageRoom()
+        public ActionResult DeactivateRoom(int? RoomID)
         {
 
-
-            string query = "SELECT R.RoomID, RT.RoomtType AS RoomType, R.Wing, R.RoomNo,R.Status AS Status FROM Tbl_Room R INNER JOIN Tbl_RoomType RT ON R.RoomType = RT.RoomTypeID;";
+            String Query = "update Tbl_Room SET Status=0 where RoomID=" + RoomID;
             ConnectionString();
-
-            List<Room> rooms = new List<Room>();
-
-            using (SqlConnection con = new SqlConnection(connectionString))
+            con.Open();
+            com.Connection = con;
+            com.CommandText = Query;
+            try
             {
-                using (SqlCommand com = new SqlCommand(query, con))
+                int i = com.ExecuteNonQuery();
+                if (i >= 1)
                 {
-                    con.Open();
-                    SqlDataReader reader = com.ExecuteReader();
-
-                    while (reader.Read())
-                    {
-                        Room getrooms = new Room
-                        {
-                            RoomID = (int)reader["RoomID"],
-                            RoomType = reader["RoomType"].ToString(),
-                            Wing = reader["Wing"].ToString()[0],
-                            RoomNo = reader["RoomNo"].ToString(),
-                            Status= reader.GetBoolean(reader.GetOrdinal("Status"))
-                        };
-
-                        rooms.Add(getrooms);
-                    }
+                    string script = "<script>alert('Room deactivated Successfully');window.location='/Admin/ManageRoom'</script>";
+                    return Content(script, "text/html");
+                }
+                else
+                {
+                    string script = "<script>alert('Deactivation Failed');window.location='/Admin/ManageRoom'</script>";
+                    return Content(script, "text/html");
                 }
             }
+            catch (Exception e)
+            {
+                return RedirectToAction("Error?error=" + e + "", "Error");
+            }
+        }
+        public ActionResult ActivateRoom(int? RoomID)
+        {
 
-            return View(rooms);
+            String Query = "update Tbl_Room SET Status=1 where RoomID=" + RoomID;
+            ConnectionString();
+            con.Open();
+            com.Connection = con;
+            com.CommandText = Query;
+            try
+            {
+                int i = com.ExecuteNonQuery();
+                if (i >= 1)
+                {
+                    string script = "<script>alert('Room Activated Successfully');window.location='/Admin/ManageRoom'</script>";
+                    return Content(script, "text/html");
+                }
+                else
+                {
+                    string script = "<script>alert('Activation Failed');window.location='/Admin/ManageRoom'</script>";
+                    return Content(script, "text/html");
+                }
+            }
+            catch (Exception e)
+            {
+                return RedirectToAction("Error?error=" + e + "", "Error");
+            }
+        }
+        public ActionResult DeactivateRoomType(int? RoomID)
+        {
+
+            String Query = "update Tbl_RoomType SET Status=0 where RoomTypeID=" + RoomID;
+            ConnectionString();
+            con.Open();
+            com.Connection = con;
+            com.CommandText = Query;
+            try
+            {
+                int i = com.ExecuteNonQuery();
+                if (i >= 1)
+                {
+                    string script = "<script>alert('RoomType deactivated Successfully');window.location='/Admin/ManageRoomType'</script>";
+                    return Content(script, "text/html");
+                }
+                else
+                {
+                    string script = "<script>alert('Deactivation Failed');window.location='/Admin/ManageRoomType'</script>";
+                    return Content(script, "text/html");
+                }
+            }
+            catch (Exception e)
+            {
+                //if (e.ToString().Contains("REFERENCE constraint"))
+                //{
+                //    string script = "<script>alert('User cannot be deleted as it has some records assoicated with it ');window.location='/Admin/Users'</script>";
+                //    return Content(script, "text/html");
+                //}
+                return RedirectToAction("Error?error=" + e + "", "Error");
+            }
+        }
+        public ActionResult ActivateRoomType(int? RoomID)
+        {
+
+            String Query = "update Tbl_RoomType SET Status=1 where RoomTypeID=" + RoomID;
+            ConnectionString();
+            con.Open();
+            com.Connection = con;
+            com.CommandText = Query;
+            try
+            {
+                int i = com.ExecuteNonQuery();
+                if (i >= 1)
+                {
+                    string script = "<script>alert('RoomType Activated Successfully');window.location='/Admin/ManageRoomType'</script>";
+                    return Content(script, "text/html");
+                }
+                else
+                {
+                    string script = "<script>alert('Activation Failed');window.location='/Admin/ManageRoomType'</script>";
+                    return Content(script, "text/html");
+                }
+            }
+            catch (Exception e)
+            {
+                //if (e.ToString().Contains("REFERENCE constraint"))
+                //{
+                //    string script = "<script>alert('User cannot be deleted as it has some records assoicated with it ');window.location='/Admin/Users'</script>";
+                //    return Content(script, "text/html");
+                //}
+                return RedirectToAction("Error?error=" + e + "", "Error");
+            }
         }
 
         [HttpPost]
@@ -1153,8 +1347,6 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
         }
         public ActionResult EditRoom(int? RoomID)
         {
-          
-
             String Query = "SELECT R.RoomID, RT.RoomtType AS RoomType, R.Wing, R.RoomNo FROM Tbl_Room R INNER JOIN Tbl_RoomType RT ON R.RoomType = RT.RoomTypeID where RoomID=" + RoomID;
             using (SqlConnection con = new SqlConnection(connectionString))
             {
@@ -1180,10 +1372,35 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
             }
             return View();
         }
-        public ActionResult DeactivateRoom(int? RoomID)
+        public ActionResult EditRoomType(int? RoomtypeID)
         {
+            String Query = "select * from Tbl_RoomType where RoomTypeID=" + RoomtypeID;
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                con.Open();
+                com.Connection = con;
+                com.CommandText = Query;
 
-            String Query = "update Tbl_Room SET Status=0 where RoomID=" + RoomID    ;
+                SqlDataReader reader = com.ExecuteReader();
+                RoomType getRoomtype;
+                while (reader.Read())
+                {
+                    getRoomtype = new RoomType
+                    {
+                        RoomTypeID = (int)reader["RoomTypeID"],
+                        Roomtype = reader["RoomtType"].ToString(),
+                        Status = reader.GetBoolean(reader.GetOrdinal("Status"))
+                    };
+                    return View(getRoomtype);
+
+                }
+            }
+            return View();
+        }
+        [HttpPost]
+        public ActionResult EditRoomType(int RoomTypeID, String Roomtype)
+        {
+            String Query = "update Tbl_RoomType set RoomtType='" + Roomtype + "' where RoomTypeID=" + RoomTypeID + ";";
             ConnectionString();
             con.Open();
             com.Connection = con;
@@ -1193,48 +1410,95 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
                 int i = com.ExecuteNonQuery();
                 if (i >= 1)
                 {
-                    string script = "<script>alert('Room deactivated Successfully');window.location='/Admin/ManageRoom'</script>";
+                    string script = "<script>alert('RoomType data was updated Successfully');window.location='/Admin/ManageRoomType'</script>";
                     return Content(script, "text/html");
                 }
                 else
                 {
-                    string script = "<script>alert('Deactivation Failed');window.location='/Admin/ManageRoom'</script>";
+                    string script = "<script>alert('Updation Failed');window.location='/Admin/ManageRoomType'</script>";
                     return Content(script, "text/html");
                 }
             }
             catch (Exception e)
             {
-                
                 return RedirectToAction("Error?error=" + e + "", "Error");
             }
+
+
+
         }
-        public ActionResult ActivateRoom(int? RoomID)
+
+
+
+
+
+
+
+
+
+
+
+        public List<RoomType> GetRoomtype()
         {
-
-            String Query = "update Tbl_Room SET Status=1 where RoomID=" + RoomID;
+            List<RoomType> lsRoomtype = new List<RoomType>();
+            string query = "Select * from Tbl_RoomType;";
             ConnectionString();
-            con.Open();
-            com.Connection = con;
-            com.CommandText = Query;
-            try
-            {
-                int i = com.ExecuteNonQuery();
-                if (i >= 1)
-                {
-                    string script = "<script>alert('Room Activated Successfully');window.location='/Admin/ManageRoom'</script>";
-                    return Content(script, "text/html");
-                }
-                else
-                {
-                    string script = "<script>alert(Activation Failed');window.location='/Admin/ManageRoom'</script>";
-                    return Content(script, "text/html");
-                }
-            }
-            catch (Exception e)
-            {
 
-                return RedirectToAction("Error?error=" + e + "", "Error");
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                using (SqlCommand com = new SqlCommand(query, con))
+                {
+                    con.Open();
+                    SqlDataReader reader = com.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        RoomType getrooms = new RoomType
+                        {
+                            RoomTypeID = (int)reader["RoomTypeID"],
+                            Roomtype = reader["RoomtType"].ToString()
+                        };
+
+                        lsRoomtype.Add(getrooms);
+                    }
+                }
             }
+
+
+            return lsRoomtype;
         }
+        public List<RoomType> GetRoomtypeDetails()
+        {
+            List<RoomType> lsRoomtype = new List<RoomType>();
+            string query = "Select * from Tbl_RoomType;";
+            ConnectionString();
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                using (SqlCommand com = new SqlCommand(query, con))
+                {
+                    con.Open();
+                    SqlDataReader reader = com.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        RoomType getrooms = new RoomType
+                        {
+                            RoomTypeID = (int)reader["RoomTypeID"],
+                            Roomtype = reader["RoomtType"].ToString(),
+                            Status = reader.GetBoolean(reader.GetOrdinal("Status"))
+                        };
+
+                        lsRoomtype.Add(getrooms);
+                    }
+                }
+            }
+
+
+            return lsRoomtype;
+        }
+
+
     }
+
 }

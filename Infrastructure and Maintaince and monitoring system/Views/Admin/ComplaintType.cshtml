@@ -131,6 +131,13 @@
                             </a>
                         </li>
                         <li class="nav-item">
+                            <a href="/Admin/ManageRoom" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Manage Room</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
                             <a href="/Asset/Asset" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Assets</p>
@@ -143,9 +150,15 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="ComplaintType" class="nav-link">
+                            <a href="/Admin/ComplaintType" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>ComplaintType</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/AssetTransfer/" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Asset Transfer</p>
                             </a>
                         </li>
                     </ul>
@@ -236,12 +249,12 @@
                                         <tr>
                                             <td>@complaint.ComplaintType_ID</td>
                                             <td>@complaint.ComplaintType</td>
-                                            
 
-                                           
-                                            
-                                            
-                                            @if(complaint.cStatus)
+
+
+
+
+                                            @if (complaint.cStatus)
                                             {
                                                 <td> <button onclick="window.location.href='@Url.Action("Deactive", "Admin", new { TableName="Tbl_ComplaintType",id=complaint.ComplaintType_ID })'">Deactive</button></td>
                                             }

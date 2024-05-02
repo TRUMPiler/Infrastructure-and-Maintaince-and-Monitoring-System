@@ -41,45 +41,51 @@
     <!-- Brand Logo -->
     <a href="#" class="brand-link">
         <img src="~/Admins/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-        <span class="brand-text font-weight-light">Infrastructure</span>
+        <span class="brand-text font-weight-light">InfraCare</span>
     </a>
     <div class="sidebar">
         <!-- Sidebar user panel (optional) -->
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
             <div class="image">
-                <img src="~/Admins/dist/img/varshaMAM.png" class="img-circle elevation-2" alt="User Image">
+                <img src="~/Content/assets/img/MIcon.png" class="img-circle elevation-2" alt="User Image">
             </div>
             <div class="info">
-                <a href="#" class="d-block">Varsha Patel</a>
+                <a href="#" class="d-block">Admin</a>
             </div>
         </div>
-        <!-- Sidebar -->
-        <!-- Sidebar Menu -->
+
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                <!-- Add icons to the links using the .nav-icon class
-         with font-awesome or any other icon font library -->
+
                 <li class="nav-item">
-                    <a href="#" class="nav-link active">
+                    <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-table"></i>
                         <p>
                             Tables
                             <i class="fas fa-angle-left right"></i>
                         </p>
                     </a>
+
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="./Users" class="nav-link active">
+                            <a href="/Admin/Users" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Users</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="./Complaints" class="nav-link">
+                            <a href="/Admin/Complaints" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Complains</p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="/Admin/ManageRoom" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Manage Room</p>
+                            </a>
+                        </li>
+
                         <li class="nav-item">
                             <a href="/Asset/Asset" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
@@ -93,14 +99,35 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="ComplaintType" class="nav-link">
+                            <a href="/Admin/ComplaintType" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>ComplaintType</p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="/AssetTransfer/" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Asset Transfer</p>
+                            </a>
+                        </li>
                     </ul>
                 </li>
-                
+
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-chart-pie"></i>
+                        <p>
+                            Report
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                </li>
+
+
+
+
+
+
                 <li class="nav-header">MISCELLANEOUS</li>
                 <li class="nav-item">
                     <a href="/Admin/Register" class="nav-link">
@@ -108,6 +135,18 @@
                         <p>Registeration</p>
                     </a>
                 </li>
+
+
+                @*<li class="nav-item">
+                        <a href="pages/calendar.html" class="nav-link">
+                            <i class="nav-icon fas fa-calendar-alt"></i>
+                            <p>
+                                Calendar
+                                <span class="badge badge-info right">2</span>
+                            </p>
+                        </a>
+                    </li>*@
+
             </ul>
         </nav>
         <!-- /.sidebar-menu -->
@@ -247,11 +286,11 @@
                                             }
                                             @if (Model.Role.Equals("Faculty Lab Asst"))
                                             {
-                                        <option value="Faculty Lab Asst" selected>Faculty Lab Assitant</option>
+                                                <option value="Faculty Lab Asst" selected>Faculty Lab Assitant</option>
                                             }
                                             else
                                             {
-                                        <option value="Faculty Lab Asst">Faculty Lab Assitant</option>
+                                                <option value="Faculty Lab Asst">Faculty Lab Assitant</option>
                                             }
                                         </select>
                                     }
@@ -259,16 +298,16 @@
                                     else if (Model.Role.Contains("Admin"))
                                     {
 
-                                    <select name="Role">
-                                        <option value="Admin" selected>Admin</option>
-                                    </select>
+                                        <select name="Role">
+                                            <option value="Admin" selected>Admin</option>
+                                        </select>
                                     }
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputPassword1">Status</label>
-                                   
+
                                     <select name="Status">
-                                        @if (Model.Status==true)
+                                        @if (Model.Status == true)
                                         {
                                             <option value="true" selected>Active</option>
                                         }
@@ -276,7 +315,7 @@
                                         {
                                             <option value="true">Active</option>
                                         }
-                                        @if (Model.Status==false)
+                                        @if (Model.Status == false)
                                         {
                                             <option value="false" selected>Inactive</option>
                                         }
@@ -285,8 +324,8 @@
                                             <option value="false">Inactive</option>
                                         }
                                     </select>
-                                    
-                         
+
+
                                 </div>
                             </div>
                             <!-- /.card-body -->
@@ -324,7 +363,7 @@
 <script>
     $(function () {
         $.validator.setDefaults({
-           
+
         });
         $.validator.addMethod("letterswithspaces", function (value, element) {
             return this.optional(element) || /^[a-zA-Z\s]*$/.test(value);
@@ -342,7 +381,7 @@
                 {
                     required: true,
                     maxlength: 10,
-                    minlength:10,
+                    minlength: 10,
                 },
                 LoginID:
                 {
@@ -369,17 +408,17 @@
                     maxlength: "User's Phone number can't be more than 10 digits",
                     minlength: "User's Phone Number can't be less than 10 digits"
                 },
-                    LoginID:
-                    {
-                        required: "Please enter User's LoginID",
-                        minlength:"User's LoginID can't be less than 15"
-                    },
+                LoginID:
+                {
+                    required: "Please enter User's LoginID",
+                    minlength: "User's LoginID can't be less than 15"
+                },
                 Name:
                 {
                     required: "Please enter User's Name",
                     letterswithspaces: "Please enter only letters and spaces",
                     maxlength: "User's  name must not exceed 50 characters",
-                    minlength:"User's  name should be more than 2 letters"
+                    minlength: "User's  name should be more than 2 letters"
                 },
                 Email: {
                     required: "Please enter User's email address",
