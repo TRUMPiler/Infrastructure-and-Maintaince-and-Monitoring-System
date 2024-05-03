@@ -12,14 +12,14 @@ public class AssetTransferModel
         [DataType(DataType.Date)]
         public DateTime TransferDate { get; set; }
 
-        [Display(Name = "From Room ID")]
-        public int From_RoomID { get; set; }
+        [Display(Name = "From Room")]
+        public string From_RoomID { get; set; }
 
-        [Display(Name = "To Room ID")]
-        public int To_RoomID { get; set; }
+        [Display(Name = "To Room")]
+        public string To_RoomID { get; set; }
 
-        [Display(Name = "Asset ID")]
-        public int AssetID { get; set; }
+        [Display(Name = "Asset")]
+        public string AssetID { get; set; }
 
         [Display(Name = "Quantity")]
         public int Quantity { get; set; }

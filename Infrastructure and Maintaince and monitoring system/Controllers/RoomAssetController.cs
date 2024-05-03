@@ -24,7 +24,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
 
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    string query = "SELECT * FROM Tbl_Room_Asset";
+                    string query = "SELECT RA.RAid,R.Wing + ' ' + CAST(R.RoomNo AS varchar) AS RoomID,A.AssetName as AssetID,RA.Working,RA.NonWorking FROM Tbl_Room_Asset RA JOIN Tbl_Room R ON RA.RoomID = R.RoomID JOIN Tbl_Asset A ON RA.AssetID = A.AssetID;";
                     SqlCommand command = new SqlCommand(query, connection);
 
                     connection.Open();
@@ -35,8 +35,8 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
                         RoomAssetsModel roomAsset = new RoomAssetsModel
                         {
                             RAid = Convert.ToInt32(reader["RAid"]),
-                            RoomID = Convert.ToInt32(reader["RoomID"]),
-                            AssetID = Convert.ToInt32(reader["AssetID"]),
+                            RoomID = Convert.ToString(reader["RoomID"]),
+                            AssetID = Convert.ToString(reader["AssetID"]),
                             Working = Convert.ToInt32(reader["Working"]),
                             NonWorking = Convert.ToInt32(reader["NonWorking"])
                         };
@@ -104,8 +104,8 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
                         roomAsset = new RoomAssetsModel
                         {
                             RAid = id,
-                            RoomID = Convert.ToInt32(reader["RoomID"]),
-                            AssetID = Convert.ToInt32(reader["AssetID"]),
+                            RoomID = Convert.ToString(reader["RoomID"]),
+                            AssetID = Convert.ToString(reader["AssetID"]),
                             Working = Convert.ToInt32(reader["Working"]),
                             NonWorking = Convert.ToInt32(reader["NonWorking"])
                         };

@@ -88,7 +88,7 @@
 
 <!-- /.navbar -->
 <!-- /.navbar -->
-<aside class="main-sidebar sidebar-dark-primary elevation-4">
+               <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
     <a href="#" class="brand-link">
         <img src="~/Admins/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
@@ -112,7 +112,7 @@
                     <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-table"></i>
                         <p>
-                            Tables
+                            Management
                             <i class="fas fa-angle-left right"></i>
                         </p>
                     </a>
@@ -124,10 +124,17 @@
                                 <p>Users</p>
                             </a>
                         </li>
+
                         <li class="nav-item">
                             <a href="/Admin/Complaints" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Complains</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/Admin/ManageRoomType" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Manage Room Type</p>
                             </a>
                         </li>
                         <li class="nav-item">
@@ -136,7 +143,12 @@
                                 <p>Manage Room</p>
                             </a>
                         </li>
-
+                        <li class="nav-item">
+                            <a href="/Admin/ComplaintHistory" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Complaint History</p>
+                            </a>
+                        </li>
                         <li class="nav-item">
                             <a href="/Asset/Asset" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
@@ -165,7 +177,7 @@
                 </li>
 
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a href="/Graphs/Graphs" class="nav-link">
                         <i class="nav-icon fas fa-chart-pie"></i>
                         <p>
                             Report
@@ -179,7 +191,7 @@
 
 
 
-                <li class="nav-header">MISCELLANEOUS</li>
+                <li class="nav-header">Registeration Panel</li>
                 <li class="nav-item">
                     <a href="/Admin/Register" class="nav-link">
                         <i class="nav-icon fas fa-file"></i>
@@ -189,14 +201,14 @@
 
 
                 @*<li class="nav-item">
-                        <a href="pages/calendar.html" class="nav-link">
-                            <i class="nav-icon fas fa-calendar-alt"></i>
-                            <p>
-                                Calendar
-                                <span class="badge badge-info right">2</span>
-                            </p>
-                        </a>
-                    </li>*@
+            <a href="pages/calendar.html" class="nav-link">
+                <i class="nav-icon fas fa-calendar-alt"></i>
+                <p>
+                    Calendar
+                    <span class="badge badge-info right">2</span>
+                </p>
+            </a>
+        </li>*@
 
             </ul>
         </nav>
@@ -229,7 +241,7 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-12">
-                    <button class="btn btn-primary" onclick="window.location.href='@Url.Action("FileComplaint", "Admin", new { })'">File A Complain</button>
+                    <button class="btn btn-primary mb-3" onclick="window.location.href='@Url.Action("FileComplaint", "Admin", new { })'">File A Complain</button>
                     <div class="card">
 
 
@@ -292,11 +304,11 @@
                                             }
                                             @if (complaint.Status.Contains("In-progress"))
                                             {
-                                                <td> <button onclick="window.location.href='@Url.Action("CompleteComplaint", "Admin", new { complaintID = complaint.ComplaintID })'">Complete</button></td>
+                                                <td> <button class="btn btn-primary" onclick="window.location.href='@Url.Action("CompleteComplaint", "Admin", new { complaintID = complaint.ComplaintID })'">Complete</button></td>
                                             }
                                             else if (complaint.Status.Contains("Completed") && complaint.HasFeedback)
                                             {
-                                                <td> <button onclick="window.location.href='@Url.Action("ViewFeedback", "Admin", new { complaintID = complaint.ComplaintID })'">View Feedbacks</button></td>
+                                                <td> <button class="btn btn-primary" onclick="window.location.href='@Url.Action("ViewFeedback", "Admin", new { complaintID = complaint.ComplaintID })'">View Feedbacks</button></td>
                                             }
                                             else
                                             {

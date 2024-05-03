@@ -151,8 +151,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
                             Status = reader["Status"].ToString(),
                             Users = GETCOMPLAINTUSERS((int)reader["ComplainID"]),
                             Complain_Registration_Date= reader["Complain_Registration_Date"].ToString(),
-                            complainRegistrationDate = DateTime.Parse(reader["Complain_Registration_Date"].ToString()),
-                            complainCompletionDate = DateTime.Parse(reader["Complain_Completion_Date"].ToString()),
+                           
                             Complain_Completion_Date = reader["Complain_Completion_Date"].ToString(),
                             HasFeedback = CheckIfFeedbackExists((int)reader["ComplainID"], con)  // Check feedback status
                         };

@@ -105,7 +105,7 @@
                     <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-table"></i>
                         <p>
-                            Tables
+                            Management
                             <i class="fas fa-angle-left right"></i>
                         </p>
                     </a>
@@ -117,10 +117,17 @@
                                 <p>Users</p>
                             </a>
                         </li>
+
                         <li class="nav-item">
                             <a href="/Admin/Complaints" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Complains</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/Admin/ManageRoomType" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Manage Room Type</p>
                             </a>
                         </li>
                         <li class="nav-item">
@@ -129,7 +136,12 @@
                                 <p>Manage Room</p>
                             </a>
                         </li>
-
+                        <li class="nav-item">
+                            <a href="/Admin/ComplaintHistory" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Complaint History</p>
+                            </a>
+                        </li>
                         <li class="nav-item">
                             <a href="/Asset/Asset" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
@@ -158,7 +170,7 @@
                 </li>
 
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a href="/Graphs/Graphs" class="nav-link">
                         <i class="nav-icon fas fa-chart-pie"></i>
                         <p>
                             Report
@@ -172,7 +184,7 @@
 
 
 
-                <li class="nav-header">MISCELLANEOUS</li>
+                <li class="nav-header">Registeration Panel</li>
                 <li class="nav-item">
                     <a href="/Admin/Register" class="nav-link">
                         <i class="nav-icon fas fa-file"></i>
@@ -182,22 +194,21 @@
 
 
                 @*<li class="nav-item">
-                        <a href="pages/calendar.html" class="nav-link">
-                            <i class="nav-icon fas fa-calendar-alt"></i>
-                            <p>
-                                Calendar
-                                <span class="badge badge-info right">2</span>
-                            </p>
-                        </a>
-                    </li>*@
+            <a href="pages/calendar.html" class="nav-link">
+                <i class="nav-icon fas fa-calendar-alt"></i>
+                <p>
+                    Calendar
+                    <span class="badge badge-info right">2</span>
+                </p>
+            </a>
+        </li>*@
 
             </ul>
         </nav>
         <!-- /.sidebar-menu -->
     </div>
     <!-- /.sidebar -->
-</aside>
-<!-- Content Wrapper. Contains page content -->
+</aside><!-- Content Wrapper. Contains page content -->
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -244,7 +255,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">ComplaintType</label>
-                                    <select name="ComplaintType">
+                                    <select name="ComplaintType" class="form-control">
                                         @foreach (var ct in Model.ComplaintTypes)
                                         {
                                             <option value="@ct.ComplaintType_ID">@ct.ComplaintType</option>
@@ -265,7 +276,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Users</label><br>
-                                    <select name="SelectedUser[]" multiple>
+                                    <select name="SelectedUser[]"  class="form-control" multiple>
 
                                         @foreach (var user in Model.Users)
                                         {

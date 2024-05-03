@@ -31,6 +31,18 @@
     <link rel="stylesheet" href="~/Admins/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
     <!-- Theme style -->
     <link rel="stylesheet" href="~/Admins/dist/css/adminlte.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        #charts {
+            display: block;
+            box-sizing: border-box;
+        }
+
+            #charts table td {
+                height: 95px;
+                width: 95px;
+            }
+    </style>
     <!-- Ionicons -->
     <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
     <!-- Tempusdominus Bootstrap 4 -->
@@ -167,7 +179,7 @@
                                     <a href="#" class="nav-link">
                                         <i class="nav-icon fas fa-table"></i>
                                         <p>
-                                            Tables
+                                            Management
                                             <i class="fas fa-angle-left right"></i>
                                         </p>
                                     </a>
@@ -186,6 +198,12 @@
                                             </a>
                                         </li>
                                         <li class="nav-item">
+                                            <a href="/Admin/ManageRoomType" class="nav-link">
+                                                <i class="far fa-circle nav-icon"></i>
+                                                <p>Manage Room Type</p>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
                                             <a href="/Admin/ManageRoom" class="nav-link">
                                                 <i class="far fa-circle nav-icon"></i>
                                                 <p>Manage Room</p>
@@ -196,6 +214,12 @@
                                             <a href="/Asset/Asset" class="nav-link">
                                                 <i class="far fa-circle nav-icon"></i>
                                                 <p>Assets</p>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="/Admin/ComplaintHistory" class="nav-link">
+                                                <i class="far fa-circle nav-icon"></i>
+                                                <p>Complaint History</p>
                                             </a>
                                         </li>
                                         <li class="nav-item">
@@ -220,7 +244,7 @@
                                 </li>
 
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link">
+                                    <a href="/Graphs/Graphs" class="nav-link">
                                         <i class="nav-icon fas fa-chart-pie"></i>
                                         <p>
                                             Report
@@ -234,7 +258,7 @@
 
 
 
-                                <li class="nav-header">MISCELLANEOUS</li>
+                                <li class="nav-header">Registeration Panel</li>
                                 <li class="nav-item">
                                     <a href="/Admin/Register" class="nav-link">
                                         <i class="nav-icon fas fa-file"></i>

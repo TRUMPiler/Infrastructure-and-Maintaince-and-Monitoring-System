@@ -30,6 +30,11 @@ public class AssetTransferController : Controller
     {
         if (ModelState.IsValid)
         {
+            if (model.From_RoomID.Contains(model.To_RoomID))
+            {
+                string script = "<script>alert('From and to Room Cannot be Same');window.location='/AssetTransfer/Add'</script>";
+                return Content(script, "text/html");
+            }
             model.TransferDate = DateTime.ParseExact(DateTime.Now.ToString("yyyy-MM-dd"), "yyyy-MM-dd", CultureInfo.InvariantCulture);
             AddTransfer(model);
             return RedirectToAction("Index");
@@ -58,6 +63,11 @@ public class AssetTransferController : Controller
     {
         if (ModelState.IsValid)
         {
+            if (model.From_RoomID.Contains(model.To_RoomID))
+            {
+                string script = "<script>alert('From and to Room Cannot be Same');window.location='/AssetTransfer/Update/"+model.ATid+"'</script>";
+                return Content(script, "text/html");
+            }
             UpdateTransfer(model);
             return RedirectToAction("Index");
         }
@@ -78,7 +88,7 @@ public class AssetTransferController : Controller
         List<AssetTransferModel> transfers = new List<AssetTransferModel>();
         using (SqlConnection connection = new SqlConnection(connectionString))
         {
-            string query = "SELECT * FROM Tbl_Asset_Transfer";
+            string query = "SELECT t.ATid, t.TransferDate, CAST(fr.Wing AS VARCHAR(50)) + CAST(fr.RoomNo AS VARCHAR(50)) AS FromRoom, CAST(tr.Wing AS VARCHAR(50)) + CAST(tr.RoomNo AS VARCHAR(50)) AS ToRoom,a.AssetName,t.Quantity FROM  Tbl_Asset_Transfer AS t JOIN Tbl_Room AS fr ON t.From_RoomID = fr.RoomID JOIN Tbl_Room AS tr ON t.To_RoomID = tr.RoomID JOIN Tbl_Asset AS a ON t.AssetID = a.AssetID;";
             SqlCommand command = new SqlCommand(query, connection);
             connection.Open();
             SqlDataReader reader = command.ExecuteReader();
@@ -87,9 +97,9 @@ public class AssetTransferController : Controller
                 AssetTransferModel transfer = new AssetTransferModel
                 {
                     ATid = Convert.ToInt32(reader["ATid"]),
-                    From_RoomID = Convert.ToInt32(reader["From_RoomID"]),
-                    To_RoomID = Convert.ToInt32(reader["To_RoomID"]),
-                    AssetID = Convert.ToInt32(reader["AssetID"]),
+                    From_RoomID = Convert.ToString(reader["FromRoom"]),
+                    To_RoomID = Convert.ToString(reader["ToRoom"]),
+                    AssetID = Convert.ToString(reader["AssetName"]),
                     Quantity = Convert.ToInt32(reader["Quantity"]),
                     TransferDate = Convert.ToDateTime(reader["TransferDate"])
                 };
@@ -103,12 +113,13 @@ public class AssetTransferController : Controller
     {
         using (SqlConnection connection = new SqlConnection(connectionString))
         {
+            
             string query = "INSERT INTO Tbl_Asset_Transfer (TransferDate, From_RoomID, To_RoomID, AssetID, Quantity) VALUES (@TransferDate, @FromRoomId, @ToRoomId, @AssetId, @Quantity)";
             SqlCommand command = new SqlCommand(query, connection);
             command.Parameters.Add("@TransferDate", model.TransferDate);
-            command.Parameters.AddWithValue("@FromRoomId", model.From_RoomID);
-            command.Parameters.AddWithValue("@ToRoomId", model.To_RoomID);
-            command.Parameters.AddWithValue("@AssetId", model.AssetID);
+            command.Parameters.AddWithValue("@FromRoomId", Convert.ToInt32(model.From_RoomID));
+            command.Parameters.AddWithValue("@ToRoomId", Convert.ToInt32(model.To_RoomID));
+            command.Parameters.AddWithValue("@AssetId", Convert.ToInt32(model.AssetID));
             command.Parameters.AddWithValue("@Quantity", model.Quantity);
             connection.Open();
             command.ExecuteNonQuery();
@@ -121,9 +132,9 @@ public class AssetTransferController : Controller
         {
             string query = "UPDATE Tbl_Asset_Transfer SET From_RoomID = @FromRoomId, To_RoomID = @ToRoomId, AssetID = @AssetId, Quantity = @Quantity WHERE ATid = @TransferId";
             SqlCommand command = new SqlCommand(query, connection);
-            command.Parameters.AddWithValue("@FromRoomId", SqlDbType.Int).Value=model.From_RoomID;
-            command.Parameters.AddWithValue("@ToRoomId", SqlDbType.Int).Value = model.To_RoomID;
-            command.Parameters.AddWithValue("@AssetId", SqlDbType.Int).Value = model.AssetID;
+            command.Parameters.AddWithValue("@FromRoomId", SqlDbType.Int).Value= Convert.ToInt32(model.From_RoomID);
+            command.Parameters.AddWithValue("@ToRoomId", SqlDbType.Int).Value = Convert.ToInt32(model.To_RoomID);
+            command.Parameters.AddWithValue("@AssetId", SqlDbType.Int).Value = Convert.ToInt32(model.AssetID);
             command.Parameters.AddWithValue("@Quantity", SqlDbType.Int).Value = model.Quantity;
             command.Parameters.AddWithValue("@TransferId", SqlDbType.Int).Value = model.ATid;
 
@@ -208,9 +219,9 @@ public class AssetTransferController : Controller
                 {
                     ATid = Convert.ToInt32(reader["ATid"]),
                     TransferDate = Convert.ToDateTime(reader["TransferDate"]),
-                    From_RoomID = Convert.ToInt32(reader["From_RoomID"]),
-                    To_RoomID = Convert.ToInt32(reader["To_RoomID"]),
-                    AssetID = Convert.ToInt32(reader["AssetID"]),
+                    From_RoomID = Convert.ToString(reader["From_RoomID"]),
+                    To_RoomID = Convert.ToString(reader["To_RoomID"]),
+                    AssetID = Convert.ToString(reader["AssetID"]),
                     Quantity = Convert.ToInt32(reader["Quantity"])
                 };
             }

@@ -2174,6 +2174,7 @@
     <Compile Include="Controllers\AssetTransferController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\FacultyController.cs" />
+    <Compile Include="Controllers\GraphsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\RoomAssetController.cs" />
     <Compile Include="Controllers\StudentController.cs" />
@@ -2190,6 +2191,7 @@
     <Compile Include="Models\EmailSending.cs" />
     <Compile Include="Models\Feedback.cs" />
     <Compile Include="Models\GetData.cs" />
+    <Compile Include="Models\GraphData.cs" />
     <Compile Include="Models\Room.cs" />
     <Compile Include="Models\RoomAssetsModel.cs" />
     <Compile Include="Models\RoomType.cs" />
@@ -2567,6 +2569,8 @@
     <Content Include="Views\Admin\AddRoomType.cshtml" />
     <Content Include="Views\Admin\EditRoomType.cshtml" />
     <Content Include="Views\Admin\ManageRoomType.cshtml" />
+    <Content Include="Views\Admin\ComplaintHistory.cshtml" />
+    <Content Include="Views\Graphs\Graphs.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

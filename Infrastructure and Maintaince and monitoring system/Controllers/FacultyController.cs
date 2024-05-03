@@ -515,8 +515,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
                             Image = reader["Image"].ToString(),
                             Status = reader["Status"].ToString(),
                             Complain_Registration_Date = reader["Complain_Registration_Date"].ToString(),
-                            complainRegistrationDate = DateTime.Parse(reader["Complain_Registration_Date"].ToString()),
-                            complainCompletionDate = DateTime.Parse(reader["Complain_Completion_Date"].ToString()),
+                            
                             Complain_Completion_Date = reader["Complain_Completion_Date"].ToString(),
                             Users = GETCOMPLAINTUSERS((int)reader["ComplainID"]),
                             HasFeedback = CheckIfFeedbackExists((int)reader["ComplainID"], con)  // Check feedback status
@@ -634,8 +633,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
                             Image = reader["Image"].ToString(),
                             Status = reader["Status"].ToString(),
                             Users = GETCOMPLAINTUSERS((int)reader["ComplainID"]),
-                            complainRegistrationDate = DateTime.Parse(reader["Complain_Registration_Date"].ToString()),
-                            complainCompletionDate = DateTime.Parse(reader["Complain_Completion_Date"].ToString()),
+                         
                             Complain_Completion_Date = reader["Complain_Completion_Date"].ToString(),
                             Complain_Registration_Date = reader["Complain_Registration_Date"].ToString(),
                             HasFeedback =CheckIfFeedbackExists((int)reader["ComplainID"],con)

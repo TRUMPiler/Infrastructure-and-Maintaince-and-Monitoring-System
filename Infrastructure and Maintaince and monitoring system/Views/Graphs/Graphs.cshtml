@@ -1,0 +1,130 @@
+﻿@model List<Infrastructure_and_Maintaince_and_monitoring_system.Models.GraphData>
+@{
+    ViewBag.Title = "Graphs";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0">Report</h1>
+                </div><!-- /.col -->
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active">Dashboard v1</li>
+                    </ol>
+                </div><!-- /.col -->
+            </div><!-- /.row -->
+        </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+
+
+
+
+    <section class="content">
+        <div class="container-fluid">
+            <!-- Small boxes (Stat box) -->
+            <div class="row">
+
+            </div>
+        </div>
+    </section>
+    <style>
+        table {
+            border-collapse: separate;
+            border-spacing: 100px 10px;
+        }
+    </style>
+    <div class="row">
+        <!-- Left col -->
+        <section class="col-lg-7 connectedSortable">
+            <div id="charts">
+                <table>
+                    <tr>
+                        <td><h3>Ratio of Complaint Types</h3></td>
+                        <td><h3>Ratio of Pending Complaint and Completed Complaint</h3></td>
+                    </tr>
+                    <tr>
+                        <td><canvas id="pieChart" width="380" height="380"></canvas></td>
+                        <td><canvas id="lineChart" width="380" height="380"></canvas></td>
+                    </tr>
+                </table>
+
+            </div>
+            <!-- /.card -->
+        </section>
+    </div>
+</div>
+
+
+
+<script>
+        var complaintTypeData = @Html.Raw(Json.Encode(ViewBag.ComplaintTypeData));
+        var completedData = @Html.Raw(Json.Encode(ViewBag.CompletedComplaintsData));
+        var pendingInProgressData = @Html.Raw(Json.Encode(ViewBag.PendingInProgressComplaintsData));
+
+        var complaintTypeLabels = complaintTypeData.map(function(item) { return item.Label; });
+        var complaintTypeValues = complaintTypeData.map(function(item) { return item.Value; });
+
+        var completedLabels = completedData.map(function(item) { return item.Label; });
+        var completedCounts = completedData.map(function(item) { return item.Value; });
+
+        var pendingInProgressLabels = pendingInProgressData.map(function(item) { return item.Label; });
+        var pendingInProgressCounts = pendingInProgressData.map(function(item) { return item.Value; });
+
+        var complaintTypeCtx = document.getElementById('pieChart').getContext('2d');
+        var complaintTypePieChart = new Chart(complaintTypeCtx, {
+            type: 'pie',
+            data: {
+                labels: complaintTypeLabels,
+                datasets: [{
+                    data: complaintTypeValues,
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.7)',
+                        'rgba(54, 162, 235, 0.7)',
+                        'rgba(255, 206, 86, 0.7)',
+                        'rgba(75, 192, 192, 0.7)',
+                        'rgba(153, 102, 255, 0.7)',
+                        'rgba(255, 159, 64, 0.7)'
+                    ]
+                }]
+            }
+        });
+
+        var complaintStatusCtx = document.getElementById('lineChart').getContext('2d');
+        var complaintStatusLineChart = new Chart(complaintStatusCtx, {
+            type: 'line',
+            data: {
+                labels: completedLabels,
+                datasets: [{
+                    label: 'Completed Complaints',
+                    data: completedCounts,
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 2,
+                    fill: false
+                }, {
+                    label: 'Pending/In-Progress Complaints',
+                    data: pendingInProgressCounts,
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 2,
+                    fill: false
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+</script>

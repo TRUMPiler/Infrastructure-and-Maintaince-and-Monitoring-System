@@ -113,7 +113,7 @@
                     <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-table"></i>
                         <p>
-                            Tables
+                            Management
                             <i class="fas fa-angle-left right"></i>
                         </p>
                     </a>
@@ -125,10 +125,17 @@
                                 <p>Users</p>
                             </a>
                         </li>
+
                         <li class="nav-item">
                             <a href="/Admin/Complaints" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Complains</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/Admin/ManageRoomType" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Manage Room Type</p>
                             </a>
                         </li>
                         <li class="nav-item">
@@ -137,7 +144,12 @@
                                 <p>Manage Room</p>
                             </a>
                         </li>
-
+                        <li class="nav-item">
+                            <a href="/Admin/ComplaintHistory" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Complaint History</p>
+                            </a>
+                        </li>
                         <li class="nav-item">
                             <a href="/Asset/Asset" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
@@ -166,7 +178,7 @@
                 </li>
 
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a href="/Graphs/Graphs" class="nav-link">
                         <i class="nav-icon fas fa-chart-pie"></i>
                         <p>
                             Report
@@ -180,7 +192,7 @@
 
 
 
-                <li class="nav-header">MISCELLANEOUS</li>
+                <li class="nav-header">Registeration Panel</li>
                 <li class="nav-item">
                     <a href="/Admin/Register" class="nav-link">
                         <i class="nav-icon fas fa-file"></i>
@@ -190,14 +202,14 @@
 
 
                 @*<li class="nav-item">
-                        <a href="pages/calendar.html" class="nav-link">
-                            <i class="nav-icon fas fa-calendar-alt"></i>
-                            <p>
-                                Calendar
-                                <span class="badge badge-info right">2</span>
-                            </p>
-                        </a>
-                    </li>*@
+            <a href="pages/calendar.html" class="nav-link">
+                <i class="nav-icon fas fa-calendar-alt"></i>
+                <p>
+                    Calendar
+                    <span class="badge badge-info right">2</span>
+                </p>
+            </a>
+        </li>*@
 
             </ul>
         </nav>
@@ -250,7 +262,7 @@
 
                                     <div class="form-group">
                                         <label for="exampleInputPassword1">Rating</label>
-                                        <select name="Rating" id="RoomID" disabled>
+                                        <select name="Rating" id="RoomID" class="form-control" disabled>
                                             @if (feedback.Rating == 5)
                                             {
                                                 <option value=5 selected>Excellent</option>

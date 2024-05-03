@@ -100,10 +100,7 @@
                     {
                         <a href="#" class="d-block">@Session["Name"]</a>
                     }
-                    else
-                    {
-                        @Html.Action("Logout", "Home");
-                    }
+
                 }
 
             </div>
@@ -125,7 +122,7 @@
 
 
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a href="FileComplaint" class="nav-link">
                         <i class="nav-icon fas fa-table"></i>
                         <p>
                             More Info
@@ -136,13 +133,21 @@
                         <li class="nav-item">
                             <a href="ComplaintHistory" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>Complaint history</p>
+                                <p>our Complains</p>
                             </a>
                         </li>
+
                         @if (Session["Role"] != null)
                         {
-                            if (Session["Role"].ToString().Contains("CR") || Session["Role"].ToString().Contains("LR"))
+                            if (Session["Role"].ToString().Contains("Faculty"))
                             {
+
+                                <li class="nav-item">
+                                    <a href="/Faculty/Complaints" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>View other Complains</p>
+                                    </a>
+                                </li>
                                 <li class="nav-item">
                                     <a href="FileComplaint" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
@@ -151,6 +156,7 @@
                                 </li>
 
                             }
+
                         }
 
                     </ul>
@@ -162,7 +168,7 @@
         <!-- /.sidebar-menu -->
     </div>
     <!-- /.sidebar -->
-</aside></aside>
+</aside>
 <!-- Content Wrapper. Contains page content -->
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">

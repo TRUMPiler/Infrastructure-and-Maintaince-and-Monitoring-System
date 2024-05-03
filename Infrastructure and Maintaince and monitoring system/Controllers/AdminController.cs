@@ -418,23 +418,23 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
         }
         private void RegisterComplaintUsers(int[] selectedUsers, int complaintId, string connectionString)
         {
-            // Create connection
+            
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                // Open connection
+               
                 connection.Open();
 
-                // Define query
+             
                 string query = "INSERT INTO Tbl_Complaint_User (UserID, ComplainID) VALUES (@UserID, @ComplainID);";
 
-                // Create command
+             
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
-                    // Add parameters
+                  
                     command.Parameters.AddWithValue("@ComplainID", complaintId);
                     command.Parameters.AddWithValue("@UserID", Session["UserID"]);
                     command.ExecuteNonQuery();
-                    // Add each selected user
+                    
                     if(selectedUsers!=null)
                     { 
                         foreach (int userId in selectedUsers)
@@ -455,10 +455,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
         [HttpPost]
         public ActionResult FileComplaint(Complaint cs)
         {
-            // Your connection string
-
-
-            // Register the complaint and get its ID
+            
             int complaintId = RegisterComplaint(cs, connectionString);
             if (complaintId == 0)
             {
@@ -470,10 +467,10 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
                 string script = "<script>alert('Complaint is Empty');window.location='/Admin/Users'</script>";
                 return Content(script, "text/html");
             }
-            // Register the associated users
+            
             RegisterComplaintUsers(cs.SelectedUser, complaintId, connectionString);
 
-            // Redirect to the StudentProfile page
+         
             return RedirectToAction("Index");
         }
 
@@ -482,7 +479,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
             // Create connection
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                // Open connection
+                
                 connection.Open();
 
                 if (cs.ComplaintImage != null && cs.ComplaintImage.ContentLength > 0)
@@ -508,20 +505,20 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
                     cs.Image = "No Image";
                 }
 
-                // Define query
+              
                 string query = "INSERT INTO [dbo].[Tbl_Complain]([Description],[ComplaintType],[ClassID],[Image],[Status],[Complain_Registration_Date]) VALUES (@Description, @ComplaintType, @ClassID,@Image, @Status,@ComplainRegisterDate); SELECT SCOPE_IDENTITY();";
 
-                // Create command
+               
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
-                    // Add parameters
+                   
                     command.Parameters.Add("@Description", SqlDbType.VarChar).Value = cs.Description;
                     command.Parameters.Add("@ComplaintType", SqlDbType.Int).Value = cs.ComplaintType;
                     command.Parameters.Add("@Image", SqlDbType.VarChar).Value = cs.Image;
                     command.Parameters.Add("@Status", SqlDbType.VarChar).Value = "Pending"; // Default status
                     command.Parameters.Add("@ClassID", SqlDbType.Int).Value = cs.ClassID;
                     command.Parameters.Add("@ComplainRegisterDate", SqlDbType.Date).Value = DateTime.Today;
-                    // Execute query and get the complaint ID
+               
                     return Convert.ToInt32(command.ExecuteScalar());
                 }
             }
@@ -650,8 +647,6 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
                             ComplaintType = reader["ComplaintType"].ToString(),
                             Image = reader["Image"].ToString(),
                             Status = reader["Status"].ToString(),
-                            complainRegistrationDate = DateTime.Parse(reader["Complain_Registration_Date"].ToString()),
-                            complainCompletionDate = DateTime.Parse(reader["Complain_Completion_Date"].ToString()),
                             Complain_Completion_Date = reader["Complain_Completion_Date"].ToString(),
                             Complain_Registration_Date= reader["Complain_Registration_Date"].ToString(),
                             Users = GETCOMPLAINTUSERS((int)reader["ComplainID"]),
@@ -1029,7 +1024,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
             }
             catch (Exception ex)
             {
-                // Log exception
+                
                 return new HttpStatusCodeResult(HttpStatusCode.InternalServerError, "Error during operation");
             }
         }
@@ -1143,7 +1138,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
         public ActionResult AddRoom(Room room)
         {
             int roomtype = int.Parse(room.RoomType);
-            string query = "Insert into Tbl_Room (RoomType,Wing,RoomNo) values(" + roomtype + ",'" + room.Wing + "'," + room.RoomNo + ");";
+            string query = "Insert into Tbl_Room (RoomType,Wing,RoomNo,Status) values(" + roomtype + ",'" + room.Wing + "'," + room.RoomNo + ",1);";
             ConnectionString();
             con.Open();
             com.Connection = con;
@@ -1165,18 +1160,20 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
             catch (Exception e)
             {
                 return RedirectToAction("Error?error=" + e + "", "Error");
-                //string script = "<script>alert('Error? error =  "+ e +" ');window.location='/Admin/Users'</script>";
-                //return Content(script, "text/html");
+                
             }
         }
         [HttpPost]
         public ActionResult AddRoomType(String Roomtype, bool Status)
         {
-            string query = "Insert into Tbl_RoomType (RoomtType,Status) values(" + Roomtype + "," + Status + ");";
+            string query = "Insert into Tbl_RoomType (RoomtType,Status) values(@RoomType,@Status);";
             ConnectionString();
             con.Open();
             com.Connection = con;
+           
             com.CommandText = query;
+            com.Parameters.Add("@RoomType", SqlDbType.VarChar).Value = Roomtype;
+            com.Parameters.Add("@Status", SqlDbType.Bit).Value = Status;
             try
             {
                 int i = com.ExecuteNonQuery();
@@ -1193,6 +1190,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
             }
             catch (Exception e)
             {
+                
                 return RedirectToAction("Error?error=" + e + "", "Error");
             }
         }
@@ -1274,11 +1272,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
             }
             catch (Exception e)
             {
-                //if (e.ToString().Contains("REFERENCE constraint"))
-                //{
-                //    string script = "<script>alert('User cannot be deleted as it has some records assoicated with it ');window.location='/Admin/Users'</script>";
-                //    return Content(script, "text/html");
-                //}
+               
                 return RedirectToAction("Error?error=" + e + "", "Error");
             }
         }
@@ -1306,11 +1300,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
             }
             catch (Exception e)
             {
-                //if (e.ToString().Contains("REFERENCE constraint"))
-                //{
-                //    string script = "<script>alert('User cannot be deleted as it has some records assoicated with it ');window.location='/Admin/Users'</script>";
-                //    return Content(script, "text/html");
-                //}
+               
                 return RedirectToAction("Error?error=" + e + "", "Error");
             }
         }
@@ -1497,7 +1487,106 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
 
             return lsRoomtype;
         }
+        public ActionResult ComplaintHistory()
+        {
+            String Query = "SELECT " +
+    "C.ComplainID, " +
+    "C.Description,C.Complain_Registration_Date,C.Complain_Completion_Date," +
+    "CT.ComplaintType, " +
+    "C.Status,C.Image " +
+    "FROM " +
+    "Tbl_Complain C " +
+"INNER JOIN " +
+    "Tbl_Complaint_User CU ON C.ComplainID = CU.ComplainID " +
+"INNER JOIN " +
+    "Tbl_ComplaintType CT ON C.ComplaintType = CT.Complaint_TypeID " +
+"WHERE " +
 
+    "CU.UserID =(SELECT UserID FROM Tbl_Users WHERE LoginID ='" + Session["LoginID"] + "');";
+            List<Complaint> complaints = new List<Complaint>();
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                con.Open();
+                using (SqlCommand com = new SqlCommand(Query, con))
+                {
+                    SqlDataReader reader = com.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        Complaint complaint = new Complaint
+                        {
+                            ComplaintID = (int)reader["ComplainID"],
+                            Description = reader["Description"].ToString(),
+                            ComplaintType = reader["ComplaintType"].ToString(),
+                            Image = reader["Image"].ToString(),
+                            Status = reader["Status"].ToString(),
+                            Users = GETCOMPLAINTUSERS((int)reader["ComplainID"]),
+                            Complain_Registration_Date = reader["Complain_Registration_Date"].ToString(),
+                            Complain_Completion_Date = reader["Complain_Completion_Date"].ToString(),
+                            HasFeedback = CheckIfFeedbackExists((int)reader["ComplainID"], con)  // Check feedback status
+                        };
+
+                        complaints.Add(complaint);
+                    }
+                }
+            }
+
+            return View(complaints);
+        }
+        public ActionResult DeleteComplaint(int? complaintID)
+        {
+            if (complaintID.HasValue)
+            {
+               
+                using (SqlConnection con = new SqlConnection(connectionString))
+                {
+                    con.Open();
+
+               
+                    SqlTransaction transaction = con.BeginTransaction();
+
+                    try
+                    {
+                       
+                        string deleteUserQuery = "DELETE FROM Tbl_Complaint_User WHERE ComplainID = @ComplaintID";
+                        using (SqlCommand deleteUserCmd = new SqlCommand(deleteUserQuery, con, transaction))
+                        {
+                            deleteUserCmd.Parameters.AddWithValue("@ComplaintID", complaintID);
+                            deleteUserCmd.ExecuteNonQuery();
+                        }
+
+                        
+                        string deleteComplaintQuery = "DELETE FROM Tbl_Complain WHERE ComplainID = @ComplaintID";
+                        using (SqlCommand deleteComplaintCmd = new SqlCommand(deleteComplaintQuery, con, transaction))
+                        {
+                            deleteComplaintCmd.Parameters.AddWithValue("@ComplaintID", complaintID);
+                            deleteComplaintCmd.ExecuteNonQuery();
+                        }
+
+                       
+                        transaction.Commit();
+                        string script = "<script>alert('Complaint was Reverted Successfully');window.location='/Student/StudentProfile'</script>";
+                        return Content(script, "text/html");
+                    }
+                    catch (Exception ex)
+                    {
+                       
+                        transaction.Rollback();
+                        string script = "<script>alert('Complaint was not Reverted Successfully');window.location='/Admin/Index'</script>";
+                        return Content(script, "text/html");
+                    }
+                }
+
+
+
+            }
+            else
+            {
+                string script = "<script>alert('ComplaintID is missing');window.location='/Admin/Index'</script>";
+                return Content(script, "text/html");
+            }
+        }
 
     }
 

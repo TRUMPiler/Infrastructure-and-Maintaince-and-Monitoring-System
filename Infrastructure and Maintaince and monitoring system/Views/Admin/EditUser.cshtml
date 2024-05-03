@@ -61,7 +61,7 @@
                     <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-table"></i>
                         <p>
-                            Tables
+                            Management
                             <i class="fas fa-angle-left right"></i>
                         </p>
                     </a>
@@ -73,10 +73,17 @@
                                 <p>Users</p>
                             </a>
                         </li>
+
                         <li class="nav-item">
                             <a href="/Admin/Complaints" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Complains</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/Admin/ManageRoomType" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Manage Room Type</p>
                             </a>
                         </li>
                         <li class="nav-item">
@@ -85,7 +92,12 @@
                                 <p>Manage Room</p>
                             </a>
                         </li>
-
+                        <li class="nav-item">
+                            <a href="/Admin/ComplaintHistory" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Complaint History</p>
+                            </a>
+                        </li>
                         <li class="nav-item">
                             <a href="/Asset/Asset" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
@@ -114,7 +126,7 @@
                 </li>
 
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a href="/Graphs/Graphs" class="nav-link">
                         <i class="nav-icon fas fa-chart-pie"></i>
                         <p>
                             Report
@@ -128,7 +140,7 @@
 
 
 
-                <li class="nav-header">MISCELLANEOUS</li>
+                <li class="nav-header">Registeration Panel</li>
                 <li class="nav-item">
                     <a href="/Admin/Register" class="nav-link">
                         <i class="nav-icon fas fa-file"></i>
@@ -138,14 +150,14 @@
 
 
                 @*<li class="nav-item">
-                        <a href="pages/calendar.html" class="nav-link">
-                            <i class="nav-icon fas fa-calendar-alt"></i>
-                            <p>
-                                Calendar
-                                <span class="badge badge-info right">2</span>
-                            </p>
-                        </a>
-                    </li>*@
+            <a href="pages/calendar.html" class="nav-link">
+                <i class="nav-icon fas fa-calendar-alt"></i>
+                <p>
+                    Calendar
+                    <span class="badge badge-info right">2</span>
+                </p>
+            </a>
+        </li>*@
 
             </ul>
         </nav>
@@ -153,7 +165,6 @@
     </div>
     <!-- /.sidebar -->
 </aside>
-
 <!-- Content Wrapper. Contains page content -->
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
@@ -238,36 +249,44 @@
                                     <label for="exampleInputPassword1">Role</label>
                                     @if (Model.Role.Contains("Student"))
                                     {
-                                        <select name="Role">
-                                            @if (Model.Role.Equals("Student LR") && Model.Gender.Equals("F"))
-                                            {
-                                                <option value="Student LR" selected>Student LR</option>
-                                            }
-                                            else if (!Model.Role.Equals("Student LR") && Model.Gender.Equals("F"))
-                                            {
-                                                <option value="Student LR">Student LR</option>
-                                            }
-                                            @if (Model.Role.Equals("Student CR") && Model.Gender.Equals("M"))
-                                            {
-                                                <option value="Student CR" selected>Student CR</option>
-                                            }
-                                            else if (!Model.Role.Equals("Student CR") && Model.Gender.Equals("M"))
-                                            {
-                                                <option value="Student CR">Student CR</option>
-                                            }
-                                            @if (Model.Role.Equals("Student"))
-                                            {
-                                                <option value="Student" selected>Student</option>
-                                            }
-                                            else
-                                            {
-                                                <option value="Student">Student</option>
-                                            }
-                                        </select>
+                                <select name="Role" class="form-control">
+                                    @if (Model.Role.Equals("Student LR") && Model.Gender.Equals("F"))
+                                    {
+                                        <option value="Student LR" selected>Student LR</option>
+                                        <option value="Student CR">Student CR</option>
+                                    }
+                                    else if ((!Model.Role.Equals("Student LR") && (Model.Role.Equals("Student CR"))) && Model.Gender.Equals("F"))
+                                    {
+                                        <option value="Student LR">Student LR</option>
+                                        <option value="Student CR" selected>Student CR</option>
+                                    }
+                                    else if ((!Model.Role.Equals("Student LR") && (!Model.Role.Equals("Student CR"))) && Model.Gender.Equals("F"))
+                                    {
+                                        <option value="Student LR">Student LR</option>
+                                        <option value="Student CR">Student CR</option>
+                                    }
+
+                                    @if (Model.Role.Equals("Student CR") && Model.Gender.Equals("M"))
+                                    {
+                                        <option value="Student CR" selected>Student CR</option>
+                                    }
+                                    else if (!Model.Role.Equals("Student CR") && Model.Gender.Equals("M"))
+                                    {
+                                        <option value="Student CR">Student CR</option>
+                                    }
+                                    @if (Model.Role.Equals("Student"))
+                                    {
+                                        <option value="Student" selected>Student</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="Student">Student</option>
+                                    }
+                                </select>
                                     }
                                     else if (Model.Role.Contains("Faculty"))
                                     {
-                                        <select name="Role">
+                                        <select name="Role" class="form-control">
                                             @if (Model.Role.Equals("Faculty"))
                                             {
                                                 <option value="Faculty" selected>Faculty</option>
@@ -298,33 +317,46 @@
                                     else if (Model.Role.Contains("Admin"))
                                     {
 
-                                        <select name="Role">
+                                        <select name="Role" class="form-control">
                                             <option value="Admin" selected>Admin</option>
                                         </select>
                                     }
                                 </div>
                                 <div class="form-group">
-                                    <label for="exampleInputPassword1">Status</label>
-
-                                    <select name="Status">
-                                        @if (Model.Status == true)
-                                        {
-                                            <option value="true" selected>Active</option>
-                                        }
-                                        else
-                                        {
-                                            <option value="true">Active</option>
-                                        }
-                                        @if (Model.Status == false)
-                                        {
-                                            <option value="false" selected>Inactive</option>
-                                        }
-                                        else
-                                        {
-                                            <option value="false">Inactive</option>
-                                        }
-                                    </select>
-
+                                    @if (Model.Role.Contains("Admin"))
+                                    {
+                                        <label for="exampleInputPassword1" hidden>Status</label>
+                                        <select name="Status" class="form-control" hidden>
+                                            
+                                                <option value="true" selected>Active</option>
+                                            
+                                                <option value="true">Active</option>
+                                            
+                                            
+                                        </select>
+                                    }
+                                    else
+                                    {
+                                        <label for="exampleInputPassword1" >Status</label>
+                                        <select name="Status" class="form-control" >
+                                            @if (Model.Status == true)
+                                            {
+                                                <option value="true" selected>Active</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="true">Active</option>
+                                            }
+                                            @if (Model.Status == false)
+                                            {
+                                                <option value="false" selected>Inactive</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="false">Inactive</option>
+                                            }
+                                        </select>
+                                    }
 
                                 </div>
                             </div>

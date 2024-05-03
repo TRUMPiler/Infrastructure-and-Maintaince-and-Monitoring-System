@@ -7,14 +7,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>@ViewBag.Title</title>
     <script type="text/javascript" language="javascript">
-     function DisableBackButton() {
-       window.history.forward()
-      }
-     DisableBackButton();
-     window.onload = DisableBackButton;
-     window.onpageshow = function(evt) { if (evt.persisted) DisableBackButton() }
-     window.onunload = function() { void (0) }
+        function DisableBackButton() {
+            window.history.forward()
+        }
+        DisableBackButton();
+        window.onload = DisableBackButton;
+        window.onpageshow = function (evt) { if (evt.persisted) DisableBackButton() }
+        window.onunload = function () { void (0) }
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        #charts {
+            display: block;
+            box-sizing: border-box;
+        }
+
+            #charts table td {
+                height: 95px;
+                width: 95px;
+            }
+    </style>
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome -->

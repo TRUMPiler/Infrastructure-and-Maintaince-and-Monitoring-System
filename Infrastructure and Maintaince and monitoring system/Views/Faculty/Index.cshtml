@@ -102,13 +102,13 @@
                 </div>
                 <div class="info">
                     @if (Session["LoginID"] != null)
-                {
-                    if (Session["Name"] != null)
                     {
-                    <a href="#" class="d-block">@Session["Name"]</a>
-                    }
+                        if (Session["Name"] != null)
+                        {
+                            <a href="#" class="d-block">@Session["Name"]</a>
+                        }
 
-                }
+                    }
 
                 </div>
             </div>
@@ -121,7 +121,7 @@
             <nav class="mt-2">
                 <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                     <!-- Add icons to the links using the .nav-icon class
-                         with font-awesome or any other icon font library -->
+                     with font-awesome or any other icon font library -->
 
 
 
@@ -140,31 +140,31 @@
                             <li class="nav-item">
                                 <a href="/Faculty/ComplaintHistory" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
-                                    <p>Complaint history</p>
+                                    <p>our Complains</p>
                                 </a>
                             </li>
 
                             @if (Session["Role"] != null)
-                        {
-                            if (Session["Role"].ToString().Contains("Faculty"))
                             {
+                                if (Session["Role"].ToString().Contains("Faculty"))
+                                {
 
-                            <li class="nav-item">
-                                <a href="/Faculty/Complaints" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>View Complains</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="/Faculty/FileComplaint" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>File a Complain</p>
-                                </a>
-                            </li>
-                               
+                                    <li class="nav-item">
+                                        <a href="/Faculty/Complaints" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>View other Complains</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="/Faculty/FileComplaint" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>File a Complain</p>
+                                        </a>
+                                    </li>
+
+                                }
+
                             }
-
-                        }
 
                         </ul>
                     </li>

@@ -139,19 +139,16 @@
                                 <p>Complaint history</p>
                             </a>
                         </li>
-                        @if (Session["Role"] != null)
-                        {
-                            if (Session["Role"].ToString().Contains("CR") || Session["Role"].ToString().Contains("LR"))
-                            {
-                                <li class="nav-item">
-                                    <a href="FileComplaint" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>File a Complain</p>
-                                    </a>
-                                </li>
 
-                            }
-                        }
+                        <li class="nav-item">
+                            <a href="FileComplaint" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>File a Complain</p>
+                            </a>
+                        </li>
+
+
+
 
                     </ul>
                 </li>
