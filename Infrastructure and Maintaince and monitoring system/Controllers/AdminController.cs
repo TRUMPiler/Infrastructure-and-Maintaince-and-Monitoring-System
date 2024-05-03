@@ -1013,7 +1013,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
                     int rowsAffected = com.ExecuteNonQuery();
                     if (rowsAffected > 0)
                     {
-                        string script = "<script>alert('Type was Deactivated Successfully');window.location='/Admin/Users'</script>";
+                        string script = "<script>alert('Type was Deactivated Successfully');window.location='/Admin/ComplaintType'</script>";
                         return Content(script, "text/html");
                     }
                     else
@@ -1048,7 +1048,7 @@ namespace Infrastructure_and_Maintaince_and_monitoring_system.Controllers
                        com.Parameters.Add("@id", SqlDbType.Int).Value = id;
                        con.Open();
                        com.ExecuteNonQuery();
-                       string script = "<script>alert('Type was Actived Successfully');window.location='/Admin/Users'</script>";
+                       string script = "<script>alert('Type was Actived Successfully');window.location='/Admin/ComplaintType'</script>";
                        return Content(script, "text/html");
             }
         }
