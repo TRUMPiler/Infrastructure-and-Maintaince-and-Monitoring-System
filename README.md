@@ -20,7 +20,7 @@ The Login Page will act as a landing page but.
 ![](https://ibb.co/KVrqH1n)
 
 ### Dashboard
-![admin](https://ibb.co/0D7x5SL)
+![admin](https://i.ibb.co/ngGFpvy/image.png)
 
 ### Charts
 ![](https://iharsh234.github.io/WebApp/images/demo/demo_chart1.JPG)
